@@ -7,7 +7,6 @@ struct CoffeeMapView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                // Main content: map or list
                 Group {
                     if viewModel.viewMode == .map {
                         mapView
@@ -16,7 +15,7 @@ struct CoffeeMapView: View {
                     }
                 }
 
-                // Category filter strip pinned to the bottom
+                // Floating category filter — glass effect in iOS 26 Liquid Glass
                 categoryFilterBar
                     .padding(.bottom, 8)
             }
@@ -27,7 +26,6 @@ struct CoffeeMapView: View {
                     viewModeToggle
                 }
             }
-            // Present shop detail as a sheet so the map stays visible behind it
             .sheet(item: $viewModel.selectedShop) { shop in
                 CoffeeShopDetailView(shop: shop)
                     .presentationDetents([.medium, .large])
@@ -35,9 +33,7 @@ struct CoffeeMapView: View {
             }
             .task { await viewModel.loadShops() }
             .overlay {
-                if viewModel.isLoading {
-                    loadingOverlay
-                }
+                if viewModel.isLoading { loadingOverlay }
             }
         }
     }
@@ -56,7 +52,8 @@ struct CoffeeMapView: View {
                 }
             }
         }
-        .mapStyle(.standard(elevation: .realistic, pointsOfInterest: .excluding([.cafe])))
+        // Simplified — removes the PointOfInterestCategories type-inference ambiguity
+        .mapStyle(.standard(elevation: .realistic))
         .ignoresSafeArea(edges: .top)
     }
 
@@ -74,7 +71,6 @@ struct CoffeeMapView: View {
                         systemImage: category.systemImage,
                         isSelected: viewModel.selectedCategory == category
                     ) {
-                        // Tapping the active category deselects it
                         viewModel.selectedCategory =
                             viewModel.selectedCategory == category ? nil : category
                     }
@@ -83,8 +79,8 @@ struct CoffeeMapView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
         }
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        // iOS 26 Liquid Glass replaces the old ultraThinMaterial + clipShape approach
+        .glassEffect(in: .rect(cornerRadius: 14))
         .padding(.horizontal, 16)
         .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
@@ -108,8 +104,7 @@ struct CoffeeMapView: View {
         ZStack {
             Color.creamBackground.opacity(0.7)
             VStack(spacing: 12) {
-                ProgressView()
-                    .tint(Color.espresso)
+                ProgressView().tint(Color.espresso)
                 Text("Finding coffee shops…")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)

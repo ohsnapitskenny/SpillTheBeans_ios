@@ -1,15 +1,17 @@
 import Foundation
 
 // MARK: - Protocol
+// Sendable conformance is required by Swift 6 strict concurrency: the service
+// is captured and called across the @MainActor isolation boundary in the VM.
 // Swap MockCoffeeShopService for a GooglePlacesService or FoursquareService by
 // implementing this protocol and injecting it into CoffeeShopViewModel.
-protocol CoffeeShopServiceProtocol {
+protocol CoffeeShopServiceProtocol: Sendable {
     func fetchShops() async throws -> [CoffeeShop]
 }
 
 // MARK: - Mock Implementation
-
-final class MockCoffeeShopService: CoffeeShopServiceProtocol {
+// A value-type struct with no mutable state — implicitly Sendable.
+struct MockCoffeeShopService: CoffeeShopServiceProtocol {
 
     func fetchShops() async throws -> [CoffeeShop] {
         // Simulate a short network round-trip
@@ -28,7 +30,7 @@ final class MockCoffeeShopService: CoffeeShopServiceProtocol {
 
 // MARK: - Errors
 
-enum DataServiceError: LocalizedError {
+enum DataServiceError: LocalizedError, Sendable {
     case resourceNotFound(String)
     case decodingFailed(String)
     case networkUnavailable

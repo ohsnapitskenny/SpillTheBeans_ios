@@ -2,13 +2,13 @@ import Foundation
 
 // MARK: - Protocol
 
-protocol CoffeeServiceProtocol {
+protocol CoffeeServiceProtocol: Sendable {
     func fetchCoffees() async throws -> [Coffee]
 }
 
 // MARK: - Mock Implementation
 
-final class MockCoffeeService: CoffeeServiceProtocol {
+struct MockCoffeeService: CoffeeServiceProtocol {
 
     func fetchCoffees() async throws -> [Coffee] {
         try await Task.sleep(nanoseconds: 200_000_000)

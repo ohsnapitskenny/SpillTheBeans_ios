@@ -17,11 +17,13 @@ enum SortOption: String, CaseIterable, Identifiable {
 }
 
 // MARK: - ViewModel
-
+// @MainActor isolates all property access to the main thread — required by
+// Swift 6 strict concurrency for @Observable classes bound to SwiftUI views.
+@MainActor
 @Observable
 final class CoffeeShopViewModel {
 
-    // MARK: Published State
+    // MARK: State
     var shops: [CoffeeShop] = []
     var isLoading = false
     var errorMessage: String?
@@ -39,10 +41,10 @@ final class CoffeeShopViewModel {
     )
 
     // MARK: Private
-    private let service: CoffeeShopServiceProtocol
+    private let service: any CoffeeShopServiceProtocol
     private var userLocation: CLLocationCoordinate2D?
 
-    init(service: CoffeeShopServiceProtocol = MockCoffeeShopService()) {
+    init(service: any CoffeeShopServiceProtocol = MockCoffeeShopService()) {
         self.service = service
     }
 
@@ -57,11 +59,12 @@ final class CoffeeShopViewModel {
 
         switch sortOption {
         case .distance:
-            guard let userLoc = userLocation else { break }
-            let origin = CLLocation(latitude: userLoc.latitude, longitude: userLoc.longitude)
-            result.sort {
-                CLLocation(latitude: $0.latitude, longitude: $0.longitude).distance(from: origin) <
-                CLLocation(latitude: $1.latitude, longitude: $1.longitude).distance(from: origin)
+            if let userLoc = userLocation {
+                let origin = CLLocation(latitude: userLoc.latitude, longitude: userLoc.longitude)
+                result.sort {
+                    CLLocation(latitude: $0.latitude, longitude: $0.longitude).distance(from: origin) <
+                    CLLocation(latitude: $1.latitude, longitude: $1.longitude).distance(from: origin)
+                }
             }
         case .rating:
             result.sort { $0.rating > $1.rating }
@@ -74,9 +77,8 @@ final class CoffeeShopViewModel {
 
     // MARK: Intents
 
-    @MainActor
     func loadShops() async {
-        guard shops.isEmpty else { return }     // avoid re-fetching on tab re-selection
+        guard shops.isEmpty else { return }
         isLoading = true
         errorMessage = nil
         do {
@@ -89,7 +91,6 @@ final class CoffeeShopViewModel {
 
     func selectShop(_ shop: CoffeeShop) {
         selectedShop = shop
-        // Zoom the map into the selected shop
         cameraPosition = .region(
             MKCoordinateRegion(
                 center: shop.coordinate,

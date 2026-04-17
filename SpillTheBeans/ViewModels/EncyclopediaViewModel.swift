@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class EncyclopediaViewModel {
 
@@ -13,9 +14,9 @@ final class EncyclopediaViewModel {
     var selectedCountry: String?
     var selectedFlavorTag: String?
 
-    private let service: CoffeeServiceProtocol
+    private let service: any CoffeeServiceProtocol
 
-    init(service: CoffeeServiceProtocol = MockCoffeeService()) {
+    init(service: any CoffeeServiceProtocol = MockCoffeeService()) {
         self.service = service
     }
 
@@ -40,15 +41,9 @@ final class EncyclopediaViewModel {
             }
         }
 
-        if let process = selectedProcess {
-            result = result.filter { $0.process == process }
-        }
-        if let country = selectedCountry {
-            result = result.filter { $0.origin.country == country }
-        }
-        if let tag = selectedFlavorTag {
-            result = result.filter { $0.flavorTags.contains(tag) }
-        }
+        if let process = selectedProcess { result = result.filter { $0.process == process } }
+        if let country = selectedCountry { result = result.filter { $0.origin.country == country } }
+        if let tag    = selectedFlavorTag { result = result.filter { $0.flavorTags.contains(tag) } }
 
         return result
     }
@@ -59,7 +54,6 @@ final class EncyclopediaViewModel {
 
     // MARK: Intents
 
-    @MainActor
     func loadCoffees() async {
         guard coffees.isEmpty else { return }
         isLoading = true

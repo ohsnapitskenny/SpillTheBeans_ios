@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA000001 /* SpillTheBeansApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000001 /* SpillTheBeansApp.swift */; };
+		AA000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000002 /* ContentView.swift */; };
+		AA000003 /* CoffeeShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000003 /* CoffeeShop.swift */; };
+		AA000004 /* Coffee.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000004 /* Coffee.swift */; };
+		AA000005 /* CoffeeShopService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000005 /* CoffeeShopService.swift */; };
+		AA000006 /* CoffeeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000006 /* CoffeeService.swift */; };
+		AA000007 /* CoffeeShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000007 /* CoffeeShopViewModel.swift */; };
+		AA000008 /* EncyclopediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000008 /* EncyclopediaViewModel.swift */; };
+		AA000009 /* CoffeeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000009 /* CoffeeMapView.swift */; };
+		AA000010 /* ShopAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000010 /* ShopAnnotationView.swift */; };
+		AA000011 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000011 /* ShopListView.swift */; };
+		AA000012 /* CoffeeShopDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000012 /* CoffeeShopDetailView.swift */; };
+		AA000013 /* EncyclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000013 /* EncyclopediaView.swift */; };
+		AA000014 /* CoffeeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000014 /* CoffeeCardView.swift */; };
+		AA000015 /* CoffeeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000015 /* CoffeeDetailView.swift */; };
+		AA000016 /* FilterChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000016 /* FilterChipView.swift */; };
+		AA000017 /* SharedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000017 /* SharedComponents.swift */; };
+		AA000018 /* CoffeeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000018 /* CoffeeComponents.swift */; };
+		AA000019 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000019 /* FlowLayout.swift */; };
+		AA000020 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000020 /* FilterSheetView.swift */; };
+		AA000021 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000021 /* Color+Theme.swift */; };
+		AA000022 /* coffeeShops.json in Resources */ = {isa = PBXBuildFile; fileRef = AB000022 /* coffeeShops.json */; };
+		AA000023 /* coffees.json in Resources */ = {isa = PBXBuildFile; fileRef = AB000023 /* coffees.json */; };
+		AA000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB000024 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AB000001 /* SpillTheBeansApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpillTheBeansApp.swift; sourceTree = "<group>"; };
+		AB000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AB000003 /* CoffeeShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeShop.swift; sourceTree = "<group>"; };
+		AB000004 /* Coffee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coffee.swift; sourceTree = "<group>"; };
+		AB000005 /* CoffeeShopService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeShopService.swift; sourceTree = "<group>"; };
+		AB000006 /* CoffeeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeService.swift; sourceTree = "<group>"; };
+		AB000007 /* CoffeeShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeShopViewModel.swift; sourceTree = "<group>"; };
+		AB000008 /* EncyclopediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncyclopediaViewModel.swift; sourceTree = "<group>"; };
+		AB000009 /* CoffeeMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMapView.swift; sourceTree = "<group>"; };
+		AB000010 /* ShopAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopAnnotationView.swift; sourceTree = "<group>"; };
+		AB000011 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
+		AB000012 /* CoffeeShopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeShopDetailView.swift; sourceTree = "<group>"; };
+		AB000013 /* EncyclopediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncyclopediaView.swift; sourceTree = "<group>"; };
+		AB000014 /* CoffeeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCardView.swift; sourceTree = "<group>"; };
+		AB000015 /* CoffeeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeDetailView.swift; sourceTree = "<group>"; };
+		AB000016 /* FilterChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChipView.swift; sourceTree = "<group>"; };
+		AB000017 /* SharedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedComponents.swift; sourceTree = "<group>"; };
+		AB000018 /* CoffeeComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeComponents.swift; sourceTree = "<group>"; };
+		AB000019 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		AB000020 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
+		AB000021 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		AB000022 /* coffeeShops.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = coffeeShops.json; sourceTree = "<group>"; };
+		AB000023 /* coffees.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = coffees.json; sourceTree = "<group>"; };
+		AB000024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AC000001 /* SpillTheBeans.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpillTheBeans.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AD000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE000001 /* SpillTheBeans */ = {
+			isa = PBXGroup;
+			children = (
+				AB000001 /* SpillTheBeansApp.swift */,
+				AB000002 /* ContentView.swift */,
+				AC000002 /* Info.plist */,
+				AB000024 /* Assets.xcassets */,
+				AE000002 /* Models */,
+				AE000003 /* ViewModels */,
+				AE000004 /* Services */,
+				AE000005 /* Views */,
+				AE000009 /* Resources */,
+			);
+			path = SpillTheBeans;
+			sourceTree = "<group>";
+		};
+		AE000002 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AB000003 /* CoffeeShop.swift */,
+				AB000004 /* Coffee.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AE000003 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AB000007 /* CoffeeShopViewModel.swift */,
+				AB000008 /* EncyclopediaViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		AE000004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AB000005 /* CoffeeShopService.swift */,
+				AB000006 /* CoffeeService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AE000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AE000006 /* Map */,
+				AE000007 /* Encyclopedia */,
+				AE000008 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AE000006 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				AB000009 /* CoffeeMapView.swift */,
+				AB000010 /* ShopAnnotationView.swift */,
+				AB000011 /* ShopListView.swift */,
+				AB000012 /* CoffeeShopDetailView.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		AE000007 /* Encyclopedia */ = {
+			isa = PBXGroup;
+			children = (
+				AB000013 /* EncyclopediaView.swift */,
+				AB000014 /* CoffeeCardView.swift */,
+				AB000015 /* CoffeeDetailView.swift */,
+			);
+			path = Encyclopedia;
+			sourceTree = "<group>";
+		};
+		AE000008 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AB000016 /* FilterChipView.swift */,
+				AB000017 /* SharedComponents.swift */,
+				AB000018 /* CoffeeComponents.swift */,
+				AB000019 /* FlowLayout.swift */,
+				AB000020 /* FilterSheetView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		AE000009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AE000010 /* Extensions */,
+				AE000011 /* MockData */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AE000010 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AB000021 /* Color+Theme.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AE000011 /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				AB000022 /* coffeeShops.json */,
+				AB000023 /* coffees.json */,
+			);
+			path = MockData;
+			sourceTree = "<group>";
+		};
+		AF000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC000001 /* SpillTheBeans.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AF000002 /* root */ = {
+			isa = PBXGroup;
+			children = (
+				AE000001 /* SpillTheBeans */,
+				AF000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AG000001 /* SpillTheBeans */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AH000001 /* Build configuration list for PBXNativeTarget "SpillTheBeans" */;
+			buildPhases = (
+				AI000001 /* Sources */,
+				AD000001 /* Frameworks */,
+				AJ000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpillTheBeans;
+			productName = SpillTheBeans;
+			productReference = AC000001 /* SpillTheBeans.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AK000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					AG000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = AH000002 /* Build configuration list for PBXProject "SpillTheBeans" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AF000002 /* root */;
+			productRefGroup = AF000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AG000001 /* SpillTheBeans */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AJ000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000022 /* coffeeShops.json in Resources */,
+				AA000023 /* coffees.json in Resources */,
+				AA000024 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AI000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000001 /* SpillTheBeansApp.swift in Sources */,
+				AA000002 /* ContentView.swift in Sources */,
+				AA000003 /* CoffeeShop.swift in Sources */,
+				AA000004 /* Coffee.swift in Sources */,
+				AA000005 /* CoffeeShopService.swift in Sources */,
+				AA000006 /* CoffeeService.swift in Sources */,
+				AA000007 /* CoffeeShopViewModel.swift in Sources */,
+				AA000008 /* EncyclopediaViewModel.swift in Sources */,
+				AA000009 /* CoffeeMapView.swift in Sources */,
+				AA000010 /* ShopAnnotationView.swift in Sources */,
+				AA000011 /* ShopListView.swift in Sources */,
+				AA000012 /* CoffeeShopDetailView.swift in Sources */,
+				AA000013 /* EncyclopediaView.swift in Sources */,
+				AA000014 /* CoffeeCardView.swift in Sources */,
+				AA000015 /* CoffeeDetailView.swift in Sources */,
+				AA000016 /* FilterChipView.swift in Sources */,
+				AA000017 /* SharedComponents.swift in Sources */,
+				AA000018 /* CoffeeComponents.swift in Sources */,
+				AA000019 /* FlowLayout.swift in Sources */,
+				AA000020 /* FilterSheetView.swift in Sources */,
+				AA000021 /* Color+Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AL000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpillTheBeans/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spillthebeans.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AL000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpillTheBeans/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spillthebeans.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AL000003 /* Debug (Project) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AL000004 /* Release (Project) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AH000001 /* Build configuration list for PBXNativeTarget "SpillTheBeans" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AL000001 /* Debug */,
+				AL000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AH000002 /* Build configuration list for PBXProject "SpillTheBeans" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AL000003 /* Debug */,
+				AL000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = AK000001 /* Project object */;
+}

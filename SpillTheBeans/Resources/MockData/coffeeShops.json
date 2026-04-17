@@ -1,0 +1,254 @@
+[
+  {
+    "id": "A1B2C3D4-0001-0001-0001-000000000001",
+    "name": "Ritual Coffee Roasters",
+    "address": "1026 Valencia St, San Francisco, CA 94110",
+    "latitude": 37.7568,
+    "longitude": -122.4213,
+    "category": "Roastery",
+    "rating": 4.7,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Tuesday",   "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Wednesday", "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Thursday",  "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Friday",    "hours": "7:00 AM – 8:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 8:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 7:00 PM" }
+    ],
+    "roasterInfo": "Roasting direct-trade specialty coffee in San Francisco since 2005. Known for transparent sourcing relationships with farms across Ethiopia, Colombia, and Kenya.",
+    "description": "A pioneering force in SF's third-wave coffee scene. Ritual roasts all coffee on-site at their Valencia Street flagship — expect rotating single-origins on espresso and a meticulous pour-over bar.",
+    "tags": ["Single Origin", "Cold Brew", "Work-Friendly"]
+  },
+  {
+    "id": "A1B2C3D4-0002-0002-0002-000000000002",
+    "name": "Sightglass Coffee",
+    "address": "270 Seventh St, San Francisco, CA 94103",
+    "latitude": 37.7742,
+    "longitude": -122.4090,
+    "category": "Roastery",
+    "rating": 4.6,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 7:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 6:00 PM" }
+    ],
+    "roasterInfo": "Brothers Jerad and Justin Morrison launched Sightglass in 2009, emphasising seasonal lots and in-house roasting in their SoMa warehouse.",
+    "description": "A dramatic two-story SoMa warehouse where you can watch roasters work the drum while you sip. Excellent cortado and a lively brunch crowd on weekends.",
+    "tags": ["Single Origin", "Specialty Food", "Outdoor Seating"]
+  },
+  {
+    "id": "A1B2C3D4-0003-0003-0003-000000000003",
+    "name": "Blue Bottle Coffee",
+    "address": "66 Mint St, San Francisco, CA 94103",
+    "latitude": 37.7822,
+    "longitude": -122.4063,
+    "category": "Pour-Over",
+    "rating": 4.5,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Tuesday",   "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Wednesday", "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Thursday",  "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Friday",    "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 5:00 PM" }
+    ],
+    "roasterInfo": "James Freeman founded Blue Bottle in 2002 in Oakland. Committed to serving coffee within 48 hours of roast.",
+    "description": "Minimalist aesthetic meets obsessive craft. Blue Bottle's Mint Plaza kiosk is a pilgrimage spot for their New Orleans-style cold brew and single-origin pour-overs.",
+    "tags": ["Single Origin", "Cold Brew", "Alt Milk"]
+  },
+  {
+    "id": "A1B2C3D4-0004-0004-0004-000000000004",
+    "name": "Saint Frank Coffee",
+    "address": "2340 Polk St, San Francisco, CA 94109",
+    "latitude": 37.7985,
+    "longitude": -122.4214,
+    "category": "Espresso Bar",
+    "rating": 4.8,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:30 AM – 5:30 PM" },
+      { "day": "Tuesday",   "hours": "7:30 AM – 5:30 PM" },
+      { "day": "Wednesday", "hours": "7:30 AM – 5:30 PM" },
+      { "day": "Thursday",  "hours": "7:30 AM – 5:30 PM" },
+      { "day": "Friday",    "hours": "7:30 AM – 5:30 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 5:30 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 5:30 PM" }
+    ],
+    "roasterInfo": null,
+    "description": "A Polk Street gem celebrated for its world-class espresso and warm neighbourhood atmosphere. Saint Frank partners with elite micro-roasters and updates its menu seasonally.",
+    "tags": ["Single Origin", "Work-Friendly", "Alt Milk"]
+  },
+  {
+    "id": "A1B2C3D4-0005-0005-0005-000000000005",
+    "name": "Equator Coffees",
+    "address": "986 Market St, San Francisco, CA 94102",
+    "latitude": 37.7831,
+    "longitude": -122.4105,
+    "category": "Roastery",
+    "rating": 4.5,
+    "openingHours": [
+      { "day": "Monday",    "hours": "6:30 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "6:30 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "6:30 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "6:30 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "6:30 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "7:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "7:00 AM – 5:00 PM" }
+    ],
+    "roasterInfo": "Equator has been a certified B-Corp roaster since 1995, sourcing beans through direct and long-term trade relationships emphasising environmental sustainability.",
+    "description": "California's first B-Corp coffee roaster, Equator blends social impact with exceptional quality. Their Market Street café offers a full espresso menu plus beans from around the world.",
+    "tags": ["Single Origin", "Specialty Food", "Outdoor Seating"]
+  },
+  {
+    "id": "A1B2C3D4-0006-0006-0006-000000000006",
+    "name": "Linea Caffe",
+    "address": "3417 18th St, San Francisco, CA 94110",
+    "latitude": 37.7614,
+    "longitude": -122.4221,
+    "category": "Espresso Bar",
+    "rating": 4.9,
+    "openingHours": [
+      { "day": "Monday",    "hours": "8:00 AM – 3:00 PM" },
+      { "day": "Tuesday",   "hours": "8:00 AM – 3:00 PM" },
+      { "day": "Wednesday", "hours": "8:00 AM – 3:00 PM" },
+      { "day": "Thursday",  "hours": "8:00 AM – 3:00 PM" },
+      { "day": "Friday",    "hours": "8:00 AM – 3:00 PM" },
+      { "day": "Saturday",  "hours": "9:00 AM – 3:00 PM" },
+      { "day": "Sunday",    "hours": "Closed" }
+    ],
+    "roasterInfo": "Linea roasts micro-lots in small batches, dialling in each coffee individually. They're known for sourcing ultra-rare competition-level lots.",
+    "description": "Arguably SF's most precision-driven espresso bar. Linea's tiny Mission District space is entirely focused on extracting the best possible shot — no distractions, no frills, just coffee.",
+    "tags": ["Single Origin", "Work-Friendly"]
+  },
+  {
+    "id": "A1B2C3D4-0007-0007-0007-000000000007",
+    "name": "Four Barrel Coffee",
+    "address": "375 Valencia St, San Francisco, CA 94103",
+    "latitude": 37.7659,
+    "longitude": -122.4215,
+    "category": "Café",
+    "rating": 4.3,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:00 AM – 8:00 PM" },
+      { "day": "Tuesday",   "hours": "7:00 AM – 8:00 PM" },
+      { "day": "Wednesday", "hours": "7:00 AM – 8:00 PM" },
+      { "day": "Thursday",  "hours": "7:00 AM – 8:00 PM" },
+      { "day": "Friday",    "hours": "7:00 AM – 9:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 9:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 8:00 PM" }
+    ],
+    "roasterInfo": null,
+    "description": "A large, buzzing Mission café with high ceilings, vintage furniture, and a great people-watching vantage point. Good espresso and a well-stocked pastry case.",
+    "tags": ["Outdoor Seating", "Work-Friendly", "Specialty Food"]
+  },
+  {
+    "id": "A1B2C3D4-0008-0008-0008-000000000008",
+    "name": "Verve Coffee Roasters",
+    "address": "2101 Market St, San Francisco, CA 94114",
+    "latitude": 37.7679,
+    "longitude": -122.4349,
+    "category": "Pour-Over",
+    "rating": 4.7,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "7:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "7:00 AM – 7:00 PM" },
+      { "day": "Saturday",  "hours": "7:30 AM – 7:00 PM" },
+      { "day": "Sunday",    "hours": "7:30 AM – 6:00 PM" }
+    ],
+    "roasterInfo": "Santa Cruz–born Verve sources directly from farmers, paying above fair-trade prices and funding community projects at origin.",
+    "description": "Verve's Castro location boasts bright interiors, an impressive pour-over menu, and consistently excellent seasonal espresso. Their Streetlevel blend is a local favourite.",
+    "tags": ["Single Origin", "Cold Brew", "Alt Milk", "Pet Friendly"]
+  },
+  {
+    "id": "A1B2C3D4-0009-0009-0009-000000000009",
+    "name": "Tartine Manufactory",
+    "address": "595 Alabama St, San Francisco, CA 94110",
+    "latitude": 37.7633,
+    "longitude": -122.4118,
+    "category": "Café",
+    "rating": 4.6,
+    "openingHours": [
+      { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
+      { "day": "Tuesday",   "hours": "Closed" },
+      { "day": "Wednesday", "hours": "8:00 AM – 5:00 PM" },
+      { "day": "Thursday",  "hours": "8:00 AM – 5:00 PM" },
+      { "day": "Friday",    "hours": "8:00 AM – 5:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 6:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 6:00 PM" }
+    ],
+    "roasterInfo": "Tartine partners with select Bay Area micro-roasters and rotates seasonal beans in their expansive café and bakery space.",
+    "description": "The coffee programme at Tartine Manufactory is every bit as considered as its world-famous bread. Brew bar guests can choose their preferred method — V60, Chemex, or AeroPress.",
+    "tags": ["Single Origin", "Specialty Food", "Outdoor Seating", "Alt Milk"]
+  },
+  {
+    "id": "A1B2C3D4-0010-0010-0010-000000000010",
+    "name": "Dandelion Chocolate Café",
+    "address": "740 Valencia St, San Francisco, CA 94110",
+    "latitude": 37.7605,
+    "longitude": -122.4218,
+    "category": "Café",
+    "rating": 4.5,
+    "openingHours": [
+      { "day": "Monday",    "hours": "9:00 AM – 9:00 PM" },
+      { "day": "Tuesday",   "hours": "9:00 AM – 9:00 PM" },
+      { "day": "Wednesday", "hours": "9:00 AM – 9:00 PM" },
+      { "day": "Thursday",  "hours": "9:00 AM – 9:00 PM" },
+      { "day": "Friday",    "hours": "9:00 AM – 10:00 PM" },
+      { "day": "Saturday",  "hours": "9:00 AM – 10:00 PM" },
+      { "day": "Sunday",    "hours": "9:00 AM – 9:00 PM" }
+    ],
+    "roasterInfo": null,
+    "description": "Bean-to-bar chocolate meets specialty coffee in this Valencia Street institution. The mocha here — made with single-origin chocolate — is a must-try. Outstanding drinking chocolate programme.",
+    "tags": ["Specialty Food", "Alt Milk", "Outdoor Seating"]
+  },
+  {
+    "id": "A1B2C3D4-0011-0011-0011-000000000011",
+    "name": "Réveille Coffee Co.",
+    "address": "4 Embarcadero Center, San Francisco, CA 94111",
+    "latitude": 37.7950,
+    "longitude": -122.3975,
+    "category": "Espresso Bar",
+    "rating": 4.4,
+    "openingHours": [
+      { "day": "Monday",    "hours": "6:30 AM – 5:00 PM" },
+      { "day": "Tuesday",   "hours": "6:30 AM – 5:00 PM" },
+      { "day": "Wednesday", "hours": "6:30 AM – 5:00 PM" },
+      { "day": "Thursday",  "hours": "6:30 AM – 5:00 PM" },
+      { "day": "Friday",    "hours": "6:30 AM – 5:00 PM" },
+      { "day": "Saturday",  "hours": "8:00 AM – 4:00 PM" },
+      { "day": "Sunday",    "hours": "8:00 AM – 4:00 PM" }
+    ],
+    "roasterInfo": "Réveille roasts at their North Beach facility, sourcing seasonal lots with a focus on Central American and African origins.",
+    "description": "A Financial District staple with serious espresso chops. Quick, efficient service without sacrificing quality — perfect for the pre-meeting cortado.",
+    "tags": ["Single Origin", "Cold Brew", "Work-Friendly", "Nitro"]
+  },
+  {
+    "id": "A1B2C3D4-0012-0012-0012-000000000012",
+    "name": "Coffee Mission",
+    "address": "3576 Mission St, San Francisco, CA 94110",
+    "latitude": 37.7444,
+    "longitude": -122.4203,
+    "category": "Pour-Over",
+    "rating": 4.6,
+    "openingHours": [
+      { "day": "Monday",    "hours": "7:30 AM – 5:00 PM" },
+      { "day": "Tuesday",   "hours": "7:30 AM – 5:00 PM" },
+      { "day": "Wednesday", "hours": "7:30 AM – 5:00 PM" },
+      { "day": "Thursday",  "hours": "7:30 AM – 5:00 PM" },
+      { "day": "Friday",    "hours": "7:30 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "8:30 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "9:00 AM – 4:00 PM" }
+    ],
+    "roasterInfo": "Works exclusively with small co-operatives in Oaxaca, Chiapas, and Guatemala, paying 40% above commodity price.",
+    "description": "A neighbourhood pour-over specialist in the Outer Mission. Coffee Mission rotates two or three single-origins per week and offers a weekly cupping session on Saturday mornings.",
+    "tags": ["Single Origin", "Pet Friendly", "Outdoor Seating", "Work-Friendly"]
+  }
+]

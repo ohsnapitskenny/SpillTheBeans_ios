@@ -1,8 +1,20 @@
 import SwiftUI
 import MapKit
 
+// Default camera region centred on San Francisco
+private let defaultRegion = MKCoordinateRegion(
+    center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
+    span: MKCoordinateSpan(latitudeDelta: 0.06, longitudeDelta: 0.06)
+)
+
 struct CoffeeMapView: View {
     @State private var viewModel = CoffeeShopViewModel()
+
+    // Camera position lives here as @State — a plain SwiftUI Binding<MapCameraPosition>
+    // with no cross-actor key-path issues. The view model signals *which* shop was
+    // selected; this onChange handler is the only place that translates that into
+    // a camera movement.
+    @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
 
     var body: some View {
         NavigationStack {
@@ -15,7 +27,7 @@ struct CoffeeMapView: View {
                     }
                 }
 
-                // Floating category filter — glass effect in iOS 26 Liquid Glass
+                // Floating category filter — Liquid Glass surface (iOS 26)
                 categoryFilterBar
                     .padding(.bottom, 8)
             }
@@ -31,6 +43,18 @@ struct CoffeeMapView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
+            // When the VM selects a shop, animate the map camera to it
+            .onChange(of: viewModel.selectedShop) { _, shop in
+                guard let shop else { return }
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    cameraPosition = .region(
+                        MKCoordinateRegion(
+                            center: shop.coordinate,
+                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                        )
+                    )
+                }
+            }
             .task { await viewModel.loadShops() }
             .overlay {
                 if viewModel.isLoading { loadingOverlay }
@@ -41,7 +65,7 @@ struct CoffeeMapView: View {
     // MARK: - Map
 
     private var mapView: some View {
-        Map(position: $viewModel.cameraPosition) {
+        Map(position: $cameraPosition) {   // ← owns its own @State Binding
             ForEach(viewModel.filteredShops) { shop in
                 Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
                     ShopAnnotationView(
@@ -52,7 +76,6 @@ struct CoffeeMapView: View {
                 }
             }
         }
-        // Simplified — removes the PointOfInterestCategories type-inference ambiguity
         .mapStyle(.standard(elevation: .realistic))
         .ignoresSafeArea(edges: .top)
     }
@@ -79,7 +102,6 @@ struct CoffeeMapView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
         }
-        // iOS 26 Liquid Glass replaces the old ultraThinMaterial + clipShape approach
         .glassEffect(in: .rect(cornerRadius: 14))
         .padding(.horizontal, 16)
         .shadow(color: .black.opacity(0.08), radius: 6, y: 2)

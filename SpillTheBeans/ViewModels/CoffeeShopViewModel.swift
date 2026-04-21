@@ -1,6 +1,5 @@
 import Foundation
-import CoreLocation
-import MapKit
+import CoreLocation  // CLLocation + CLLocationCoordinate2D only — MapKit not needed here
 import Observation
 
 // MARK: - Supporting Enums
@@ -19,6 +18,11 @@ enum SortOption: String, CaseIterable, Identifiable {
 // MARK: - ViewModel
 // @MainActor isolates all property access to the main thread — required by
 // Swift 6 strict concurrency for @Observable classes bound to SwiftUI views.
+//
+// NOTE: MapCameraPosition was intentionally removed from this class.
+// Camera position is pure view-state (how the user looks at the map) and must
+// live as @State inside CoffeeMapView so SwiftUI can own the Binding without
+// hitting the Swift 6 ReferenceWritableKeyPath / @MainActor isolation error.
 @MainActor
 @Observable
 final class CoffeeShopViewModel {
@@ -31,14 +35,6 @@ final class CoffeeShopViewModel {
     var selectedShop: CoffeeShop?
     var selectedCategory: ShopCategory?
     var sortOption: SortOption = .distance
-
-    /// MapKit camera — default region centred on San Francisco
-    var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-            span: MKCoordinateSpan(latitudeDelta: 0.06, longitudeDelta: 0.06)
-        )
-    )
 
     // MARK: Private
     private let service: any CoffeeShopServiceProtocol
@@ -89,14 +85,10 @@ final class CoffeeShopViewModel {
         isLoading = false
     }
 
+    /// Marks a shop as selected. The view observes this via .onChange and
+    /// moves its own camera — keeping MapKit types out of the view model.
     func selectShop(_ shop: CoffeeShop) {
         selectedShop = shop
-        cameraPosition = .region(
-            MKCoordinateRegion(
-                center: shop.coordinate,
-                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-            )
-        )
     }
 
     func formattedDistance(to shop: CoffeeShop) -> String? {

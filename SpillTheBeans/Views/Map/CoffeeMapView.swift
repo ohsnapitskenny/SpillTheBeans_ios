@@ -1,5 +1,13 @@
 import SwiftUI
 import MapKit
+import CoreLocation
+
+// Make CLLocationCoordinate2D Equatable so we can use it with SwiftUI's onChange
+extension CLLocationCoordinate2D: Equatable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
 
 // Default camera region — centred over the Netherlands so Rotterdam, Amsterdam
 // and Utrecht are all visible on first launch.
@@ -259,3 +267,4 @@ struct CoffeeMapView: View {
         .ignoresSafeArea()
     }
 }
+

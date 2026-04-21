@@ -9,34 +9,42 @@ private let defaultRegion = MKCoordinateRegion(
 )
 
 struct CoffeeMapView: View {
-    @State private var viewModel = CoffeeShopViewModel()
+    @State private var viewModel     = CoffeeShopViewModel()
     @State private var locationManager = LocationManager()
 
-    // Camera position is view-state, not business logic — keep it here so
-    // SwiftUI owns the Binding without Swift 6 key-path isolation issues.
+    // Camera position owned here so SwiftUI holds the Binding cleanly.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
 
-    // Namespace links the standalone MapCompassButton / MapUserLocationButton
-    // overlays to this specific Map instance (required when placing controls
-    // outside of `.mapControls {}`).
+    // Live camera state, updated via onMapCameraChange — used by the
+    // custom compass (heading) and locate-me button (preserves zoom on fly).
+    @State private var cameraHeading:    Double = 0
+    @State private var cameraCenter:     CLLocationCoordinate2D? = nil
+    @State private var cameraDistance:   Double = 80_000   // metres, ~default zoom
+
+    // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                Group {
-                    if viewModel.viewMode == .map {
-                        mapView
-                    } else {
-                        ShopListView(viewModel: viewModel)
-                    }
+
+                // ─── Map is ALWAYS in the hierarchy ───────────────────────
+                // When the user switches to list mode we overlay the list view
+                // ON TOP instead of destroying and recreating the Map.
+                // This is what keeps camera position intact across mode switches.
+                mapView
+
+                // List slides over the map with a smooth fade
+                if viewModel.viewMode == .list {
+                    ShopListView(viewModel: viewModel)
+                        .transition(.opacity)
                 }
 
-                // Floating category filter — Liquid Glass surface (iOS 26)
+                // Floating category filter — Liquid Glass (iOS 26)
                 categoryFilterBar
                     .padding(.bottom, 8)
             }
-            // Title only shows in list mode; the map needs all the chrome it can get.
+            // Title only in list mode — the map needs every pixel
             .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -44,18 +52,13 @@ struct CoffeeMapView: View {
                     viewModeToggle
                 }
             }
-            // Compass + user-location button, pinned to top-trailing just below
-            // the navigation-bar toggle button so they're easy to reach.
+            // Custom locate-me + compass, visible only in map mode,
+            // pinned top-trailing just below the navigation-bar toggle button.
             .overlay(alignment: .topTrailing) {
                 if viewModel.viewMode == .map {
-                    VStack(spacing: 6) {
-                        MapUserLocationButton(scope: mapScope)
-                        MapCompassButton(scope: mapScope)
-                    }
-                    .padding(.top, 8)
-                    .padding(.trailing, 16)
-                    .buttonBorderShape(.roundedRectangle)
-                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
+                    mapControlsOverlay
+                        .padding(.top, 8)
+                        .padding(.trailing, 16)
                 }
             }
             .sheet(item: $viewModel.selectedShop) { shop in
@@ -63,7 +66,7 @@ struct CoffeeMapView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
-            // Animate the camera to the selected shop
+            // Fly to a tapped shop annotation
             .onChange(of: viewModel.selectedShop) { _, shop in
                 guard let shop else { return }
                 withAnimation(.easeInOut(duration: 0.5)) {
@@ -75,10 +78,23 @@ struct CoffeeMapView: View {
                     )
                 }
             }
-            // Forward real-time location to the view model (for distance sorting)
-            .onChange(of: locationManager.userLocation) { _, coordinate in
-                guard let coordinate else { return }
+            // Location updates → forward to VM (distance sort) and, on the very
+            // FIRST fix, automatically fly the map to the user's position.
+            .onChange(of: locationManager.userLocation) { oldValue, newValue in
+                guard let coordinate = newValue else { return }
                 viewModel.updateUserLocation(coordinate)
+
+                if oldValue == nil {
+                    // First real GPS fix after permission was granted — zoom in.
+                    withAnimation(.easeInOut(duration: 0.9)) {
+                        cameraPosition = .region(
+                            MKCoordinateRegion(
+                                center: coordinate,
+                                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                            )
+                        )
+                    }
+                }
             }
             .task {
                 await viewModel.loadShops()
@@ -94,7 +110,7 @@ struct CoffeeMapView: View {
 
     private var mapView: some View {
         Map(position: $cameraPosition, scope: mapScope) {
-            // Blue user-location dot — only visible once permission is granted
+            // Blue pulsing user-location dot — shown once permission is granted
             UserAnnotation()
 
             ForEach(viewModel.filteredShops) { shop in
@@ -108,9 +124,84 @@ struct CoffeeMapView: View {
             }
         }
         .mapStyle(.standard(elevation: .realistic))
-        // Suppress default-positioned controls; we draw them ourselves above.
+        // Suppress default-positioned controls — we draw our own below
         .mapControls { }
+        // Keep heading, center, and zoom in sync for the custom buttons
+        .onMapCameraChange(frequency: .continuous) { context in
+            cameraHeading  = context.camera.heading
+            cameraCenter   = context.camera.centerCoordinate
+            cameraDistance = context.camera.distance
+        }
         .ignoresSafeArea(edges: .top)
+    }
+
+    // MARK: - Map Controls Overlay
+
+    private var mapControlsOverlay: some View {
+        VStack(spacing: 6) {
+
+            // ── Locate-me button ──────────────────────────────────────────
+            // Filled icon  → have a GPS fix, tap to fly there.
+            // Outline icon → no fix yet (permission pending/denied),
+            //                tap to (re-)request authorisation.
+            Button {
+                if let coord = locationManager.userLocation {
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        cameraPosition = .region(
+                            MKCoordinateRegion(
+                                center: coord,
+                                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                            )
+                        )
+                    }
+                } else {
+                    locationManager.requestWhenInUseAuthorization()
+                }
+            } label: {
+                Image(
+                    systemName: locationManager.userLocation != nil
+                        ? "location.fill"
+                        : "location"
+                )
+                .font(.system(size: 16, weight: .medium))
+                .frame(width: 36, height: 36)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+            }
+            .tint(Color.espresso)
+            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+
+            // ── Compass / reset-north button ──────────────────────────────
+            // Always visible. The compass needle rotates live with the map.
+            // Tap to snap heading back to 0° (true north) without changing
+            // the current zoom level or centre position.
+            Button {
+                guard let center = cameraCenter else { return }
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    cameraPosition = .camera(
+                        MapCamera(
+                            centerCoordinate: center,
+                            distance: cameraDistance,
+                            heading: 0,
+                            pitch: 0
+                        )
+                    )
+                }
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.regularMaterial)
+                        .frame(width: 36, height: 36)
+                    // Red north-tip arrow rotates counter to the heading so it
+                    // always points toward actual north on screen.
+                    Image(systemName: "arrow.up")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(cameraHeading == 0 ? Color.secondary : Color.espresso)
+                        .rotationEffect(.degrees(-cameraHeading))
+                        .animation(.easeOut(duration: 0.15), value: cameraHeading)
+                }
+            }
+            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+        }
     }
 
     // MARK: - Category Filter Bar

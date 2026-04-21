@@ -193,7 +193,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AF000002 /* root */ = {
+		AF000002 = {
 			isa = PBXGroup;
 			children = (
 				AE000001 /* SpillTheBeans */,
@@ -244,7 +244,7 @@
 				en,
 				Base,
 			);
-			mainGroup = AF000002 /* root */;
+			mainGroup = AF000002;
 			productRefGroup = AF000001 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -308,6 +308,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = S24N87H3CQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SpillTheBeans/Info.plist;
@@ -335,6 +336,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = S24N87H3CQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SpillTheBeans/Info.plist;
@@ -353,7 +355,7 @@
 			};
 			name = Release;
 		};
-		AL000003 /* Debug (Project) */ = {
+		AL000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -415,7 +417,7 @@
 			};
 			name = Debug;
 		};
-		AL000004 /* Release (Project) */ = {
+		AL000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -493,7 +495,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = AK000001 /* Project object */;
 }

@@ -8,6 +8,12 @@ private let defaultRegion = MKCoordinateRegion(
     span: MKCoordinateSpan(latitudeDelta: 0.70, longitudeDelta: 1.00)
 )
 
+// Helper wrapper so we can observe location changes with an Equatable value
+private struct EquatableCoordinate: Equatable {
+    let lat: CLLocationDegrees?
+    let lon: CLLocationDegrees?
+}
+
 struct CoffeeMapView: View {
     @State private var viewModel = CoffeeShopViewModel()
     @State private var locationManager = LocationManager()
@@ -16,7 +22,7 @@ struct CoffeeMapView: View {
     // SwiftUI owns the Binding without Swift 6 key-path isolation issues.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
 
-    // Namespace links the standalone MapCompassButton / MapUserLocationButton
+    // Namespace links the standalone MapCompass / MapUserLocationButton
     // overlays to this specific Map instance (required when placing controls
     // outside of `.mapControls {}`).
     @Namespace private var mapScope
@@ -24,13 +30,7 @@ struct CoffeeMapView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                Group {
-                    if viewModel.viewMode == .map {
-                        mapView
-                    } else {
-                        ShopListView(viewModel: viewModel)
-                    }
-                }
+                mainContent
 
                 // Floating category filter — Liquid Glass surface (iOS 26)
                 categoryFilterBar
@@ -42,20 +42,6 @@ struct CoffeeMapView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     viewModeToggle
-                }
-            }
-            // Compass + user-location button, pinned to top-trailing just below
-            // the navigation-bar toggle button so they're easy to reach.
-            .overlay(alignment: .topTrailing) {
-                if viewModel.viewMode == .map {
-                    VStack(spacing: 6) {
-                        MapUserLocationButton(scope: mapScope)
-                        MapCompassButton(scope: mapScope)
-                    }
-                    .padding(.top, 8)
-                    .padding(.trailing, 16)
-                    .buttonBorderShape(.roundedRectangle)
-                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
                 }
             }
             .sheet(item: $viewModel.selectedShop) { shop in
@@ -76,8 +62,11 @@ struct CoffeeMapView: View {
                 }
             }
             // Forward real-time location to the view model (for distance sorting)
-            .onChange(of: locationManager.userLocation) { _, coordinate in
-                guard let coordinate else { return }
+            // Observe a derived Equatable tuple (latitude/longitude) to avoid requiring
+            // CLLocationCoordinate2D to conform to Equatable.
+            .onChange(of: EquatableCoordinate(lat: locationManager.userLocation?.latitude,
+                                              lon: locationManager.userLocation?.longitude)) { _, _ in
+                guard let coordinate = locationManager.userLocation else { return }
                 viewModel.updateUserLocation(coordinate)
             }
             .task {
@@ -87,6 +76,15 @@ struct CoffeeMapView: View {
             .overlay {
                 if viewModel.isLoading { loadingOverlay }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var mainContent: some View {
+        if viewModel.viewMode == .map {
+            mapView
+        } else {
+            ShopListView(viewModel: viewModel)
         }
     }
 
@@ -168,3 +166,4 @@ struct CoffeeMapView: View {
         .ignoresSafeArea()
     }
 }
+

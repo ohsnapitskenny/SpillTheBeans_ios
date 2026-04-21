@@ -23,12 +23,6 @@ struct CoffeeMapView: View {
     // Camera position owned here so SwiftUI holds the Binding cleanly.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
 
-    // Live camera state, updated via onMapCameraChange — used by the
-    // custom compass (heading) and locate-me button (preserves zoom on fly).
-    @State private var cameraHeading:    Double = 0
-    @State private var cameraCenter:     CLLocationCoordinate2D? = nil
-    @State private var cameraDistance:   Double = 80_000   // metres, ~default zoom
-
     // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
@@ -132,14 +126,8 @@ struct CoffeeMapView: View {
             }
         }
         .mapStyle(.standard(elevation: .realistic))
-        // Suppress default-positioned controls — we draw our own below
+        // Suppress the default-positioned controls; we position them ourselves.
         .mapControls { }
-        // Keep heading, center, and zoom in sync for the custom buttons
-        .onMapCameraChange(frequency: .continuous) { context in
-            cameraHeading  = context.camera.heading
-            cameraCenter   = context.camera.centerCoordinate
-            cameraDistance = context.camera.distance
-        }
         .ignoresSafeArea(edges: .top)
     }
 
@@ -178,37 +166,12 @@ struct CoffeeMapView: View {
             .tint(Color.espresso)
             .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
 
-            // ── Compass / reset-north button ──────────────────────────────
-            // Always visible. The compass needle rotates live with the map.
-            // Tap to snap heading back to 0° (true north) without changing
-            // the current zoom level or centre position.
-            Button {
-                guard let center = cameraCenter else { return }
-                withAnimation(.easeInOut(duration: 0.4)) {
-                    cameraPosition = .camera(
-                        MapCamera(
-                            centerCoordinate: center,
-                            distance: cameraDistance,
-                            heading: 0,
-                            pitch: 0
-                        )
-                    )
-                }
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.regularMaterial)
-                        .frame(width: 36, height: 36)
-                    // Red north-tip arrow rotates counter to the heading so it
-                    // always points toward actual north on screen.
-                    Image(systemName: "arrow.up")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(cameraHeading == 0 ? Color.secondary : Color.espresso)
-                        .rotationEffect(.degrees(-cameraHeading))
-                        .animation(.easeOut(duration: 0.15), value: cameraHeading)
-                }
-            }
-            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+            // ── Compass ───────────────────────────────────────────────────
+            // Default MapKit compass: auto-hidden at north (heading == 0),
+            // reappears as soon as the map is rotated, tap resets to north.
+            // Linked to the Map via mapScope so it controls the right instance.
+            MapCompassButton(scope: mapScope)
+                .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
         }
     }
 

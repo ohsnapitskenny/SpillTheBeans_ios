@@ -2,6 +2,61 @@ import Foundation
 import CoreLocation  // CLLocation + CLLocationCoordinate2D only — MapKit not needed here
 import Observation
 
+// MARK: - Location Manager
+// Wraps CLLocationManager so SwiftUI views can observe location changes without
+// pulling MapKit into the view model layer.
+
+@MainActor
+@Observable
+final class LocationManager: NSObject {
+    var userLocation: CLLocationCoordinate2D?
+    var authorizationStatus: CLAuthorizationStatus = .notDetermined
+
+    private let clManager = CLLocationManager()
+
+    override init() {
+        super.init()
+        clManager.delegate = self
+        clManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        authorizationStatus = clManager.authorizationStatus
+    }
+
+    /// Call this once from the view's `.task` modifier.
+    func requestWhenInUseAuthorization() {
+        switch clManager.authorizationStatus {
+        case .notDetermined:
+            clManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            clManager.startUpdatingLocation()
+        default:
+            break
+        }
+    }
+}
+
+extension LocationManager: CLLocationManagerDelegate {
+    nonisolated func locationManager(
+        _ manager: CLLocationManager,
+        didUpdateLocations locations: [CLLocation]
+    ) {
+        guard let coordinate = locations.last?.coordinate else { return }
+        Task { @MainActor [weak self] in
+            self?.userLocation = coordinate
+        }
+    }
+
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            authorizationStatus = status
+            if status == .authorizedWhenInUse || status == .authorizedAlways {
+                clManager.startUpdatingLocation()
+            }
+        }
+    }
+}
+
 // MARK: - Supporting Enums
 
 enum MapViewMode {

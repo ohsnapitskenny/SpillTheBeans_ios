@@ -1,20 +1,25 @@
 import SwiftUI
 import MapKit
 
-// Default camera region centred on San Francisco
+// Default camera region — centred over the Netherlands so Rotterdam, Amsterdam
+// and Utrecht are all visible on first launch.
 private let defaultRegion = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
-    span: MKCoordinateSpan(latitudeDelta: 0.06, longitudeDelta: 0.06)
+    center: CLLocationCoordinate2D(latitude: 52.15, longitude: 4.85),
+    span: MKCoordinateSpan(latitudeDelta: 0.70, longitudeDelta: 1.00)
 )
 
 struct CoffeeMapView: View {
     @State private var viewModel = CoffeeShopViewModel()
+    @State private var locationManager = LocationManager()
 
-    // Camera position lives here as @State — a plain SwiftUI Binding<MapCameraPosition>
-    // with no cross-actor key-path issues. The view model signals *which* shop was
-    // selected; this onChange handler is the only place that translates that into
-    // a camera movement.
+    // Camera position is view-state, not business logic — keep it here so
+    // SwiftUI owns the Binding without Swift 6 key-path isolation issues.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
+
+    // Namespace links the standalone MapCompassButton / MapUserLocationButton
+    // overlays to this specific Map instance (required when placing controls
+    // outside of `.mapControls {}`).
+    @Namespace private var mapScope
 
     var body: some View {
         NavigationStack {
@@ -31,11 +36,26 @@ struct CoffeeMapView: View {
                 categoryFilterBar
                     .padding(.bottom, 8)
             }
-            .navigationTitle("Spill the Beans")
+            // Title only shows in list mode; the map needs all the chrome it can get.
+            .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     viewModeToggle
+                }
+            }
+            // Compass + user-location button, pinned to top-trailing just below
+            // the navigation-bar toggle button so they're easy to reach.
+            .overlay(alignment: .topTrailing) {
+                if viewModel.viewMode == .map {
+                    VStack(spacing: 6) {
+                        MapUserLocationButton(scope: mapScope)
+                        MapCompassButton(scope: mapScope)
+                    }
+                    .padding(.top, 8)
+                    .padding(.trailing, 16)
+                    .buttonBorderShape(.roundedRectangle)
+                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
                 }
             }
             .sheet(item: $viewModel.selectedShop) { shop in
@@ -43,7 +63,7 @@ struct CoffeeMapView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
-            // When the VM selects a shop, animate the map camera to it
+            // Animate the camera to the selected shop
             .onChange(of: viewModel.selectedShop) { _, shop in
                 guard let shop else { return }
                 withAnimation(.easeInOut(duration: 0.5)) {
@@ -55,7 +75,15 @@ struct CoffeeMapView: View {
                     )
                 }
             }
-            .task { await viewModel.loadShops() }
+            // Forward real-time location to the view model (for distance sorting)
+            .onChange(of: locationManager.userLocation) { _, coordinate in
+                guard let coordinate else { return }
+                viewModel.updateUserLocation(coordinate)
+            }
+            .task {
+                await viewModel.loadShops()
+                locationManager.requestWhenInUseAuthorization()
+            }
             .overlay {
                 if viewModel.isLoading { loadingOverlay }
             }
@@ -65,7 +93,10 @@ struct CoffeeMapView: View {
     // MARK: - Map
 
     private var mapView: some View {
-        Map(position: $cameraPosition) {   // ← owns its own @State Binding
+        Map(position: $cameraPosition, scope: mapScope) {
+            // Blue user-location dot — only visible once permission is granted
+            UserAnnotation()
+
             ForEach(viewModel.filteredShops) { shop in
                 Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
                     ShopAnnotationView(
@@ -77,6 +108,8 @@ struct CoffeeMapView: View {
             }
         }
         .mapStyle(.standard(elevation: .realistic))
+        // Suppress default-positioned controls; we draw them ourselves above.
+        .mapControls { }
         .ignoresSafeArea(edges: .top)
     }
 

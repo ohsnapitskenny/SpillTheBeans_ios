@@ -49,19 +49,19 @@ struct CoffeeMapView: View {
                         .transition(.opacity)
                 }
 
-                // Filter chips — only visible after the FAB is tapped.
-                // Sit above the FAB row (72 pt clearance) and slide in from the right.
-                if showingFilter {
-                    categoryFilterBar
-                        .padding(.bottom, 72)
-                        .transition(.move(edge: .trailing).combined(with: .opacity))
-                }
             }
-            // Filter FAB — bottom-right corner, visible in both map and list modes
+            // Chips + FAB share the same HStack so they sit at identical height.
+            // Chips slide in from the trailing edge (right → left).
             .overlay(alignment: .bottomTrailing) {
-                filterFAB
-                    .padding(.trailing, 20)
-                    .padding(.bottom, 20)
+                HStack(alignment: .center, spacing: 8) {
+                    if showingFilter {
+                        categoryFilterBar
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                    }
+                    filterFAB
+                }
+                .padding(.trailing, 20)
+                .padding(.bottom, 20)
             }
             // Title only in list mode — the map needs every pixel
             .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
@@ -249,7 +249,6 @@ struct CoffeeMapView: View {
             .padding(.vertical, 10)
         }
         .glassEffect(in: .rect(cornerRadius: 14))
-        .padding(.horizontal, 16)
         .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 
@@ -259,7 +258,7 @@ struct CoffeeMapView: View {
     /// Fills espresso when a category filter is active so the state is always visible.
     private var filterFAB: some View {
         Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                 showingFilter.toggle()
             }
         } label: {

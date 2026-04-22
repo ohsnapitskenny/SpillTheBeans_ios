@@ -30,6 +30,9 @@ struct CoffeeMapView: View {
     @State private var cameraCenter:   CLLocationCoordinate2D? = nil
     @State private var cameraDistance: Double = 80_000   // metres
 
+    // Current visible region — used to show only annotations inside the viewport.
+    @State private var visibleRegion: MKCoordinateRegion = defaultRegion
+
     // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
@@ -53,7 +56,7 @@ struct CoffeeMapView: View {
             // Chips + FAB share the same HStack so they sit at identical height.
             // Chips slide in from the trailing edge (right → left).
             .overlay(alignment: .bottomTrailing) {
-                HStack(alignment: .center, spacing: 8) {
+                HStack(alignment: .bottom, spacing: 8) {
                     if showingFilter {
                         categoryFilterBar
                             .transition(.move(edge: .trailing).combined(with: .opacity))
@@ -124,6 +127,21 @@ struct CoffeeMapView: View {
         }
     }
 
+    // MARK: - Viewport filter
+
+    /// Only the shops whose coordinates fall inside the currently visible map region.
+    /// Updates automatically as the camera moves because `visibleRegion` is @State.
+    private var shopsInViewport: [CoffeeShop] {
+        let halfLat = visibleRegion.span.latitudeDelta  / 2
+        let halfLon = visibleRegion.span.longitudeDelta / 2
+        let cLat    = visibleRegion.center.latitude
+        let cLon    = visibleRegion.center.longitude
+        return viewModel.filteredShops.filter { shop in
+            abs(shop.latitude  - cLat) <= halfLat &&
+            abs(shop.longitude - cLon) <= halfLon
+        }
+    }
+
     // MARK: - Map
 
     private var mapView: some View {
@@ -131,7 +149,7 @@ struct CoffeeMapView: View {
             // Blue pulsing user-location dot — shown once permission is granted
             UserAnnotation()
 
-            ForEach(viewModel.filteredShops) { shop in
+            ForEach(shopsInViewport) { shop in
                 Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
                     ShopAnnotationView(
                         shop: shop,
@@ -144,11 +162,12 @@ struct CoffeeMapView: View {
         .mapStyle(.standard(elevation: .realistic))
         // Suppress the default-positioned controls; we position them ourselves.
         .mapControls { }
-        // Track heading, centre and zoom — powers the custom reset-north button.
+        // Track heading, centre, zoom and visible region continuously.
         .onMapCameraChange(frequency: .continuous) { ctx in
             cameraHeading  = ctx.camera.heading
             cameraCenter   = ctx.camera.centerCoordinate
             cameraDistance = ctx.camera.distance
+            visibleRegion  = ctx.region
         }
         .ignoresSafeArea(edges: .top)
     }

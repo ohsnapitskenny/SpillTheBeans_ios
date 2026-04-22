@@ -10,7 +10,7 @@ struct CoffeeShopDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     // Mini map preview
-                    Map {
+                    Map(interactionModes: []) {
                         Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
                             ShopAnnotationView(shop: shop, isSelected: true)
                         }

@@ -61,7 +61,7 @@ struct CoffeeMapView: View {
                     filterFAB
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 20)
+                .padding(.bottom, 30)
             }
             // Title only in list mode — the map needs every pixel
             .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
@@ -98,7 +98,6 @@ struct CoffeeMapView: View {
                 }
             }
             // Location updates → forward to VM (distance sort) and, on the very
-            // FIRST fix, automatically fly the map to the user's position.
             .onChange(of: locationManager.userLocation) { oldValue, newValue in
                 guard let coordinate = newValue else { return }
                 viewModel.updateUserLocation(coordinate)
@@ -184,7 +183,7 @@ struct CoffeeMapView: View {
                 )
                 .font(.system(size: 16, weight: .medium))
                 .frame(width: 36, height: 36)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                .background(.regularMaterial, in: Circle())
             }
             .tint(Color.espresso)
             .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
@@ -209,7 +208,7 @@ struct CoffeeMapView: View {
                     }
                 } label: {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 8)
+                        Circle()
                             .fill(.regularMaterial)
                             .frame(width: 36, height: 36)
                         Image(systemName: "arrow.up")
@@ -254,11 +253,9 @@ struct CoffeeMapView: View {
 
     // MARK: - Filter FAB
 
-    /// Round filter button — matches the locate-me / compass style at top-right.
-    /// Fills espresso when a category filter is active so the state is always visible.
     private var filterFAB: some View {
         Button {
-            withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
+            withAnimation(.spring(response: 0.35)) {
                 showingFilter.toggle()
             }
         } label: {
@@ -273,7 +270,7 @@ struct CoffeeMapView: View {
                     viewModel.selectedCategory != nil
                         ? AnyShapeStyle(Color.espresso)
                         : AnyShapeStyle(.regularMaterial),
-                    in: RoundedRectangle(cornerRadius: 8)
+                    in: Circle()
                 )
                 .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
         }
@@ -281,7 +278,6 @@ struct CoffeeMapView: View {
     }
 
     // MARK: - View Mode Toggle
-
     private var viewModeToggle: some View {
         Button {
             withAnimation(.spring(response: 0.3)) {
@@ -294,7 +290,6 @@ struct CoffeeMapView: View {
     }
 
     // MARK: - Loading Overlay
-
     private var loadingOverlay: some View {
         ZStack {
             Color.creamBackground.opacity(0.7)

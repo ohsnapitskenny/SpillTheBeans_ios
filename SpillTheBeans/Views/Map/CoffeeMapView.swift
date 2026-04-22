@@ -38,7 +38,7 @@ struct CoffeeMapView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
+            ZStack(alignment: .center) {
 
                 // ─── Map is ALWAYS in the hierarchy ───────────────────────
                 // When the user switches to list mode we overlay the list view
@@ -54,7 +54,6 @@ struct CoffeeMapView: View {
 
             }
             // Chips + FAB share the same HStack so they sit at identical height.
-            // Chips slide in from the trailing edge (right → left).
             .overlay(alignment: .bottomTrailing) {
                 HStack(alignment: .bottom, spacing: 8) {
                     if showingFilter {
@@ -64,7 +63,7 @@ struct CoffeeMapView: View {
                     filterFAB
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 30)
+                .padding(.bottom, 20)
             }
             // Title only in list mode — the map needs every pixel
             .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
@@ -176,11 +175,7 @@ struct CoffeeMapView: View {
 
     private var mapControlsOverlay: some View {
         VStack(spacing: 6) {
-
             // ── Locate-me button ──────────────────────────────────────────
-            // Filled icon  → have a GPS fix, tap to fly there.
-            // Outline icon → no fix yet (permission pending/denied),
-            //                tap to (re-)request authorisation.
             Button {
                 if let coord = locationManager.userLocation {
                     withAnimation(.easeInOut(duration: 0.5)) {
@@ -312,7 +307,7 @@ struct CoffeeMapView: View {
     private var loadingOverlay: some View {
         ZStack {
             Color.creamBackground.opacity(0.7)
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 ProgressView().tint(Color.espresso)
                 Text("Finding coffee shops…")
                     .font(.subheadline)

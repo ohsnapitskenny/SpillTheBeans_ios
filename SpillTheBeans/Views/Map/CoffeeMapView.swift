@@ -268,8 +268,6 @@ struct CoffeeMapView: View {
                     ? "line.3.horizontal.decrease"
                     : "line.3.horizontal.decrease.circle.fill")
                     .font(.system(size: 14, weight: .semibold))
-                Text(viewModel.selectedCategory?.rawValue ?? "Filter")
-                    .font(.subheadline.weight(.semibold))
             }
             .padding(.horizontal, 18)
             .padding(.vertical, 11)

@@ -50,11 +50,11 @@ struct CoffeeMapView: View {
                 }
 
                 // Filter chips — only visible after the FAB is tapped.
-                // Sit above the FAB row (72 pt clearance) and slide in from below.
+                // Sit above the FAB row (72 pt clearance) and slide in from the right.
                 if showingFilter {
                     categoryFilterBar
                         .padding(.bottom, 72)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
                 }
             }
             // Filter FAB — bottom-right corner, visible in both map and list modes
@@ -255,31 +255,28 @@ struct CoffeeMapView: View {
 
     // MARK: - Filter FAB
 
-    /// Floating action button that toggles the filter chips row.
-    /// Turns espresso-coloured and shows the active category name when a filter is set.
+    /// Round filter button — matches the locate-me / compass style at top-right.
+    /// Fills espresso when a category filter is active so the state is always visible.
     private var filterFAB: some View {
         Button {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                 showingFilter.toggle()
             }
         } label: {
-            HStack(spacing: 7) {
-                Image(systemName: viewModel.selectedCategory == nil
-                    ? "line.3.horizontal.decrease"
-                    : "line.3.horizontal.decrease.circle.fill")
-                    .font(.system(size: 14, weight: .semibold))
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 11)
-            .background {
-                Capsule()
-                    .fill(viewModel.selectedCategory != nil
+            Image(systemName: viewModel.selectedCategory == nil
+                ? "line.3.horizontal.decrease"
+                : "line.3.horizontal.decrease.circle.fill")
+                .font(.system(size: 16, weight: .medium))
+                .frame(width: 36, height: 36)
+                .background(
+                    viewModel.selectedCategory != nil
                         ? AnyShapeStyle(Color.espresso)
-                        : AnyShapeStyle(.regularMaterial))
-            }
-            .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
-            .shadow(color: .black.opacity(0.18), radius: 8, y: 4)
+                        : AnyShapeStyle(.regularMaterial),
+                    in: RoundedRectangle(cornerRadius: 8)
+                )
+                .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
         }
+        .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
     }
 
     // MARK: - View Mode Toggle

@@ -17,8 +17,9 @@ private let defaultRegion = MKCoordinateRegion(
 )
 
 struct CoffeeMapView: View {
-    @State private var viewModel     = CoffeeShopViewModel()
-    @State private var locationManager = LocationManager()
+    @State private var viewModel        = CoffeeShopViewModel()
+    @State private var locationManager  = LocationManager()
+    @State private var showingFilter    = false
 
     // Camera position owned here so SwiftUI holds the Binding cleanly.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
@@ -41,10 +42,12 @@ struct CoffeeMapView: View {
                     ShopListView(viewModel: viewModel)
                         .transition(.opacity)
                 }
-
-                // Floating category filter — Liquid Glass (iOS 26)
-                categoryFilterBar
-                    .padding(.bottom, 8)
+            }
+            // Filter FAB — bottom-right corner, visible in both map and list modes
+            .overlay(alignment: .bottomTrailing) {
+                filterFAB
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 20)
             }
             // Title only in list mode — the map needs every pixel
             .navigationTitle(viewModel.viewMode == .list ? "Spill the Beans" : "")
@@ -66,6 +69,11 @@ struct CoffeeMapView: View {
             .sheet(item: $viewModel.selectedShop) { shop in
                 CoffeeShopDetailView(shop: shop)
                     .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $showingFilter) {
+                MapFilterSheetView(viewModel: viewModel)
+                    .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
             // Fly to a tapped shop annotation
@@ -175,31 +183,31 @@ struct CoffeeMapView: View {
         }
     }
 
-    // MARK: - Category Filter Bar
+    // MARK: - Filter FAB
 
-    private var categoryFilterBar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                FilterChip(title: "All", isSelected: viewModel.selectedCategory == nil) {
-                    viewModel.selectedCategory = nil
-                }
-                ForEach(ShopCategory.allCases) { category in
-                    FilterChip(
-                        title: category.rawValue,
-                        systemImage: category.systemImage,
-                        isSelected: viewModel.selectedCategory == category
-                    ) {
-                        viewModel.selectedCategory =
-                            viewModel.selectedCategory == category ? nil : category
-                    }
-                }
+    /// Floating action button that opens the filter sheet.
+    /// Shows the active filter name (and turns espresso-coloured) when a filter is set.
+    private var filterFAB: some View {
+        Button { showingFilter = true } label: {
+            HStack(spacing: 7) {
+                Image(systemName: viewModel.selectedCategory == nil
+                    ? "line.3.horizontal.decrease"
+                    : "line.3.horizontal.decrease.circle.fill")
+                    .font(.system(size: 14, weight: .semibold))
+                Text(viewModel.selectedCategory?.rawValue ?? "Filter")
+                    .font(.subheadline.weight(.semibold))
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 11)
+            .background {
+                Capsule()
+                    .fill(viewModel.selectedCategory != nil
+                        ? AnyShapeStyle(Color.espresso)
+                        : AnyShapeStyle(.regularMaterial))
+            }
+            .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
+            .shadow(color: .black.opacity(0.18), radius: 8, y: 4)
         }
-        .glassEffect(in: .rect(cornerRadius: 14))
-        .padding(.horizontal, 16)
-        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 
     // MARK: - View Mode Toggle
@@ -228,6 +236,70 @@ struct CoffeeMapView: View {
             }
         }
         .ignoresSafeArea()
+    }
+}
+
+// MARK: - Map Filter Sheet
+
+/// Bottom sheet that lets the user filter the map (and list) by shop type.
+struct MapFilterSheetView: View {
+    @Bindable var viewModel: CoffeeShopViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section("Type") {
+                    typeRow(label: "All", icon: "mappin.and.ellipse", isSelected: viewModel.selectedCategory == nil) {
+                        viewModel.selectedCategory = nil
+                    }
+                    ForEach(ShopCategory.allCases) { category in
+                        typeRow(
+                            label: category.rawValue,
+                            icon: category.systemImage,
+                            isSelected: viewModel.selectedCategory == category
+                        ) {
+                            viewModel.selectedCategory =
+                                viewModel.selectedCategory == category ? nil : category
+                        }
+                    }
+                }
+            }
+            .listStyle(.insetGrouped)
+            .navigationTitle("Filter")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Clear") { viewModel.selectedCategory = nil }
+                        .foregroundStyle(Color.terracotta)
+                        .disabled(viewModel.selectedCategory == nil)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.espresso)
+                }
+            }
+        }
+        .tint(Color.espresso)
+    }
+
+    private func typeRow(label: String, icon: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .foregroundStyle(Color.terracotta)
+                    .frame(width: 22)
+                Text(label)
+                    .foregroundStyle(.primary)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .foregroundStyle(Color.terracotta)
+                        .fontWeight(.semibold)
+                }
+            }
+        }
     }
 }
 

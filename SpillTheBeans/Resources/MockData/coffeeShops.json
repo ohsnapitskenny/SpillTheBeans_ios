@@ -5,7 +5,7 @@
     "address": "Scheepstimmermanslaan 69, 3011 BS Rotterdam",
     "latitude": 51.9147,
     "longitude": 4.4897,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -26,7 +26,7 @@
     "address": "Meent 73, 3011 JG Rotterdam",
     "latitude": 51.9252,
     "longitude": 4.4858,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -47,7 +47,7 @@
     "address": "Delftsestraat 31, 3013 AC Rotterdam",
     "latitude": 51.9274,
     "longitude": 4.4707,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -68,7 +68,7 @@
     "address": "Nieuwe Binnenweg 258, 3021 GS Rotterdam",
     "latitude": 51.9183,
     "longitude": 4.4694,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -89,7 +89,7 @@
     "address": "Nieuwe Binnenweg 116, 3015 BE Rotterdam",
     "latitude": 51.9179,
     "longitude": 4.4723,
-    "category": "Pour-Over",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -110,7 +110,7 @@
     "address": "Oostzeedijk 226, 3063 CE Rotterdam",
     "latitude": 51.9168,
     "longitude": 4.5054,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -131,7 +131,7 @@
     "address": "Delftsestraat 18, 3013 AE Rotterdam",
     "latitude": 51.9279,
     "longitude": 4.4690,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -152,7 +152,7 @@
     "address": "Mathenesserlaan 246, 3021 HM Rotterdam",
     "latitude": 51.9133,
     "longitude": 4.4562,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -173,7 +173,7 @@
     "address": "Zwaanshals 286, 3035 KP Rotterdam",
     "latitude": 51.9381,
     "longitude": 4.4744,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -194,7 +194,7 @@
     "address": "Vijverhofstraat 70, 3032 SN Rotterdam",
     "latitude": 51.9367,
     "longitude": 4.4684,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -215,7 +215,7 @@
     "address": "Koninginnenhoofd 1, 3072 AD Rotterdam",
     "latitude": 51.9056,
     "longitude": 4.4895,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -236,7 +236,7 @@
     "address": "Mauritsweg 55, 3012 JW Rotterdam",
     "latitude": 51.9221,
     "longitude": 4.4747,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -257,7 +257,7 @@
     "address": "Van Oldenbarneveltstraat 120, 3012 GV Rotterdam",
     "latitude": 51.9225,
     "longitude": 4.4817,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 6:00 PM" },
@@ -278,7 +278,7 @@
     "address": "Witte de Withstraat 10, 3012 BP Rotterdam",
     "latitude": 51.9186,
     "longitude": 4.4783,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -299,7 +299,7 @@
     "address": "Nieuwe Binnenweg 33, 3014 GB Rotterdam",
     "latitude": 51.9190,
     "longitude": 4.4780,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.4,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -320,7 +320,7 @@
     "address": "Schiemond 20, 3024 EE Rotterdam",
     "latitude": 51.9091,
     "longitude": 4.4524,
-    "category": "Pour-Over",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -341,7 +341,7 @@
     "address": "Weena 70, 3012 CM Rotterdam",
     "latitude": 51.9237,
     "longitude": 4.4684,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "7:30 AM – 5:00 PM" },
@@ -362,7 +362,7 @@
     "address": "Zwart Janstraat 108, 3035 AV Rotterdam",
     "latitude": 51.9308,
     "longitude": 4.4727,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -383,7 +383,7 @@
     "address": "Witte de Withstraat 65, 3012 BN Rotterdam",
     "latitude": 51.9179,
     "longitude": 4.4785,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -404,7 +404,7 @@
     "address": "Willemsparkweg 173, 1071 GZ Amsterdam",
     "latitude": 52.3560,
     "longitude": 4.8790,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -425,7 +425,7 @@
     "address": "Haarlemmerdijk 76, 1013 JG Amsterdam",
     "latitude": 52.3854,
     "longitude": 4.8913,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -446,7 +446,7 @@
     "address": "Jan Pieter Heijestraat 87, 1053 GL Amsterdam",
     "latitude": 52.3648,
     "longitude": 4.8682,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -467,7 +467,7 @@
     "address": "Haarlemmerdijk 151, 1013 KH Amsterdam",
     "latitude": 52.3857,
     "longitude": 4.8889,
-    "category": "Pour-Over",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -488,7 +488,7 @@
     "address": "Van Woustraat 151, 1074 AL Amsterdam",
     "latitude": 52.3516,
     "longitude": 4.8997,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -509,7 +509,7 @@
     "address": "Eerste Constantijn Huygensstraat 76, 1054 BV Amsterdam",
     "latitude": 52.3636,
     "longitude": 4.8759,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -530,7 +530,7 @@
     "address": "Oudekerksplein 14, 1012 GZ Amsterdam",
     "latitude": 52.3742,
     "longitude": 4.8984,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "10:00 AM – 5:00 PM" },
@@ -551,7 +551,7 @@
     "address": "Stadhouderskade 153, 1074 BC Amsterdam",
     "latitude": 52.3542,
     "longitude": 4.8948,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -572,7 +572,7 @@
     "address": "Boerhaaveplein 9, 1091 AT Amsterdam",
     "latitude": 52.3562,
     "longitude": 4.9163,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -593,7 +593,7 @@
     "address": "Cornelis Troostplein 17, 1072 JJ Amsterdam",
     "latitude": 52.3497,
     "longitude": 4.8947,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -614,7 +614,7 @@
     "address": "Overtoom 361, 1054 JN Amsterdam",
     "latitude": 52.3614,
     "longitude": 4.8631,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -635,7 +635,7 @@
     "address": "Haarlemmerstraat 68, 1013 ES Amsterdam",
     "latitude": 52.3846,
     "longitude": 4.8937,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -656,7 +656,7 @@
     "address": "Van Beuningenstraat 61, 1051 XE Amsterdam",
     "latitude": 52.3829,
     "longitude": 4.8816,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -677,7 +677,7 @@
     "address": "Kinkerstraat 330, 1053 EJ Amsterdam",
     "latitude": 52.3679,
     "longitude": 4.8749,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -698,7 +698,7 @@
     "address": "Pretoriusstraat 33, 1092 GA Amsterdam",
     "latitude": 52.3575,
     "longitude": 4.9241,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 6:00 PM" },
@@ -719,7 +719,7 @@
     "address": "Kinkerstraat 112, 1053 EB Amsterdam",
     "latitude": 52.3680,
     "longitude": 4.8776,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -740,7 +740,7 @@
     "address": "Kerkstraat 96, 1017 GP Amsterdam",
     "latitude": 52.3615,
     "longitude": 4.8896,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -761,7 +761,7 @@
     "address": "Sarphatipark 34, 1072 PB Amsterdam",
     "latitude": 52.3577,
     "longitude": 4.8987,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -782,7 +782,7 @@
     "address": "Jan Evertsenstraat 136, 1056 EK Amsterdam",
     "latitude": 52.3726,
     "longitude": 4.8574,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -803,7 +803,7 @@
     "address": "Weteringstraat 48, 1017 SP Amsterdam",
     "latitude": 52.3608,
     "longitude": 4.8913,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -824,7 +824,7 @@
     "address": "Van Hallstraat 293, 1051 HM Amsterdam",
     "latitude": 52.3849,
     "longitude": 4.8842,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -845,7 +845,7 @@
     "address": "Amstelstraat 6, 1017 DA Amsterdam",
     "latitude": 52.3669,
     "longitude": 4.8956,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -866,7 +866,7 @@
     "address": "Pazzanistraat 39, 1014 DB Amsterdam",
     "latitude": 52.3866,
     "longitude": 4.8771,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -887,7 +887,7 @@
     "address": "IJburglaan 1291, 1087 CJ Amsterdam",
     "latitude": 52.3581,
     "longitude": 4.9929,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -908,7 +908,7 @@
     "address": "Slibvijzel 10, 1016 GA Amsterdam",
     "latitude": 52.3687,
     "longitude": 4.8830,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -929,7 +929,7 @@
     "address": "Binnen Dommersstraat 15, 1013 HK Amsterdam",
     "latitude": 52.3813,
     "longitude": 4.8869,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -950,7 +950,7 @@
     "address": "Korte Koningsstraat 13, 1011 GA Amsterdam",
     "latitude": 52.3741,
     "longitude": 4.9021,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 6:00 PM" },
@@ -971,7 +971,7 @@
     "address": "Beukenplein 14, 1092 BB Amsterdam",
     "latitude": 52.3569,
     "longitude": 4.9156,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 6:00 PM" },
@@ -992,7 +992,7 @@
     "address": "Voorstraat 35, 3512 AJ Utrecht",
     "latitude": 52.0932,
     "longitude": 5.1250,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -1013,7 +1013,7 @@
     "address": "Zijdebalenstraat 60, 3532 AB Utrecht",
     "latitude": 52.0957,
     "longitude": 5.1246,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -1034,7 +1034,7 @@
     "address": "Twijnstraat 13, 3511 ZH Utrecht",
     "latitude": 52.0878,
     "longitude": 5.1231,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -1055,7 +1055,7 @@
     "address": "Oudegracht 314, 3511 PL Utrecht",
     "latitude": 52.0892,
     "longitude": 5.1205,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 6:00 PM" },
@@ -1076,7 +1076,7 @@
     "address": "Voorstraat 87, 3512 AK Utrecht",
     "latitude": 52.0921,
     "longitude": 5.1258,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -1097,7 +1097,7 @@
     "address": "Vredenburgkade 14, 3511 WB Utrecht",
     "latitude": 52.0919,
     "longitude": 5.1156,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -1118,7 +1118,7 @@
     "address": "Ganzenmarkt 14, 3512 GD Utrecht",
     "latitude": 52.0905,
     "longitude": 5.1214,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "9:00 AM – 5:00 PM" },
@@ -1139,7 +1139,7 @@
     "address": "Cartesiusweg 38, 3534 BA Utrecht",
     "latitude": 52.0999,
     "longitude": 5.0997,
-    "category": "Roastery",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -1160,7 +1160,7 @@
     "address": "Voorstraat 46, 3512 AS Utrecht",
     "latitude": 52.0930,
     "longitude": 5.1247,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 7:00 PM" },
@@ -1181,7 +1181,7 @@
     "address": "Zadelstraat 21, 3511 LR Utrecht",
     "latitude": 52.0898,
     "longitude": 5.1216,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 6:00 PM" },
@@ -1202,7 +1202,7 @@
     "address": "Nobelstraat 143, 3512 EM Utrecht",
     "latitude": 52.0944,
     "longitude": 5.1265,
-    "category": "Café",
+    "category": "Coffee Shop",
     "rating": 4.5,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -1223,7 +1223,7 @@
     "address": "Nachtegaalstraat 80, 3581 AN Utrecht",
     "latitude": 52.0883,
     "longitude": 5.1264,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.7,
     "openingHours": [
       { "day": "Monday",    "hours": "8:00 AM – 5:00 PM" },
@@ -1244,7 +1244,7 @@
     "address": "Twijnstraat aan de Werf 46, 3511 ZM Utrecht",
     "latitude": 52.0864,
     "longitude": 5.1220,
-    "category": "Pour-Over",
+    "category": "Coffee Shop",
     "rating": 4.8,
     "openingHours": [
       { "day": "Monday",    "hours": "Closed" },
@@ -1265,7 +1265,7 @@
     "address": "Biltstraat 32, 3572 BB Utrecht",
     "latitude": 52.0941,
     "longitude": 5.1294,
-    "category": "Espresso Bar",
+    "category": "Coffee Shop",
     "rating": 4.6,
     "openingHours": [
       { "day": "Monday",    "hours": "8:30 AM – 5:00 PM" },
@@ -1279,5 +1279,132 @@
     "roasterInfo": null,
     "description": "A laid-back Biltstraat bar — plant-filled, pet-friendly, and consistently well-dialled espresso.",
     "tags": ["Alt Milk", "Work-Friendly", "Pet Friendly"]
+  },
+
+  {
+    "id": "A1B2C3D4-5001-0000-0000-000000000001",
+    "name": "Manhattan Coffee Roasters",
+    "address": "Wijnhaven 95, 3011 WN Rotterdam",
+    "latitude": 51.9225,
+    "longitude": 4.4881,
+    "category": "Store",
+    "rating": 4.8,
+    "openingHours": [
+      { "day": "Monday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "Closed" }
+    ],
+    "roasterInfo": "Rotterdam-based roastery celebrated for its competition-level espressos and an extensive single-origin retail catalogue.",
+    "description": "Manhattan's flagship retail shop in the Wijnhaven area — buy fresh-roasted beans, pick up Hario equipment, and try a shot at the bar.",
+    "tags": ["Single Origin", "Work-Friendly"]
+  },
+  {
+    "id": "A1B2C3D4-5002-0000-0000-000000000002",
+    "name": "Stooker Rotterdam",
+    "address": "'s-Gravendijkwal 74, 3021 EK Rotterdam",
+    "latitude": 51.9188,
+    "longitude": 4.4601,
+    "category": "Store",
+    "rating": 4.7,
+    "openingHours": [
+      { "day": "Monday",    "hours": "Closed" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "11:00 AM – 4:00 PM" }
+    ],
+    "roasterInfo": "Small-batch Rotterdam roastery specialising in light, fruit-forward naturals and washed lots from Central America and Africa.",
+    "description": "Stooker's retail and roastery outpost — browse the bean wall, taste a sample espresso, and pick up brewing kit from the curated equipment shelf.",
+    "tags": ["Single Origin", "Specialty Food"]
+  },
+  {
+    "id": "A1B2C3D4-5003-0000-0000-000000000003",
+    "name": "Friedhats Coffee",
+    "address": "Overtoom 197, 1054 HX Amsterdam",
+    "latitude": 51.9617,
+    "longitude": 4.8636,
+    "category": "Store",
+    "rating": 4.9,
+    "openingHours": [
+      { "day": "Monday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "11:00 AM – 4:00 PM" }
+    ],
+    "roasterInfo": "One of the most respected micro-roasters in the Netherlands — sourcing directly from farms and processing stations, with full transparency on every lot.",
+    "description": "Friedhats' Overtoom retail store — limited-release beans, a tasting bar, and the best selection of specialty brewing equipment in Amsterdam.",
+    "tags": ["Single Origin", "Work-Friendly"]
+  },
+  {
+    "id": "A1B2C3D4-5004-0000-0000-000000000004",
+    "name": "Headfirst Coffee Roasters",
+    "address": "Jan Pieter Heijestraat 106, 1053 GN Amsterdam",
+    "latitude": 52.3641,
+    "longitude": 4.8688,
+    "category": "Store",
+    "rating": 4.7,
+    "openingHours": [
+      { "day": "Monday",    "hours": "Closed" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "Closed" }
+    ],
+    "roasterInfo": "Amsterdam-West roastery focusing on natural and honey-processed lots; known for bold, complex tasting profiles.",
+    "description": "Headfirst's retail and roastery — a quiet corner shop where you can buy their full bean range and explore the roastery at the back.",
+    "tags": ["Single Origin", "Alt Milk"]
+  },
+  {
+    "id": "A1B2C3D4-5005-0000-0000-000000000005",
+    "name": "Bocca Coffee — Retail Utrecht",
+    "address": "Nicolaaskerkhof 5, 3512 PB Utrecht",
+    "latitude": 52.0908,
+    "longitude": 5.1244,
+    "category": "Store",
+    "rating": 4.7,
+    "openingHours": [
+      { "day": "Monday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "Closed" }
+    ],
+    "roasterInfo": "Bocca, one of the Netherlands' oldest specialty roasters, known for long-term direct-trade relationships and educational transparency.",
+    "description": "Bocca's Utrecht retail point — a well-curated selection of their full bean range alongside brewing gear and a short tasting menu.",
+    "tags": ["Single Origin", "Specialty Food"]
+  },
+  {
+    "id": "A1B2C3D4-5006-0000-0000-000000000006",
+    "name": "Koffie & Zo Utrecht",
+    "address": "Lange Viestraat 37, 3511 BK Utrecht",
+    "latitude": 52.0923,
+    "longitude": 5.1196,
+    "category": "Store",
+    "rating": 4.6,
+    "openingHours": [
+      { "day": "Monday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Tuesday",   "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Wednesday", "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Thursday",  "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Friday",    "hours": "10:00 AM – 6:00 PM" },
+      { "day": "Saturday",  "hours": "10:00 AM – 5:00 PM" },
+      { "day": "Sunday",    "hours": "Closed" }
+    ],
+    "roasterInfo": null,
+    "description": "Utrecht's go-to specialty coffee shop — a wide wall of beans from Dutch and European roasters, a full range of V60, Chemex and AeroPress gear, and free brewing workshops on Saturday mornings.",
+    "tags": ["Single Origin", "Work-Friendly", "Specialty Food"]
   }
 ]

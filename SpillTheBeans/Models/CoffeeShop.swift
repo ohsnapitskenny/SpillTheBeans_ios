@@ -25,19 +25,17 @@ struct CoffeeShop: Identifiable, Codable, Hashable {
 // MARK: - Category
 
 enum ShopCategory: String, Codable, CaseIterable, Identifiable, Hashable {
-    case espressoBar = "Espresso Bar"
-    case pourOver    = "Pour-Over"
-    case roastery    = "Roastery"
-    case cafe        = "Café"
+    /// A place where you can sit down and drink specialty coffee.
+    case coffeeShop = "Coffee Shop"
+    /// A retail outlet where you can buy specialty beans, equipment or both.
+    case store      = "Store"
 
     var id: String { rawValue }
 
     var systemImage: String {
         switch self {
-        case .espressoBar: return "cup.and.saucer.fill"
-        case .pourOver:    return "drop.fill"
-        case .roastery:    return "flame.fill"
-        case .cafe:        return "house.fill"
+        case .coffeeShop: return "cup.and.saucer.fill"
+        case .store:      return "bag.fill"
         }
     }
 }

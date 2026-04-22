@@ -60,7 +60,7 @@ struct CoffeeMapView: View {
                     }
                     filterFAB
                 }
-                .padding(.trailing, 20)
+                .padding(.horizontal, 20)
                 .padding(.bottom, 20)
             }
             // Title only in list mode — the map needs every pixel
@@ -262,9 +262,11 @@ struct CoffeeMapView: View {
                 showingFilter.toggle()
             }
         } label: {
-            Image(systemName: viewModel.selectedCategory == nil
-                ? "line.3.horizontal.decrease"
-                : "line.3.horizontal.decrease.circle.fill")
+            Image(systemName: showingFilter
+                ? "xmark"
+                : (viewModel.selectedCategory == nil
+                    ? "line.3.horizontal.decrease"
+                    : "line.3.horizontal.decrease.circle.fill"))
                 .font(.system(size: 16, weight: .medium))
                 .frame(width: 36, height: 36)
                 .background(

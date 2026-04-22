@@ -24,6 +24,12 @@ struct CoffeeMapView: View {
     // Camera position owned here so SwiftUI holds the Binding cleanly.
     @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
 
+    // Live camera state — updated via onMapCameraChange so the custom
+    // reset-north button can rotate its arrow and snap back precisely.
+    @State private var cameraHeading:  Double = 0
+    @State private var cameraCenter:   CLLocationCoordinate2D? = nil
+    @State private var cameraDistance: Double = 80_000   // metres
+
     // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
@@ -41,6 +47,14 @@ struct CoffeeMapView: View {
                 if viewModel.viewMode == .list {
                     ShopListView(viewModel: viewModel)
                         .transition(.opacity)
+                }
+
+                // Filter chips — only visible after the FAB is tapped.
+                // Sit above the FAB row (72 pt clearance) and slide in from below.
+                if showingFilter {
+                    categoryFilterBar
+                        .padding(.bottom, 72)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
             // Filter FAB — bottom-right corner, visible in both map and list modes
@@ -69,11 +83,6 @@ struct CoffeeMapView: View {
             .sheet(item: $viewModel.selectedShop) { shop in
                 CoffeeShopDetailView(shop: shop)
                     .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-            }
-            .sheet(isPresented: $showingFilter) {
-                MapFilterSheetView(viewModel: viewModel)
-                    .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
             // Fly to a tapped shop annotation
@@ -136,6 +145,12 @@ struct CoffeeMapView: View {
         .mapStyle(.standard(elevation: .realistic))
         // Suppress the default-positioned controls; we position them ourselves.
         .mapControls { }
+        // Track heading, centre and zoom — powers the custom reset-north button.
+        .onMapCameraChange(frequency: .continuous) { ctx in
+            cameraHeading  = ctx.camera.heading
+            cameraCenter   = ctx.camera.centerCoordinate
+            cameraDistance = ctx.camera.distance
+        }
         .ignoresSafeArea(edges: .top)
     }
 
@@ -174,21 +189,80 @@ struct CoffeeMapView: View {
             .tint(Color.espresso)
             .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
 
-            // ── Compass ───────────────────────────────────────────────────
-            // Default MapKit compass: auto-hidden at north (heading == 0),
-            // reappears as soon as the map is rotated, tap resets to north.
-            // Linked to the Map via mapScope so it controls the right instance.
-            MapCompassButton(scope: mapScope)
+            // ── Reset-north button ────────────────────────────────────────
+            // Hidden when the map is already pointing true north (heading ≈ 0).
+            // The arrow rotates counter to the live heading so it always points
+            // to actual north on screen. Tap snaps heading to 0 while keeping
+            // the current zoom and centre position intact.
+            if abs(cameraHeading) > 0.5 {
+                Button {
+                    guard let center = cameraCenter else { return }
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        cameraPosition = .camera(
+                            MapCamera(
+                                centerCoordinate: center,
+                                distance: cameraDistance,
+                                heading: 0,
+                                pitch: 0
+                            )
+                        )
+                    }
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(.regularMaterial)
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "arrow.up")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(Color.espresso)
+                            .rotationEffect(.degrees(-cameraHeading))
+                            .animation(.easeOut(duration: 0.15), value: cameraHeading)
+                    }
+                }
                 .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+                .transition(.opacity.combined(with: .scale(scale: 0.8)))
+            }
         }
+    }
+
+    // MARK: - Category Filter Bar
+
+    /// Horizontal chip row that appears when the FAB is tapped.
+    private var categoryFilterBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                FilterChip(title: "All", isSelected: viewModel.selectedCategory == nil) {
+                    viewModel.selectedCategory = nil
+                }
+                ForEach(ShopCategory.allCases) { category in
+                    FilterChip(
+                        title: category.rawValue,
+                        systemImage: category.systemImage,
+                        isSelected: viewModel.selectedCategory == category
+                    ) {
+                        viewModel.selectedCategory =
+                            viewModel.selectedCategory == category ? nil : category
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+        }
+        .glassEffect(in: .rect(cornerRadius: 14))
+        .padding(.horizontal, 16)
+        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 
     // MARK: - Filter FAB
 
-    /// Floating action button that opens the filter sheet.
-    /// Shows the active filter name (and turns espresso-coloured) when a filter is set.
+    /// Floating action button that toggles the filter chips row.
+    /// Turns espresso-coloured and shows the active category name when a filter is set.
     private var filterFAB: some View {
-        Button { showingFilter = true } label: {
+        Button {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                showingFilter.toggle()
+            }
+        } label: {
             HStack(spacing: 7) {
                 Image(systemName: viewModel.selectedCategory == nil
                     ? "line.3.horizontal.decrease"
@@ -239,67 +313,4 @@ struct CoffeeMapView: View {
     }
 }
 
-// MARK: - Map Filter Sheet
-
-/// Bottom sheet that lets the user filter the map (and list) by shop type.
-struct MapFilterSheetView: View {
-    @Bindable var viewModel: CoffeeShopViewModel
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            List {
-                Section("Type") {
-                    typeRow(label: "All", icon: "mappin.and.ellipse", isSelected: viewModel.selectedCategory == nil) {
-                        viewModel.selectedCategory = nil
-                    }
-                    ForEach(ShopCategory.allCases) { category in
-                        typeRow(
-                            label: category.rawValue,
-                            icon: category.systemImage,
-                            isSelected: viewModel.selectedCategory == category
-                        ) {
-                            viewModel.selectedCategory =
-                                viewModel.selectedCategory == category ? nil : category
-                        }
-                    }
-                }
-            }
-            .listStyle(.insetGrouped)
-            .navigationTitle("Filter")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Clear") { viewModel.selectedCategory = nil }
-                        .foregroundStyle(Color.terracotta)
-                        .disabled(viewModel.selectedCategory == nil)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color.espresso)
-                }
-            }
-        }
-        .tint(Color.espresso)
-    }
-
-    private func typeRow(label: String, icon: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 12) {
-                Image(systemName: icon)
-                    .foregroundStyle(Color.terracotta)
-                    .frame(width: 22)
-                Text(label)
-                    .foregroundStyle(.primary)
-                Spacer()
-                if isSelected {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(Color.terracotta)
-                        .fontWeight(.semibold)
-                }
-            }
-        }
-    }
-}
 

@@ -3,6 +3,10 @@ import SwiftUI
 struct CoffeeDetailView: View {
     let coffee: Coffee
 
+    @State private var reviews: [CoffeeReview] = []
+    @State private var reviewsLoading = true
+    private let reviewService = MockReviewService()
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
@@ -16,6 +20,8 @@ struct CoffeeDetailView: View {
                 if coffee.producer != nil || coffee.altitude != nil || coffee.harvestSeason != nil {
                     producerSection
                 }
+                Divider()
+                reviewsSection
             }
             .padding()
             .padding(.bottom, 32)
@@ -23,6 +29,10 @@ struct CoffeeDetailView: View {
         .background(Color.creamBackground)
         .navigationTitle(coffee.name)
         .navigationBarTitleDisplayMode(.large)
+        .task {
+            reviews = (try? await reviewService.fetchReviews(for: coffee.id)) ?? []
+            reviewsLoading = false
+        }
     }
 
     // MARK: - Hero
@@ -35,7 +45,9 @@ struct CoffeeDetailView: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.espresso)
-                Text([coffee.origin.country, coffee.origin.region].compactMap { $0 }.joined(separator: ", "))
+                Text([coffee.origin.country, coffee.origin.region]
+                    .compactMap { $0 }
+                    .joined(separator: ", "))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -135,6 +147,40 @@ struct CoffeeDetailView: View {
                 }
                 if let season = coffee.harvestSeason {
                     InfoTile(label: "Harvest", value: season)
+                }
+            }
+        }
+    }
+
+    // MARK: - Reviews
+
+    private var reviewsSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                SectionHeader(title: "Reviews")
+                Spacer()
+                if !reviews.isEmpty {
+                    Text("\(reviews.count)")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            if reviewsLoading {
+                ProgressView()
+                    .tint(Color.espresso)
+                    .frame(maxWidth: .infinity, minHeight: 80)
+            } else if reviews.isEmpty {
+                Text("No reviews yet.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.vertical, 8)
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(reviews) { review in
+                        ReviewRowView(review: review)
+                    }
                 }
             }
         }

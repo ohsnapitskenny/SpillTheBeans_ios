@@ -1,9 +1,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AuthService.self) private var authService
+
     var body: some View {
-        // Tab struct API — available iOS 18+ (required for iOS 26)
-        // .sidebarAdaptable shows a sidebar on iPad and a tab bar on iPhone
+        if authService.isAuthenticated {
+            mainTabs
+        } else {
+            SplashView()
+        }
+    }
+
+    // MARK: - Main Tab View
+
+    private var mainTabs: some View {
         TabView {
             Tab("Map", systemImage: "map.fill") {
                 CoffeeMapView()
@@ -13,39 +23,11 @@ struct ContentView: View {
                 EncyclopediaView()
             }
 
-            // Placeholder kept separate so future features can be added independently
-            Tab("Journal", systemImage: "pencil.and.list.clipboard") {
-                ComingSoonView(tabName: "Journal", systemImage: "pencil.and.list.clipboard")
+            Tab("Me", systemImage: "person.fill") {
+                UserProfileView()
             }
         }
         .tabViewStyle(.sidebarAdaptable)
         .tint(Color.espresso)
-    }
-}
-
-// MARK: - Coming Soon Placeholder
-
-private struct ComingSoonView: View {
-    let tabName: String
-    let systemImage: String
-
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Image(systemName: systemImage)
-                    .font(.system(size: 64))
-                    .foregroundStyle(Color.terracotta.opacity(0.35))
-                Text(tabName)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Color.espresso)
-                Text("Coming soon")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.creamBackground)
-            .navigationTitle(tabName)
-        }
     }
 }

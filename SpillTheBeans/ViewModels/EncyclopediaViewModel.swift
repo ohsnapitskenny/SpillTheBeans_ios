@@ -30,6 +30,16 @@ final class EncyclopediaViewModel {
         Array(Set(coffees.flatMap { $0.flavorTags })).sorted()
     }
 
+    /// First 6 coffees in load order — shown in the "Latest Beans" carousel.
+    var latestCoffees: [Coffee] {
+        Array(coffees.prefix(6))
+    }
+
+    /// The next 6 coffees — shown in the "Recommended for You" carousel.
+    var recommendedCoffees: [Coffee] {
+        Array(coffees.dropFirst(6).prefix(6))
+    }
+
     var filteredCoffees: [Coffee] {
         var result = coffees
 
@@ -50,6 +60,10 @@ final class EncyclopediaViewModel {
 
     var hasActiveFilters: Bool {
         selectedProcess != nil || selectedCountry != nil || selectedFlavorTag != nil
+    }
+
+    var hasActiveSearch: Bool {
+        !searchText.isEmpty || hasActiveFilters
     }
 
     // MARK: Intents

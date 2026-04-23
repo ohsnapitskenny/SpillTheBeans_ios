@@ -1,5 +1,69 @@
 import SwiftUI
 
+// MARK: - Review Row View
+
+/// A card row showing a single coffee review — used in CoffeeDetailView and UserProfileView.
+struct ReviewRowView: View {
+    let review: CoffeeReview
+
+    private var formattedDate: String {
+        let f = DateFormatter()
+        f.dateStyle = .medium
+        f.timeStyle = .none
+        return f.string(from: review.date)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Label(review.username, systemImage: "person.fill")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.espresso)
+                Spacer()
+                Text(formattedDate)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
+            HStack(spacing: 10) {
+                StarRatingView(rating: review.rating)
+                Label(review.brewMethod.rawValue, systemImage: review.brewMethod.systemImage)
+                    .font(.caption2)
+                    .foregroundStyle(Color.terracotta)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.terracotta.opacity(0.1))
+                    .clipShape(Capsule())
+            }
+
+            Text(review.note)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .background(Color.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.04), radius: 4, y: 2)
+    }
+}
+
+// MARK: - Star Rating View
+
+struct StarRatingView: View {
+    let rating: Int
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(1...5, id: \.self) { i in
+                Image(systemName: i <= rating ? "star.fill" : "star")
+                    .font(.caption2)
+                    .foregroundStyle(i <= rating ? Color.terracotta : Color.terracotta.opacity(0.25))
+            }
+        }
+    }
+}
+
 // MARK: - Section Header
 
 struct SectionHeader: View {

@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "coffee-bean-icon.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

@@ -31,6 +31,11 @@
 		AA000022 /* coffeeShops.json in Resources */ = {isa = PBXBuildFile; fileRef = AB000022 /* coffeeShops.json */; };
 		AA000023 /* coffees.json in Resources */ = {isa = PBXBuildFile; fileRef = AB000023 /* coffees.json */; };
 		AA000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB000024 /* Assets.xcassets */; };
+		B90E9C882F9AD1C400BB06F3 /* CoffeeReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C872F9AD1C400BB06F3 /* CoffeeReview.swift */; };
+		B90E9C8A2F9AD1D100BB06F3 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C892F9AD1D100BB06F3 /* AppUser.swift */; };
+		B90E9C8C2F9AD1ED00BB06F3 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */; };
+		B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */; };
+		B90E9C932F9AD24000BB06F3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C912F9AD24000BB06F3 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +65,11 @@
 		AB000024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC000001 /* SpillTheBeans.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpillTheBeans.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B90E9C872F9AD1C400BB06F3 /* CoffeeReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeReview.swift; sourceTree = "<group>"; };
+		B90E9C892F9AD1D100BB06F3 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
+		B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		B90E9C912F9AD24000BB06F3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +102,8 @@
 		AE000002 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B90E9C892F9AD1D100BB06F3 /* AppUser.swift */,
+				B90E9C872F9AD1C400BB06F3 /* CoffeeReview.swift */,
 				AB000003 /* CoffeeShop.swift */,
 				AB000004 /* Coffee.swift */,
 			);
@@ -110,6 +122,8 @@
 		AE000004 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */,
+				B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */,
 				AB000005 /* CoffeeShopService.swift */,
 				AB000006 /* CoffeeService.swift */,
 			);
@@ -119,6 +133,7 @@
 		AE000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B90E9C922F9AD24000BB06F3 /* Auth */,
 				AE000006 /* Map */,
 				AE000007 /* Encyclopedia */,
 				AE000008 /* Components */,
@@ -201,6 +216,14 @@
 			);
 			sourceTree = "<group>";
 		};
+		B90E9C922F9AD24000BB06F3 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				B90E9C912F9AD24000BB06F3 /* SplashView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -273,11 +296,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA000001 /* SpillTheBeansApp.swift in Sources */,
+				B90E9C8C2F9AD1ED00BB06F3 /* ReviewService.swift in Sources */,
 				AA000002 /* ContentView.swift in Sources */,
 				AA000003 /* CoffeeShop.swift in Sources */,
 				AA000004 /* Coffee.swift in Sources */,
 				AA000005 /* CoffeeShopService.swift in Sources */,
 				AA000006 /* CoffeeService.swift in Sources */,
+				B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */,
+				B90E9C932F9AD24000BB06F3 /* SplashView.swift in Sources */,
+				B90E9C8A2F9AD1D100BB06F3 /* AppUser.swift in Sources */,
 				AA000007 /* CoffeeShopViewModel.swift in Sources */,
 				AA000008 /* EncyclopediaViewModel.swift in Sources */,
 				AA000009 /* CoffeeMapView.swift in Sources */,
@@ -285,6 +312,7 @@
 				AA000011 /* ShopListView.swift in Sources */,
 				AA000012 /* CoffeeShopDetailView.swift in Sources */,
 				AA000013 /* EncyclopediaView.swift in Sources */,
+				B90E9C882F9AD1C400BB06F3 /* CoffeeReview.swift in Sources */,
 				AA000014 /* CoffeeCardView.swift in Sources */,
 				AA000015 /* CoffeeDetailView.swift in Sources */,
 				AA000016 /* FilterChipView.swift in Sources */,

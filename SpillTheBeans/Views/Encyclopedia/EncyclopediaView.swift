@@ -164,8 +164,8 @@ struct EncyclopediaView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 if !viewModel.searchText.isEmpty {
-                    ActiveFilterChip(title: ""\(viewModel.searchText)"") {
-                        viewModel.searchText = ""
+                        ActiveFilterChip(title: "\"\(viewModel.searchText)\"") {
+                            viewModel.searchText = ""
                     }
                 }
                 if let p = viewModel.selectedProcess {

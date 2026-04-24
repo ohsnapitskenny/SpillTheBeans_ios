@@ -68,19 +68,19 @@ struct EncyclopediaView: View {
                         .padding(.top, 4)
                 }
 
-                // ── Latest Beans ──────────────────────────────────────────
-                if !viewModel.latestCoffees.isEmpty && !viewModel.hasActiveSearch {
-                    carouselSection(
-                        title: "Latest Beans",
-                        coffees: viewModel.latestCoffees
-                    )
-                }
-
                 // ── Recommended for You ───────────────────────────────────
                 if !viewModel.recommendedCoffees.isEmpty && !viewModel.hasActiveSearch {
                     carouselSection(
                         title: "Recommended for You",
                         coffees: viewModel.recommendedCoffees
+                    )
+                }
+                
+                // ── Latest Beans ──────────────────────────────────────────
+                if !viewModel.latestCoffees.isEmpty && !viewModel.hasActiveSearch {
+                    carouselSection(
+                        title: "Latest Beans",
+                        coffees: viewModel.latestCoffees
                     )
                 }
 

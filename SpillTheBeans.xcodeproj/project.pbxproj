@@ -35,7 +35,8 @@
 		B90E9C8A2F9AD1D100BB06F3 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C892F9AD1D100BB06F3 /* AppUser.swift */; };
 		B90E9C8C2F9AD1ED00BB06F3 /* ReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */; };
 		B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */; };
-		B90E9C932F9AD24000BB06F3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C912F9AD24000BB06F3 /* SplashView.swift */; };
+		B9B991572F9AD90300598A90 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991552F9AD90300598A90 /* UserProfileView.swift */; };
+		B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991582F9AD91B00598A90 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,7 +70,8 @@
 		B90E9C892F9AD1D100BB06F3 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
 		B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		B90E9C912F9AD24000BB06F3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		B9B991552F9AD90300598A90 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		B9B991582F9AD91B00598A90 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,8 @@
 		AE000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B9B991582F9AD91B00598A90 /* SplashView.swift */,
+				B9B991562F9AD90300598A90 /* User */,
 				B90E9C922F9AD24000BB06F3 /* Auth */,
 				AE000006 /* Map */,
 				AE000007 /* Encyclopedia */,
@@ -219,9 +223,16 @@
 		B90E9C922F9AD24000BB06F3 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				B90E9C912F9AD24000BB06F3 /* SplashView.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		B9B991562F9AD90300598A90 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				B9B991552F9AD90300598A90 /* UserProfileView.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,14 +307,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA000001 /* SpillTheBeansApp.swift in Sources */,
+				B9B991572F9AD90300598A90 /* UserProfileView.swift in Sources */,
 				B90E9C8C2F9AD1ED00BB06F3 /* ReviewService.swift in Sources */,
 				AA000002 /* ContentView.swift in Sources */,
 				AA000003 /* CoffeeShop.swift in Sources */,
 				AA000004 /* Coffee.swift in Sources */,
 				AA000005 /* CoffeeShopService.swift in Sources */,
 				AA000006 /* CoffeeService.swift in Sources */,
+				B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */,
 				B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */,
-				B90E9C932F9AD24000BB06F3 /* SplashView.swift in Sources */,
 				B90E9C8A2F9AD1D100BB06F3 /* AppUser.swift in Sources */,
 				AA000007 /* CoffeeShopViewModel.swift in Sources */,
 				AA000008 /* EncyclopediaViewModel.swift in Sources */,

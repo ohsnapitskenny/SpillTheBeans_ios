@@ -2,14 +2,16 @@ import Foundation
 
 // MARK: - Protocol
 
-protocol ReviewServiceProtocol {
+@MainActor
+protocol ReviewServiceProtocol: Sendable {
     func fetchReviews(for coffeeId: UUID) async throws -> [CoffeeReview]
     func fetchMyReviews(userId: String) async throws -> [CoffeeReview]
 }
 
 // MARK: - Mock Implementation
 
-final class MockReviewService: ReviewServiceProtocol {
+@MainActor
+final class MockReviewService: ReviewServiceProtocol, Sendable {
 
     // MARK: Data pools
 

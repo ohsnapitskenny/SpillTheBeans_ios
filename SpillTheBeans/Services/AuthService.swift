@@ -66,7 +66,6 @@ final class AuthService: NSObject {
     }
 
     // MARK: Persistence
-
     private func persist(_ user: AppUser) {
         guard let data = try? JSONEncoder().encode(user) else { return }
         UserDefaults.standard.set(data, forKey: persistKey)

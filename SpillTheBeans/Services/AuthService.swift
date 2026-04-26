@@ -1,71 +1,70 @@
 import Foundation
 import AuthenticationServices
 import Observation
+import UIKit
 
 // MARK: - AuthService
-// @MainActor @Observable so SwiftUI views can observe sign-in state changes directly.
+//
+// Owns the full Sign in with Apple flow as delegate +
+// presentation-context provider. No closures to capture,
+// no actor-isolation ambiguity.
 
 @MainActor
 @Observable
 final class AuthService: NSObject {
 
-    // MARK: State
+    // MARK: - State
 
     var currentUser: AppUser?
-
     var isAuthenticated: Bool { currentUser != nil }
 
-    // MARK: Private
+    // MARK: - Private
 
     private let persistKey = "spillthebeans.currentUser"
 
-    // MARK: Init
+    /// Strong reference so the controller isn't deallocated mid-flow.
+    private var activeController: ASAuthorizationController?
+
+    // MARK: - Init
 
     override init() {
         super.init()
         loadPersistedUser()
     }
 
-    // MARK: Intents
+    // MARK: - Public intents
 
-    /// Signs in as guest — no Apple credential required.
-    func continueAsGuest() {
-        let guest = AppUser.guest
-        currentUser = guest
-        persist(guest)
+    /// Kicks off the Sign in with Apple sheet.
+    func startAppleSignIn() {
+        let provider = ASAuthorizationAppleIDProvider()
+        let request  = provider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate                  = self
+        controller.presentationContextProvider = self
+        activeController = controller
+        controller.performRequests()
     }
 
-    /// Clears the current session and returns to the splash screen.
+    /// Sets the current user to the anonymous guest account.
+    func continueAsGuest() {
+        setUser(.guest)
+    }
+
+    /// Clears the session and returns to the splash screen.
     func signOut() {
         currentUser = nil
         UserDefaults.standard.removeObject(forKey: persistKey)
     }
 
-    /// Called from `SignInWithAppleButton`'s `onCompletion` handler.
-    func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
-        switch result {
-        case .success(let auth):
-            guard let credential = auth.credential as? ASAuthorizationAppleIDCredential else { return }
-            let userId = credential.user
-            let displayName: String
-            if let given  = credential.fullName?.givenName,
-               let family = credential.fullName?.familyName {
-                displayName = "\(given) \(family)"
-            } else {
-                // Apple only sends the name on the very first sign-in; fall back gracefully.
-                displayName = credential.email?.components(separatedBy: "@").first ?? "Coffee Lover"
-            }
-            let user = AppUser(id: userId, displayName: displayName, email: credential.email, isGuest: false)
-            currentUser = user
-            persist(user)
+    // MARK: - Private helpers
 
-        case .failure:
-            // Silently ignore cancellations and errors — user stays on splash.
-            break
-        }
+    private func setUser(_ user: AppUser) {
+        currentUser = user
+        persist(user)
     }
 
-    // MARK: Persistence
     private func persist(_ user: AppUser) {
         guard let data = try? JSONEncoder().encode(user) else { return }
         UserDefaults.standard.set(data, forKey: persistKey)
@@ -75,5 +74,70 @@ final class AuthService: NSObject {
         guard let data = UserDefaults.standard.data(forKey: persistKey),
               let user = try? JSONDecoder().decode(AppUser.self, from: data) else { return }
         currentUser = user
+    }
+}
+
+// MARK: - ASAuthorizationControllerDelegate
+
+extension AuthService: ASAuthorizationControllerDelegate {
+
+    /// Called on the main thread by the system when authorisation succeeds.
+    nonisolated func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+
+        let userId = credential.user
+
+        // Apple only delivers fullName on the very first sign-in.
+        // Fall back gracefully for returning users.
+        let displayName: String
+        if let given  = credential.fullName?.givenName,  !given.isEmpty,
+           let family = credential.fullName?.familyName, !family.isEmpty {
+            displayName = "\(given) \(family)"
+        } else if let localPart = credential.email?.components(separatedBy: "@").first,
+                  !localPart.isEmpty {
+            displayName = localPart
+        } else {
+            displayName = "Coffee Lover"
+        }
+
+        let user = AppUser(id: userId,
+                           displayName: displayName,
+                           email: credential.email,
+                           isGuest: false)
+
+        // Delegate callbacks arrive on the main thread, so hop explicitly.
+        MainActor.assumeIsolated {
+            setUser(user)
+        }
+    }
+
+    /// Called on the main thread when the user cancels or an error occurs.
+    nonisolated func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithError error: Error
+    ) {
+        // Silently ignore cancellations — user stays on the splash screen.
+    }
+}
+
+// MARK: - ASAuthorizationControllerPresentationContextProviding
+
+extension AuthService: ASAuthorizationControllerPresentationContextProviding {
+
+    /// Returns the key window so the sheet can be presented over the app.
+    nonisolated func presentationAnchor(
+        for controller: ASAuthorizationController
+    ) -> ASPresentationAnchor {
+        // presentationAnchor is always called on the main thread.
+        MainActor.assumeIsolated {
+            UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap(\.windows)
+                .first(where: \.isKeyWindow)
+                ?? UIWindow()
+        }
     }
 }

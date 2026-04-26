@@ -1,12 +1,10 @@
 import SwiftUI
-import AuthenticationServices
 
 struct SplashView: View {
     @Environment(AuthService.self) private var authService
 
     var body: some View {
         ZStack {
-            // Deep espresso background
             Color.espresso.ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -40,19 +38,10 @@ struct SplashView: View {
 
                 // ── Auth Buttons ──────────────────────────────────────────
                 VStack(spacing: 14) {
-                    SignInWithAppleButton(.signIn) { request in
-                        request.requestedScopes = [.fullName, .email]
-                    } onCompletion: { result in
-                        // SignInWithAppleButton delivers its completion on a
-                        // non-isolated executor. Hop to MainActor explicitly
-                        // so we can call the @MainActor-isolated AuthService.
-                        Task { @MainActor in
-                            authService.handleAppleSignIn(result)
-                        }
+                    AppleSignInButton(style: .white) {
+                        authService.startAppleSignIn()
                     }
-                    .signInWithAppleButtonStyle(.white)
                     .frame(height: 52)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
 
                     Button {
                         authService.continueAsGuest()

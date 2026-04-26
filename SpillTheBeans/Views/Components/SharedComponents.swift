@@ -1,4 +1,40 @@
 import SwiftUI
+import AuthenticationServices
+
+// MARK: - Apple Sign In Button
+//
+// UIViewRepresentable wrapper around ASAuthorizationAppleIDButton.
+// Uses Apple's official button appearance while accepting a plain Swift
+// closure — no Result-typed completion, no actor-isolation hazard.
+
+struct AppleSignInButton: UIViewRepresentable {
+    var style: ASAuthorizationAppleIDButton.Style = .white
+    let action: () -> Void
+
+    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
+        let button = ASAuthorizationAppleIDButton(
+            authorizationButtonType: .signIn,
+            authorizationButtonStyle: style
+        )
+        button.cornerRadius = 14
+        button.addTarget(
+            context.coordinator,
+            action: #selector(Coordinator.tapped),
+            for: .touchUpInside
+        )
+        return button
+    }
+
+    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
+
+    func makeCoordinator() -> Coordinator { Coordinator(action: action) }
+
+    final class Coordinator: NSObject {
+        let action: () -> Void
+        init(action: @escaping () -> Void) { self.action = action }
+        @objc func tapped() { action() }
+    }
+}
 
 // MARK: - Review Row View
 

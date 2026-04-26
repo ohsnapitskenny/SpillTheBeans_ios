@@ -1,6 +1,5 @@
 import SwiftUI
 import Charts
-import AuthenticationServices
 
 // MARK: - UserProfileView
 
@@ -48,16 +47,10 @@ struct UserProfileView: View {
                     .multilineTextAlignment(.center)
             }
 
-            SignInWithAppleButton(.signIn) { request in
-                request.requestedScopes = [.fullName, .email]
-            } onCompletion: { result in
-                Task { @MainActor in
-                    authService.handleAppleSignIn(result)
-                }
+            AppleSignInButton(style: .black) {
+                authService.startAppleSignIn()
             }
-            .signInWithAppleButtonStyle(.black)
             .frame(height: 52)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
             .padding(.horizontal, 40)
 
             Spacer()

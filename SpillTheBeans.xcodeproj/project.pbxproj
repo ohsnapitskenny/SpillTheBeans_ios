@@ -66,6 +66,7 @@
 		AB000024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC000001 /* SpillTheBeans.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpillTheBeans.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC000003 /* SpillTheBeans.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpillTheBeans.entitlements; sourceTree = "<group>"; };
 		B90E9C872F9AD1C400BB06F3 /* CoffeeReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeReview.swift; sourceTree = "<group>"; };
 		B90E9C892F9AD1D100BB06F3 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewService.swift; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 				AB000001 /* SpillTheBeansApp.swift */,
 				AB000002 /* ContentView.swift */,
 				AC000002 /* Info.plist */,
+				AC000003 /* SpillTheBeans.entitlements */,
 				AB000024 /* Assets.xcassets */,
 				AE000002 /* Models */,
 				AE000003 /* ViewModels */,
@@ -267,6 +269,11 @@
 				TargetAttributes = {
 					AG000001 = {
 						CreatedOnToolsVersion = 15.0;
+						SystemCapabilities = {
+							com.apple.Sign_in_with_Apple = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -345,6 +352,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SpillTheBeans/SpillTheBeans.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -373,6 +381,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SpillTheBeans/SpillTheBeans.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";

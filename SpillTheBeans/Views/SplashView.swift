@@ -43,7 +43,12 @@ struct SplashView: View {
                     SignInWithAppleButton(.signIn) { request in
                         request.requestedScopes = [.fullName, .email]
                     } onCompletion: { result in
-                        authService.handleAppleSignIn(result)
+                        // SignInWithAppleButton delivers its completion on a
+                        // non-isolated executor. Hop to MainActor explicitly
+                        // so we can call the @MainActor-isolated AuthService.
+                        Task { @MainActor in
+                            authService.handleAppleSignIn(result)
+                        }
                     }
                     .signInWithAppleButtonStyle(.white)
                     .frame(height: 52)

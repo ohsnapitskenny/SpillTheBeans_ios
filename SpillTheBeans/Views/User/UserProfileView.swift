@@ -51,7 +51,9 @@ struct UserProfileView: View {
             SignInWithAppleButton(.signIn) { request in
                 request.requestedScopes = [.fullName, .email]
             } onCompletion: { result in
-                authService.handleAppleSignIn(result)
+                Task { @MainActor in
+                    authService.handleAppleSignIn(result)
+                }
             }
             .signInWithAppleButtonStyle(.black)
             .frame(height: 52)

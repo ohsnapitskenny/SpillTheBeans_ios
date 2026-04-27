@@ -4,10 +4,15 @@ struct ContentView: View {
     @Environment(AuthService.self) private var authService
 
     var body: some View {
-        if authService.isAuthenticated {
+        // Read the stored @Observable property directly — not a computed
+        // wrapper — so SwiftUI's observation tracker registers the dependency
+        // and re-evaluates body the moment currentUser changes.
+        if authService.currentUser != nil {
             mainTabs
+                .transition(.opacity)
         } else {
             SplashView()
+                .transition(.opacity)
         }
     }
 

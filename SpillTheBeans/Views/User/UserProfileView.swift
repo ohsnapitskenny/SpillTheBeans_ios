@@ -11,12 +11,12 @@ struct UserProfileView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if let user = authService.currentUser, !user.isGuest {
-                    profileView(user: user)
-                } else {
-                    guestView
-                }
+            // Read currentUser (stored @Observable property) directly so
+            // observation tracking is guaranteed to fire on changes.
+            if let user = authService.currentUser, !user.isGuest {
+                profileView(user: user)
+            } else {
+                guestView
             }
         }
     }

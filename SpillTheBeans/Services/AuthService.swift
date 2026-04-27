@@ -4,10 +4,6 @@ import Observation
 import UIKit
 
 // MARK: - AuthService
-//
-// Owns the full Sign in with Apple flow as delegate +
-// presentation-context provider. No closures to capture,
-// no actor-isolation ambiguity.
 
 @MainActor
 @Observable
@@ -15,14 +11,15 @@ final class AuthService: NSObject {
 
     // MARK: - State
 
+    /// Directly-observed stored property — views should bind to this, not to a
+    /// computed wrapper, so @Observable tracking is guaranteed.
     var currentUser: AppUser?
-    var isAuthenticated: Bool { currentUser != nil }
 
     // MARK: - Private
 
     private let persistKey = "spillthebeans.currentUser"
 
-    /// Strong reference so the controller isn't deallocated mid-flow.
+    /// Keeps the controller alive for the full authorization flow.
     private var activeController: ASAuthorizationController?
 
     // MARK: - Init
@@ -34,25 +31,21 @@ final class AuthService: NSObject {
 
     // MARK: - Public intents
 
-    /// Kicks off the Sign in with Apple sheet.
     func startAppleSignIn() {
-        let provider = ASAuthorizationAppleIDProvider()
-        let request  = provider.createRequest()
+        let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.fullName, .email]
 
         let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate                  = self
+        controller.delegate                   = self
         controller.presentationContextProvider = self
         activeController = controller
         controller.performRequests()
     }
 
-    /// Sets the current user to the anonymous guest account.
     func continueAsGuest() {
-        setUser(.guest)
+        apply(.guest)
     }
 
-    /// Clears the session and returns to the splash screen.
     func signOut() {
         currentUser = nil
         UserDefaults.standard.removeObject(forKey: persistKey)
@@ -60,12 +53,9 @@ final class AuthService: NSObject {
 
     // MARK: - Private helpers
 
-    private func setUser(_ user: AppUser) {
+    /// Single write-point so every sign-in path goes through the same code.
+    fileprivate func apply(_ user: AppUser) {
         currentUser = user
-        persist(user)
-    }
-
-    private func persist(_ user: AppUser) {
         guard let data = try? JSONEncoder().encode(user) else { return }
         UserDefaults.standard.set(data, forKey: persistKey)
     }
@@ -81,45 +71,46 @@ final class AuthService: NSObject {
 
 extension AuthService: ASAuthorizationControllerDelegate {
 
-    /// Called on the main thread by the system when authorisation succeeds.
     nonisolated func authorizationController(
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
-        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential
+        else { return }
 
-        let userId = credential.user
+        // ── Extract all data from the ObjC credential here, in the
+        // nonisolated context, so only plain Sendable types (String / String?)
+        // cross the actor boundary. ────────────────────────────────────────
+        let userId     = credential.user
+        let givenName  = credential.fullName?.givenName  ?? ""
+        let familyName = credential.fullName?.familyName ?? ""
+        let email      = credential.email                // String?
 
-        // Apple only delivers fullName on the very first sign-in.
-        // Fall back gracefully for returning users.
         let displayName: String
-        if let given  = credential.fullName?.givenName,  !given.isEmpty,
-           let family = credential.fullName?.familyName, !family.isEmpty {
-            displayName = "\(given) \(family)"
-        } else if let localPart = credential.email?.components(separatedBy: "@").first,
+        if !givenName.isEmpty, !familyName.isEmpty {
+            displayName = "\(givenName) \(familyName)"
+        } else if let localPart = email?.components(separatedBy: "@").first,
                   !localPart.isEmpty {
             displayName = localPart
         } else {
             displayName = "Coffee Lover"
         }
 
-        let user = AppUser(id: userId,
-                           displayName: displayName,
-                           email: credential.email,
-                           isGuest: false)
-
-        // Delegate callbacks arrive on the main thread, so hop explicitly.
-        MainActor.assumeIsolated {
-            setUser(user)
+        // All captured types are Sendable: String, String?, Bool.
+        Task { @MainActor [weak self] in
+            let user = AppUser(id: userId,
+                               displayName: displayName,
+                               email: email,
+                               isGuest: false)
+            self?.apply(user)
         }
     }
 
-    /// Called on the main thread when the user cancels or an error occurs.
     nonisolated func authorizationController(
         controller: ASAuthorizationController,
         didCompleteWithError error: Error
     ) {
-        // Silently ignore cancellations — user stays on the splash screen.
+        // Silently ignore user cancellations.
     }
 }
 
@@ -127,16 +118,15 @@ extension AuthService: ASAuthorizationControllerDelegate {
 
 extension AuthService: ASAuthorizationControllerPresentationContextProviding {
 
-    /// Returns the key window so the sheet can be presented over the app.
     nonisolated func presentationAnchor(
         for controller: ASAuthorizationController
     ) -> ASPresentationAnchor {
-        // presentationAnchor is always called on the main thread.
+        // presentationAnchor is called on the main thread by UIKit.
         MainActor.assumeIsolated {
             UIApplication.shared.connectedScenes
                 .compactMap { $0 as? UIWindowScene }
-                .flatMap(\.windows)
-                .first(where: \.isKeyWindow)
+                .first { $0.activationState == .foregroundActive }
+                .flatMap { $0.keyWindow }
                 ?? UIWindow()
         }
     }

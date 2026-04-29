@@ -4,15 +4,31 @@ struct ContentView: View {
     @Environment(AuthService.self) private var authService
 
     var body: some View {
-        // Read the stored @Observable property directly — not a computed
-        // wrapper — so SwiftUI's observation tracker registers the dependency
-        // and re-evaluates body the moment currentUser changes.
-        if authService.currentUser != nil {
+        // Read stored @Observable properties directly — not computed wrappers —
+        // so SwiftUI's observation tracker re-evaluates body on every change.
+        if authService.isCheckingCredentialState {
+            // Neutral loading screen shown during the launch-time Apple ID
+            // credential check. Prevents a flash of SplashView → mainTabs
+            // (or vice versa) for returning users whose token is still valid.
+            loadingView
+        } else if authService.currentUser != nil {
             mainTabs
                 .transition(.opacity)
         } else {
             SplashView()
                 .transition(.opacity)
+        }
+    }
+
+    // MARK: - Loading View
+
+    private var loadingView: some View {
+        ZStack {
+            Color.espresso.ignoresSafeArea()
+            ProgressView()
+                .progressViewStyle(.circular)
+                .tint(Color.cream)
+                .scaleEffect(1.2)
         }
     }
 

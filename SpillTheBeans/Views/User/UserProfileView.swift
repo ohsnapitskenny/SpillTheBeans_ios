@@ -7,6 +7,8 @@ struct UserProfileView: View {
     @Environment(AuthService.self) private var authService
     @State private var reviews: [CoffeeReview] = []
     @State private var isLoading = false
+    @State private var showAuth  = false
+    @State private var authMode  = AuthMode.signIn
     private let reviewService = MockReviewService()
 
     var body: some View {
@@ -47,10 +49,29 @@ struct UserProfileView: View {
                     .multilineTextAlignment(.center)
             }
 
-            AppleSignInButton(style: .black) {
-                authService.startAppleSignIn()
+            VStack(spacing: 12) {
+                Button {
+                    authMode = .signIn
+                    showAuth = true
+                } label: {
+                    Text("Sign In")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(Color.espresso)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+
+                Button {
+                    authMode = .signUp
+                    showAuth = true
+                } label: {
+                    Text("Create Account")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.terracotta)
+                }
             }
-            .frame(height: 52)
             .padding(.horizontal, 40)
 
             Spacer()
@@ -60,6 +81,10 @@ struct UserProfileView: View {
         .background(Color.creamBackground)
         .navigationTitle("Me")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showAuth) {
+            AuthView(initialMode: authMode)
+                .environment(authService)
+        }
     }
 
     // MARK: - Profile View

@@ -1,209 +1,207 @@
 import Foundation
-import AuthenticationServices
 import Observation
-import UIKit
 
 // MARK: - AuthService
 //
-// Implements Apple's recommended Sign in with Apple pattern:
-//   1. On launch: restore any persisted session, then verify the Apple ID
-//      credential is still valid via getCredentialState(forUserID:).
-//   2. startAppleSignIn(): presents the system sheet via ASAuthorizationController.
-//   3. Delegate callbacks extract only Sendable data before hopping to @MainActor.
+// Username/password authentication backed by a Cloudflare Worker.
 //
-// Reference: "Implementing User Authentication with Sign in with Apple"
-// https://developer.apple.com/documentation/authenticationservices/
+// Flow:
+//   1. On launch: restore persisted user + token, verify token with the server.
+//   2. signIn / signUp: POST to the worker, persist the returned token + user.
+//   3. signOut: fire-and-forget DELETE to the server, clear local state.
 
 @MainActor
 @Observable
-final class AuthService: NSObject {
+final class AuthService {
 
     // MARK: - State
 
-    /// The currently signed-in user, or nil when no session exists.
-    /// Views must observe this property directly (not a computed wrapper) to
-    /// guarantee @Observable tracking fires on every change.
     var currentUser: AppUser?
 
-    /// True while the launch-time credential-state check is in flight.
-    /// ContentView shows a neutral loading screen during this window to
-    /// prevent a flash of the splash screen followed by the app (or vice versa).
-    var isCheckingCredentialState = true
+    /// True while the launch-time token check is in flight.
+    var isRestoringSession = true
+
+    /// Set on sign-in / sign-up failure; cleared before each new attempt.
+    var authError: String?
+
+    /// True while a network request is in-flight.
+    var isLoading = false
 
     // MARK: - Private
 
-    private let persistKey  = "spillthebeans.currentUser"
-    private var activeController: ASAuthorizationController?
+    private let persistKey = "spillthebeans.currentUser"
+    private let tokenKey   = "spillthebeans.authToken"
+
+    // Update this after deploying the Cloudflare Worker.
+    // See SpillTheBeans-Worker/wrangler.toml for the worker name / subdomain.
+    private let baseURL = "https://spillthebeans-auth.hk-lam.workers.dev"
 
     // MARK: - Init
 
-    override init() {
-        super.init()
-        // Step 1 — restore the last persisted session (synchronous, instant).
-        // Step 2 — verify it is still valid with Apple's servers (async).
-        restoreAndVerifySession()
+    init() {
+        Task { await restoreSession() }
     }
 
-    // MARK: - Public intents
+    // MARK: - Public
 
-    /// Presents the system Sign in with Apple sheet.
-    func startAppleSignIn() {
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName, .email]
-
-        let controller = ASAuthorizationController(authorizationRequests: [request])
-        controller.delegate                    = self
-        controller.presentationContextProvider = self
-        activeController = controller          // retain so it isn't deallocated
-        controller.performRequests()
-    }
-
-    /// Signs in without an Apple ID — skips credential checking.
-    func continueAsGuest() {
-        apply(.guest)
-    }
-
-    /// Clears the session and returns to the splash screen.
-    func signOut() {
-        currentUser = nil
-        UserDefaults.standard.removeObject(forKey: persistKey)
-    }
-
-    // MARK: - Session restoration + Apple credential verification
-
-    private func restoreAndVerifySession() {
-        // Load the previously persisted AppUser (if any).
-        guard let data = UserDefaults.standard.data(forKey: persistKey),
-              let user = try? JSONDecoder().decode(AppUser.self, from: data)
-        else {
-            // Nothing stored — go straight to the splash screen.
-            isCheckingCredentialState = false
-            return
+    func signIn(username: String, password: String) async {
+        isLoading = true
+        authError = nil
+        defer { isLoading = false }
+        do {
+            let (user, token) = try await post(
+                path: "/auth/login",
+                body: LoginRequest(username: username, password: password)
+            )
+            apply(user, token: token)
+        } catch let e as APIError {
+            authError = e.message
+        } catch {
+            authError = "Something went wrong. Please try again."
         }
+    }
 
-        // Guest sessions need no Apple-server check.
+    func signUp(username: String, password: String, displayName: String, email: String?) async {
+        isLoading = true
+        authError = nil
+        defer { isLoading = false }
+        do {
+            let (user, token) = try await post(
+                path: "/auth/register",
+                body: RegisterRequest(username: username, password: password,
+                                      displayName: displayName, email: email)
+            )
+            apply(user, token: token)
+        } catch let e as APIError {
+            authError = e.message
+        } catch {
+            authError = "Something went wrong. Please try again."
+        }
+    }
+
+    func signOut() {
+        if let token = UserDefaults.standard.string(forKey: tokenKey) {
+            fireAndForgetLogout(token: token)
+        }
+        clearLocalSession()
+    }
+
+    func continueAsGuest() {
+        apply(.guest, token: nil)
+    }
+
+    // MARK: - Session restoration
+
+    private func restoreSession() async {
+        defer { isRestoringSession = false }
+
+        guard
+            let data = UserDefaults.standard.data(forKey: persistKey),
+            let user = try? JSONDecoder().decode(AppUser.self, from: data)
+        else { return }
+
         if user.isGuest {
             currentUser = user
-            isCheckingCredentialState = false
             return
         }
 
-        // Optimistically restore the Apple ID session while the check runs.
-        // If the check fails the UI will already be showing the app, which is
-        // better UX than a blank loading spinner for users whose token is fine.
+        // Optimistically restore while the token check runs.
         currentUser = user
-        verifyAppleCredential(userId: user.id)
-    }
 
-    /// Calls Apple's server to confirm the stored Apple ID credential is still
-    /// valid. Apple recommends calling this on every app launch.
-    private func verifyAppleCredential(userId: String) {
-        ASAuthorizationAppleIDProvider()
-            .getCredentialState(forUserID: userId) { [weak self] state, _ in
-                // The completion runs on an arbitrary background thread —
-                // hop to @MainActor before touching any observable state.
-                Task { @MainActor [weak self] in
-                    defer { self?.isCheckingCredentialState = false }
-                    switch state {
-                    case .authorized:
-                        break   // Credential still valid — keep the session.
-                    case .revoked, .notFound:
-                        // User revoked the app's access or Apple ID was removed.
-                        // Sign out and return to the splash screen.
-                        self?.signOut()
-                    default:
-                        break   // .transferred (app transfer) — keep session.
-                    }
-                }
-            }
+        guard let token = UserDefaults.standard.string(forKey: tokenKey) else {
+            clearLocalSession(); return
+        }
+
+        do {
+            let fresh = try await verifyToken(token)
+            apply(fresh, token: token)
+        } catch {
+            clearLocalSession()
+        }
     }
 
     // MARK: - Private helpers
 
-    private func apply(_ user: AppUser) {
+    private func apply(_ user: AppUser, token: String?) {
         currentUser = user
-        guard let data = try? JSONEncoder().encode(user) else { return }
-        UserDefaults.standard.set(data, forKey: persistKey)
+        if let data = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(data, forKey: persistKey)
+        }
+        if let token {
+            UserDefaults.standard.set(token, forKey: tokenKey)
+        }
     }
-}
 
-// MARK: - ASAuthorizationControllerDelegate
+    private func clearLocalSession() {
+        currentUser = nil
+        UserDefaults.standard.removeObject(forKey: persistKey)
+        UserDefaults.standard.removeObject(forKey: tokenKey)
+    }
 
-extension AuthService: ASAuthorizationControllerDelegate {
+    private func fireAndForgetLogout(token: String) {
+        let url = URL(string: "\(baseURL)/auth/logout")!
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        Task.detached { try? await URLSession.shared.data(for: req) }
+    }
 
-    nonisolated func authorizationController(
-        controller: ASAuthorizationController,
-        didCompleteWithAuthorization authorization: ASAuthorization
-    ) {
-        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential
-        else { return }
+    private func verifyToken(_ token: String) async throws -> AppUser {
+        var req = URLRequest(url: URL(string: "\(baseURL)/auth/verify")!)
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw InternalError.invalidToken
+        }
+        return try JSONDecoder().decode(VerifyResponse.self, from: data).user
+    }
 
-        // Extract everything we need from the ObjC credential object here,
-        // in the nonisolated context. Only Sendable Swift types (String,
-        // String?, Bool) are then captured by the @MainActor Task below,
-        // satisfying Swift 6 strict-concurrency rules.
-        let userId     = credential.user
-        let givenName  = credential.fullName?.givenName  ?? ""
-        let familyName = credential.fullName?.familyName ?? ""
-        let email      = credential.email   // Apple only sends this on first sign-in
+    private func post<B: Encodable>(path: String, body: B) async throws -> (AppUser, String) {
+        var req = URLRequest(url: URL(string: "\(baseURL)\(path)")!)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try JSONEncoder().encode(body)
 
-        // Build the display name.
-        // Apple only provides fullName on the FIRST sign-in; after that, both
-        // fields are empty. For returning users we keep whatever was stored
-        // in UserDefaults by the previous apply() call.
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else { throw InternalError.network }
+
+        if http.statusCode != 200 {
+            let msg = (try? JSONDecoder().decode(ErrorBody.self, from: data))?.error
+                ?? "Request failed (\(http.statusCode))"
+            throw APIError(message: msg)
+        }
+
+        let decoded = try JSONDecoder().decode(AuthResponse.self, from: data)
+        return (decoded.user, decoded.token)
+    }
+
+    // MARK: - Codable helpers
+
+    private struct RegisterRequest: Encodable {
+        let username: String
+        let password: String
         let displayName: String
-        if !givenName.isEmpty, !familyName.isEmpty {
-            displayName = "\(givenName) \(familyName)"
-        } else if let localPart = email?.components(separatedBy: "@").first,
-                  !localPart.isEmpty {
-            displayName = localPart
-        } else {
-            displayName = "Coffee Lover"
-        }
-
-        Task { @MainActor [weak self] in
-            // For a returning user whose name was already stored, prefer the
-            // persisted display name over the empty one Apple sends back.
-            let existing = self?.currentUser
-            let resolvedName: String
-            if displayName == "Coffee Lover",
-               let stored = existing?.displayName, !stored.isEmpty {
-                resolvedName = stored
-            } else {
-                resolvedName = displayName
-            }
-
-            let user = AppUser(id: userId,
-                               displayName: resolvedName,
-                               email: email ?? existing?.email,
-                               isGuest: false)
-            self?.apply(user)
-        }
+        let email: String?
     }
 
-    nonisolated func authorizationController(
-        controller: ASAuthorizationController,
-        didCompleteWithError error: Error
-    ) {
-        // Cancellations and errors are silently ignored —
-        // the user simply stays on the splash screen.
+    private struct LoginRequest: Encodable {
+        let username: String
+        let password: String
     }
-}
 
-// MARK: - ASAuthorizationControllerPresentationContextProviding
-
-extension AuthService: ASAuthorizationControllerPresentationContextProviding {
-
-    nonisolated func presentationAnchor(
-        for controller: ASAuthorizationController
-    ) -> ASPresentationAnchor {
-        // Apple guarantees this is called on the main thread.
-        MainActor.assumeIsolated {
-            UIApplication.shared.connectedScenes
-                .compactMap { $0 as? UIWindowScene }
-                .first { $0.activationState == .foregroundActive }
-                .flatMap(\.keyWindow)
-                ?? UIWindow()
-        }
+    private struct AuthResponse: Decodable {
+        let token: String
+        let user: AppUser
     }
+
+    private struct VerifyResponse: Decodable {
+        let user: AppUser
+    }
+
+    private struct ErrorBody: Decodable {
+        let error: String
+    }
+
+    private enum InternalError: Error { case network, invalidToken }
+    private struct APIError: Error { let message: String }
 }

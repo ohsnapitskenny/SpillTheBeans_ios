@@ -6,10 +6,10 @@ struct ContentView: View {
     var body: some View {
         // Read stored @Observable properties directly — not computed wrappers —
         // so SwiftUI's observation tracker re-evaluates body on every change.
-        if authService.isCheckingCredentialState {
-            // Neutral loading screen shown during the launch-time Apple ID
-            // credential check. Prevents a flash of SplashView → mainTabs
-            // (or vice versa) for returning users whose token is still valid.
+        if authService.isRestoringSession {
+            // Neutral loading screen shown during the launch-time token check.
+            // Prevents a flash of SplashView → mainTabs (or vice versa) for
+            // returning users whose token is still valid.
             loadingView
         } else if authService.currentUser != nil {
             mainTabs

@@ -37,6 +37,7 @@
 		B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */; };
 		B9B991572F9AD90300598A90 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991552F9AD90300598A90 /* UserProfileView.swift */; };
 		B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991582F9AD91B00598A90 /* SplashView.swift */; };
+		CF000002 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF000001 /* AuthView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		B90E9C8D2F9AD1F700BB06F3 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B9B991552F9AD90300598A90 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		B9B991582F9AD91B00598A90 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		CF000001 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 		B90E9C922F9AD24000BB06F3 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				CF000001 /* AuthView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -269,12 +272,7 @@
 				TargetAttributes = {
 					AG000001 = {
 						CreatedOnToolsVersion = 15.0;
-						SystemCapabilities = {
-							com.apple.Sign_in_with_Apple = {
-								enabled = 1;
-							};
 						};
-					};
 				};
 			};
 			buildConfigurationList = AH000002 /* Build configuration list for PBXProject "SpillTheBeans" */;
@@ -322,6 +320,7 @@
 				AA000005 /* CoffeeShopService.swift in Sources */,
 				AA000006 /* CoffeeService.swift in Sources */,
 				B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */,
+				CF000002 /* AuthView.swift in Sources */,
 				B90E9C8E2F9AD1F700BB06F3 /* AuthService.swift in Sources */,
 				B90E9C8A2F9AD1D100BB06F3 /* AppUser.swift in Sources */,
 				AA000007 /* CoffeeShopViewModel.swift in Sources */,

@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SplashView: View {
     @Environment(AuthService.self) private var authService
+    @State private var showAuth  = false
+    @State private var authMode  = AuthMode.signIn
 
     var body: some View {
         ZStack {
@@ -38,10 +40,31 @@ struct SplashView: View {
 
                 // ── Auth Buttons ──────────────────────────────────────────
                 VStack(spacing: 14) {
-                    AppleSignInButton(style: .white) {
-                        authService.startAppleSignIn()
+                    Button {
+                        authMode = .signIn
+                        showAuth = true
+                    } label: {
+                        Text("Sign In")
+                            .font(.headline)
+                            .foregroundStyle(Color.espresso)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(Color.cream)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
-                    .frame(height: 52)
+
+                    Button {
+                        authMode = .signUp
+                        showAuth = true
+                    } label: {
+                        Text("Create Account")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(Color.terracotta)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
 
                     Button {
                         authService.continueAsGuest()
@@ -61,6 +84,10 @@ struct SplashView: View {
                 .padding(.horizontal, 32)
                 .padding(.bottom, 52)
             }
+        }
+        .sheet(isPresented: $showAuth) {
+            AuthView(initialMode: authMode)
+                .environment(authService)
         }
     }
 }

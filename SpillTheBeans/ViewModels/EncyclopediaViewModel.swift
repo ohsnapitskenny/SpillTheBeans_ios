@@ -16,7 +16,7 @@ final class EncyclopediaViewModel {
 
     private let service: any CoffeeServiceProtocol
 
-    init(service: any CoffeeServiceProtocol = MockCoffeeService()) {
+    init(service: any CoffeeServiceProtocol = APICoffeeService()) {
         self.service = service
     }
 

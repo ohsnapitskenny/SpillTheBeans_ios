@@ -9,7 +9,15 @@ protocol CoffeeShopServiceProtocol: Sendable {
     func fetchShops() async throws -> [CoffeeShop]
 }
 
-// MARK: - Mock Implementation
+// MARK: - API Implementation
+
+struct APICoffeeShopService: CoffeeShopServiceProtocol {
+    func fetchShops() async throws -> [CoffeeShop] {
+        try await API.get("shops")
+    }
+}
+
+// MARK: - Mock Implementation (kept for previews / offline development)
 // A value-type struct with no mutable state — implicitly Sendable.
 struct MockCoffeeShopService: CoffeeShopServiceProtocol {
 

@@ -1,13 +1,21 @@
-// Spill the Beans — Auth Worker
-// Endpoints:
+// Spill the Beans — API Worker
+// Auth endpoints:
 //   POST /auth/register  { username, password, displayName?, email? }
 //   POST /auth/login     { username, password }
 //   GET  /auth/verify    Authorization: Bearer <token>
 //   POST /auth/logout    Authorization: Bearer <token>
 //
-// KV bindings (set in wrangler.toml):
-//   USERS    — stores user records keyed by username
-//   SESSIONS — stores session tokens with 90-day TTL
+// Data endpoints (backed by D1):
+//   GET  /coffees                 — all coffee beans
+//   GET  /shops                   — all coffee shops
+//   GET  /coffees/:id/reviews     — reviews for one coffee
+//   GET  /my/reviews              — reviews by the authenticated user
+//   POST /reviews                 — create a review (authenticated)
+//
+// Bindings (set in wrangler.toml):
+//   USERS    (KV) — user records keyed by username
+//   SESSIONS (KV) — session tokens with 90-day TTL
+//   DB       (D1) — coffees, coffee_shops, reviews tables
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -131,6 +139,130 @@ async function handleLogout(request, env) {
   return json({ success: true });
 }
 
+// ── Data handlers (D1) ────────────────────────────────────────────────────────
+
+// Row mappers reshape flat D1 rows into the exact JSON the iOS models decode.
+
+function coffeeFromRow(r) {
+  return {
+    id: r.id,
+    name: r.name,
+    origin: { country: r.origin_country, region: r.origin_region, flag: r.origin_flag },
+    process: r.process,
+    roastLevel: r.roast_level,
+    flavorTags: JSON.parse(r.flavor_tags),
+    tastingNote: r.tasting_note,
+    producer: r.producer,
+    altitude: r.altitude,
+    harvestSeason: r.harvest_season,
+  };
+}
+
+function shopFromRow(r) {
+  return {
+    id: r.id,
+    name: r.name,
+    address: r.address,
+    latitude: r.latitude,
+    longitude: r.longitude,
+    category: r.category,
+    rating: r.rating,
+    openingHours: JSON.parse(r.opening_hours),
+    roasterInfo: r.roaster_info,
+    description: r.description,
+    tags: JSON.parse(r.tags),
+  };
+}
+
+function reviewFromRow(r) {
+  return {
+    id: r.id,
+    coffeeId: r.coffee_id,
+    userId: r.user_id,
+    username: r.username,
+    brewMethod: r.brew_method,
+    rating: r.rating,
+    note: r.note,
+    date: r.created_at,
+  };
+}
+
+async function handleGetCoffees(env) {
+  const { results } = await env.DB.prepare(
+    'SELECT * FROM coffees ORDER BY created_at DESC, name'
+  ).all();
+  return json(results.map(coffeeFromRow));
+}
+
+async function handleGetShops(env) {
+  const { results } = await env.DB.prepare(
+    'SELECT * FROM coffee_shops ORDER BY name'
+  ).all();
+  return json(results.map(shopFromRow));
+}
+
+async function handleGetCoffeeReviews(env, coffeeId) {
+  const { results } = await env.DB.prepare(
+    'SELECT * FROM reviews WHERE coffee_id = ?1 COLLATE NOCASE ORDER BY created_at DESC'
+  ).bind(coffeeId).all();
+  return json(results.map(reviewFromRow));
+}
+
+// Resolves the session for a Bearer token, or null.
+async function sessionFromRequest(request, env) {
+  const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
+  if (!token) return null;
+  const raw = await env.SESSIONS.get(`session:${token}`);
+  return raw ? JSON.parse(raw) : null;
+}
+
+async function handleGetMyReviews(request, env) {
+  const session = await sessionFromRequest(request, env);
+  if (!session) return json({ error: 'Unauthorized' }, 401);
+
+  const { results } = await env.DB.prepare(
+    'SELECT * FROM reviews WHERE user_id = ?1 ORDER BY created_at DESC'
+  ).bind(session.userId).all();
+  return json(results.map(reviewFromRow));
+}
+
+async function handleCreateReview(request, env) {
+  const session = await sessionFromRequest(request, env);
+  if (!session) return json({ error: 'Unauthorized' }, 401);
+
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const { coffeeId, brewMethod, rating, note } = body;
+  if (!coffeeId || !brewMethod || !rating) {
+    return json({ error: 'coffeeId, brewMethod and rating are required' }, 400);
+  }
+  if (rating < 1 || rating > 5) return json({ error: 'rating must be 1–5' }, 400);
+
+  const coffee = await env.DB.prepare('SELECT id FROM coffees WHERE id = ?1 COLLATE NOCASE')
+    .bind(coffeeId).first();
+  if (!coffee) return json({ error: 'Unknown coffee' }, 404);
+
+  const review = {
+    id: crypto.randomUUID().toUpperCase(),
+    coffee_id: coffee.id,
+    user_id: session.userId,
+    username: session.username,
+    brew_method: brewMethod,
+    rating,
+    note: note || '',
+    created_at: new Date().toISOString(),
+  };
+
+  await env.DB.prepare(
+    `INSERT INTO reviews (id, coffee_id, user_id, username, brew_method, rating, note, created_at)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)`
+  ).bind(review.id, review.coffee_id, review.user_id, review.username,
+         review.brew_method, review.rating, review.note, review.created_at).run();
+
+  return json(reviewFromRow(review));
+}
+
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 export default {
@@ -145,6 +277,17 @@ export default {
       if (pathname === '/auth/login'    && request.method === 'POST') return handleLogin(request, env);
       if (pathname === '/auth/verify'   && request.method === 'GET')  return handleVerify(request, env);
       if (pathname === '/auth/logout'   && request.method === 'POST') return handleLogout(request, env);
+
+      if (pathname === '/coffees'    && request.method === 'GET')  return handleGetCoffees(env);
+      if (pathname === '/shops'      && request.method === 'GET')  return handleGetShops(env);
+      if (pathname === '/my/reviews' && request.method === 'GET')  return handleGetMyReviews(request, env);
+      if (pathname === '/reviews'    && request.method === 'POST') return handleCreateReview(request, env);
+
+      const reviewsMatch = pathname.match(/^\/coffees\/([^/]+)\/reviews$/);
+      if (reviewsMatch && request.method === 'GET') {
+        return handleGetCoffeeReviews(env, decodeURIComponent(reviewsMatch[1]));
+      }
+
       return json({ error: 'Not found' }, 404);
     } catch (e) {
       console.error(e);

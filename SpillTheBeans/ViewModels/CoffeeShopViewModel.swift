@@ -95,7 +95,7 @@ final class CoffeeShopViewModel {
     private let service: any CoffeeShopServiceProtocol
     private var userLocation: CLLocationCoordinate2D?
 
-    init(service: any CoffeeShopServiceProtocol = MockCoffeeShopService()) {
+    init(service: any CoffeeShopServiceProtocol = APICoffeeShopService()) {
         self.service = service
     }
 

@@ -1,12 +1,59 @@
 import Foundation
 
+// MARK: - API configuration
+
+enum API {
+    /// The Cloudflare Worker backing the app (auth + data, D1-backed).
+    static let baseURL = URL(string: "https://spillthebeans-auth.hk-lam.workers.dev")!
+
+    /// Decoder that handles ISO8601 dates with or without fractional seconds
+    /// (D1 timestamps include milliseconds, which the plain .iso8601 strategy rejects).
+    static func makeDecoder() -> JSONDecoder {
+        let withFractional = ISO8601DateFormatter()
+        withFractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let plain = ISO8601DateFormatter()
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .custom { d in
+            let container = try d.singleValueContainer()
+            let string = try container.decode(String.self)
+            if let date = withFractional.date(from: string) ?? plain.date(from: string) {
+                return date
+            }
+            throw DecodingError.dataCorruptedError(
+                in: container, debugDescription: "Unparseable date: \(string)")
+        }
+        return decoder
+    }
+
+    static func get<T: Decodable>(_ path: String, token: String? = nil) async throws -> T {
+        var request = URLRequest(url: baseURL.appendingPathComponent(path))
+        if let token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw DataServiceError.networkUnavailable
+        }
+        return try makeDecoder().decode(T.self, from: data)
+    }
+}
+
 // MARK: - Protocol
 
 protocol CoffeeServiceProtocol: Sendable {
     func fetchCoffees() async throws -> [Coffee]
 }
 
-// MARK: - Mock Implementation
+// MARK: - API Implementation
+
+struct APICoffeeService: CoffeeServiceProtocol {
+    func fetchCoffees() async throws -> [Coffee] {
+        try await API.get("coffees")
+    }
+}
+
+// MARK: - Mock Implementation (kept for previews / offline development)
 
 struct MockCoffeeService: CoffeeServiceProtocol {
 

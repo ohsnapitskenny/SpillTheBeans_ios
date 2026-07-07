@@ -9,7 +9,7 @@ struct UserProfileView: View {
     @State private var isLoading = false
     @State private var showAuth  = false
     @State private var authMode  = AuthMode.signIn
-    private let reviewService = MockReviewService()
+    private let reviewService = APIReviewService()
 
     var body: some View {
         NavigationStack {

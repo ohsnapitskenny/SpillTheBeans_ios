@@ -8,7 +8,26 @@ protocol ReviewServiceProtocol: Sendable {
     func fetchMyReviews(userId: String) async throws -> [CoffeeReview]
 }
 
-// MARK: - Mock Implementation
+// MARK: - API Implementation
+
+@MainActor
+final class APIReviewService: ReviewServiceProtocol, Sendable {
+
+    func fetchReviews(for coffeeId: UUID) async throws -> [CoffeeReview] {
+        try await API.get("coffees/\(coffeeId.uuidString)/reviews")
+    }
+
+    func fetchMyReviews(userId: String) async throws -> [CoffeeReview] {
+        // The server resolves the user from the session token, not the
+        // userId parameter. Guests have no token and therefore no reviews.
+        guard let token = UserDefaults.standard.string(forKey: "spillthebeans.authToken") else {
+            return []
+        }
+        return try await API.get("my/reviews", token: token)
+    }
+}
+
+// MARK: - Mock Implementation (kept for previews / offline development)
 
 @MainActor
 final class MockReviewService: ReviewServiceProtocol, Sendable {

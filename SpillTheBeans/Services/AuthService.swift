@@ -32,9 +32,8 @@ final class AuthService {
     private let persistKey = "spillthebeans.currentUser"
     private let tokenKey   = "spillthebeans.authToken"
 
-    // Update this after deploying the Cloudflare Worker.
-    // See SpillTheBeans-Worker/wrangler.toml for the worker name / subdomain.
-    private let baseURL = "https://spillthebeans-auth.hk-lam.workers.dev"
+    // Single source of truth for the worker URL lives in API (CoffeeService.swift).
+    private let baseURL = API.baseURL.absoluteString
 
     // MARK: - Init
 

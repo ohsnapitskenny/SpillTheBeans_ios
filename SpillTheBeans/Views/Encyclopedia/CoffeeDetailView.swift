@@ -5,7 +5,7 @@ struct CoffeeDetailView: View {
 
     @State private var reviews: [CoffeeReview] = []
     @State private var reviewsLoading = true
-    private let reviewService = MockReviewService()
+    private let reviewService = APIReviewService()
 
     var body: some View {
         ScrollView {

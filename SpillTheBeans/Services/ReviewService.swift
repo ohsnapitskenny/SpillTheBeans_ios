@@ -6,7 +6,7 @@ import Foundation
 protocol ReviewServiceProtocol: Sendable {
     func fetchReviews(for coffeeId: UUID) async throws -> [CoffeeReview]
     func fetchMyReviews(userId: String) async throws -> [CoffeeReview]
-}
+} 
 
 // MARK: - API Implementation
 

@@ -1,24 +1,23 @@
 import SwiftUI
-import MapKit
 
 struct CoffeeShopDetailView: View {
     let shop: CoffeeShop
     @Environment(\.dismiss) private var dismiss
 
+    /// Live Google Places data — nil while loading or when the shop has no
+    /// linked place. Every section falls back to the database values.
+    @State private var place: PlaceDetails?
+    private let placeService: any PlaceServiceProtocol = APIPlaceService()
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
-                    // Mini map preview
-                    Map(interactionModes: []) {
-                        Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
-                            ShopAnnotationView(shop: shop, isSelected: true)
-                        }
+                    // Store photos from Google Places
+                    if let photos = place?.photos, !photos.isEmpty {
+                        ShopPhotosView(photos: photos)
+                            .padding(.horizontal)
                     }
-                    .mapStyle(.standard)
-                    .frame(height: 180)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .padding(.horizontal)
 
                     // Header
                     headerSection
@@ -67,6 +66,9 @@ struct CoffeeShopDetailView: View {
                         .foregroundStyle(Color.espresso)
                 }
             }
+            .task {
+                place = try? await placeService.fetchDetails(shopID: shop.id)
+            }
         }
     }
 
@@ -80,14 +82,27 @@ struct CoffeeShopDetailView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(Color.espresso)
                 Spacer()
-                RatingBadge(rating: shop.rating)
+                VStack(alignment: .trailing, spacing: 4) {
+                    // Google rating wins over the stored one as soon as it lands.
+                    RatingBadge(rating: place?.rating ?? shop.rating)
+                    if let count = place?.userRatingCount {
+                        Text("\(count) reviews")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
 
             Label(shop.address, systemImage: "mappin.circle.fill")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
-            CategoryBadge(category: shop.category)
+            HStack(spacing: 8) {
+                CategoryBadge(category: shop.category)
+                if let openNow = place?.openNow {
+                    OpenNowBadge(isOpen: openNow)
+                }
+            }
         }
     }
 
@@ -100,11 +115,17 @@ struct CoffeeShopDetailView: View {
         }
     }
 
+    /// Google hours when available, otherwise the hours stored in the database.
+    private var displayedHours: [OpeningHours] {
+        if let hours = place?.weekdayHours, !hours.isEmpty { return hours }
+        return shop.openingHours
+    }
+
     private var hoursSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionHeader(title: "Hours")
             VStack(spacing: 8) {
-                ForEach(shop.openingHours) { entry in
+                ForEach(displayedHours) { entry in
                     HStack {
                         Text(entry.day)
                             .font(.subheadline)
@@ -118,5 +139,27 @@ struct CoffeeShopDetailView: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Open now badge
+
+private struct OpenNowBadge: View {
+    let isOpen: Bool
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Circle()
+                .fill(isOpen ? Color.green : Color.red)
+                .frame(width: 6, height: 6)
+            Text(isOpen ? "Open now" : "Closed")
+                .font(.caption)
+                .fontWeight(.medium)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .background((isOpen ? Color.green : Color.red).opacity(0.12))
+        .clipShape(Capsule())
+        .foregroundStyle(isOpen ? Color.green : Color.red)
     }
 }

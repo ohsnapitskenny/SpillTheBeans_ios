@@ -10,6 +10,10 @@ id = "d54032cae9f44c5aa6f4ea2ecce5c6b8"
 binding = "SESSIONS"
 id = "fd8f8e9f73484d6499d5e31b08983a0e"
 
+[[kv_namespaces]]
+binding = "PLACES"
+id = "bd344fcb609946f28b528359cc13e0fe"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "spillthebeans-db"

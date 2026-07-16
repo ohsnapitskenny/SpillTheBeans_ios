@@ -12,10 +12,18 @@
 //   GET  /my/reviews              — reviews by the authenticated user
 //   POST /reviews                 — create a review (authenticated)
 //
+// Google Places endpoints (key stays server-side):
+//   GET  /shops/:id/place         — live Places details (rating, hours, photos)
+//   GET  /place-photo?name=&w=    — streams a Places photo through the worker
+//
 // Bindings (set in wrangler.toml):
 //   USERS    (KV) — user records keyed by username
 //   SESSIONS (KV) — session tokens with 90-day TTL
+//   PLACES   (KV) — 24h cache of Google Places details
 //   DB       (D1) — coffees, coffee_shops, reviews tables
+//
+// Secrets:
+//   GOOGLE_MAPS_API_KEY — Places API key (wrangler secret put GOOGLE_MAPS_API_KEY)
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -263,10 +271,132 @@ async function handleCreateReview(request, env) {
   return json(reviewFromRow(review));
 }
 
+// ── Google Places (server-side proxy) ─────────────────────────────────────────
+// The app never talks to Google directly: this keeps the API key out of the
+// bundle and lets us cache responses for 24h so 61 shops don't hammer billing.
+
+const PLACE_CACHE_TTL = 60 * 60 * 24;   // seconds
+
+const PLACE_FIELD_MASK = [
+  'rating',
+  'userRatingCount',
+  'currentOpeningHours.openNow',
+  'currentOpeningHours.weekdayDescriptions',
+  'regularOpeningHours.weekdayDescriptions',
+  'photos.name',
+  'googleMapsUri',
+  'websiteUri',
+].join(',');
+
+// "Monday: 8:00 AM – 5:00 PM" → { day, hours } (the shape the iOS app renders).
+// Google uses narrow no-break spaces around AM/PM; normalise to plain spaces.
+function weekdayDescriptionsToHours(descriptions) {
+  return (descriptions || []).map((line) => {
+    const clean = line.replace(/[   ]/g, ' ');
+    const idx = clean.indexOf(': ');
+    if (idx === -1) return { day: clean, hours: '' };
+    return { day: clean.slice(0, idx), hours: clean.slice(idx + 2) };
+  });
+}
+
+async function handleGetShopPlace(request, env, ctx, shopId) {
+  if (!env.GOOGLE_MAPS_API_KEY) {
+    return json({ error: 'Places API not configured' }, 503);
+  }
+
+  const shop = await env.DB.prepare(
+    'SELECT id, google_place_id FROM coffee_shops WHERE id = ?1 COLLATE NOCASE'
+  ).bind(shopId).first();
+  if (!shop) return json({ error: 'Unknown shop' }, 404);
+  if (!shop.google_place_id) return json({ error: 'Shop has no linked Google place' }, 404);
+
+  const cacheKey = `place:${shop.google_place_id}`;
+  const cached = await env.PLACES.get(cacheKey);
+  if (cached) return json(JSON.parse(cached));
+
+  const resp = await fetch(
+    `https://places.googleapis.com/v1/places/${encodeURIComponent(shop.google_place_id)}`,
+    {
+      headers: {
+        'X-Goog-Api-Key': env.GOOGLE_MAPS_API_KEY,
+        'X-Goog-FieldMask': PLACE_FIELD_MASK,
+      },
+    }
+  );
+  if (!resp.ok) {
+    console.error('Places API error', resp.status, await resp.text());
+    return json({ error: 'Places lookup failed' }, 502);
+  }
+  const place = await resp.json();
+
+  const origin = new URL(request.url).origin;
+  const details = {
+    rating: place.rating ?? null,
+    userRatingCount: place.userRatingCount ?? null,
+    openNow: place.currentOpeningHours?.openNow ?? null,
+    weekdayHours: weekdayDescriptionsToHours(
+      place.currentOpeningHours?.weekdayDescriptions ??
+      place.regularOpeningHours?.weekdayDescriptions
+    ),
+    photos: (place.photos || []).slice(0, 8).map(
+      (p) => `${origin}/place-photo?name=${encodeURIComponent(p.name)}&w=1000`
+    ),
+    googleMapsURI: place.googleMapsUri ?? null,
+    websiteURI: place.websiteUri ?? null,
+  };
+
+  ctx.waitUntil(env.PLACES.put(cacheKey, JSON.stringify(details), { expirationTtl: PLACE_CACHE_TTL }));
+
+  // Keep the list view's rating column converging on the live Google rating.
+  if (typeof details.rating === 'number') {
+    ctx.waitUntil(
+      env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE id = ?2')
+        .bind(details.rating, shop.id).run()
+    );
+  }
+
+  return json(details);
+}
+
+async function handleGetPlacePhoto(request, env, ctx) {
+  if (!env.GOOGLE_MAPS_API_KEY) return json({ error: 'Places API not configured' }, 503);
+
+  const url = new URL(request.url);
+  const name = url.searchParams.get('name') || '';
+  const width = Math.min(parseInt(url.searchParams.get('w') || '1000', 10) || 1000, 1600);
+  // Only proxy genuine Places photo resources — never arbitrary URLs.
+  if (!/^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/.test(name)) {
+    return json({ error: 'Invalid photo name' }, 400);
+  }
+
+  // Serve from the edge cache when possible (the key never appears in our URL).
+  const cache = caches.default;
+  const cacheKey = new Request(url.toString(), { method: 'GET' });
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
+
+  const resp = await fetch(
+    `https://places.googleapis.com/v1/${name}/media?maxWidthPx=${width}&key=${env.GOOGLE_MAPS_API_KEY}`,
+    { redirect: 'follow' }
+  );
+  if (!resp.ok) return json({ error: 'Photo fetch failed' }, 502);
+
+  const out = new Response(resp.body, {
+    status: 200,
+    headers: {
+      'Content-Type': resp.headers.get('Content-Type') || 'image/jpeg',
+      'Cache-Control': 'public, max-age=86400',
+      ...CORS,
+    },
+  });
+  ctx.waitUntil(cache.put(cacheKey, out.clone()));
+  return out;
+}
+
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: CORS });
     }
@@ -286,6 +416,14 @@ export default {
       const reviewsMatch = pathname.match(/^\/coffees\/([^/]+)\/reviews$/);
       if (reviewsMatch && request.method === 'GET') {
         return handleGetCoffeeReviews(env, decodeURIComponent(reviewsMatch[1]));
+      }
+
+      const placeMatch = pathname.match(/^\/shops\/([^/]+)\/place$/);
+      if (placeMatch && request.method === 'GET') {
+        return handleGetShopPlace(request, env, ctx, decodeURIComponent(placeMatch[1]));
+      }
+      if (pathname === '/place-photo' && request.method === 'GET') {
+        return handleGetPlacePhoto(request, env, ctx);
       }
 
       return json({ error: 'Not found' }, 404);

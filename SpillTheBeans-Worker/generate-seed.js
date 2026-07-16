@@ -19,10 +19,10 @@ for (const c of coffees) {
 }
 
 for (const s of shops) {
-  sql += `INSERT INTO coffee_shops (id, name, address, latitude, longitude, category, rating, opening_hours, roaster_info, description, tags) VALUES (` +
+  sql += `INSERT INTO coffee_shops (id, name, address, latitude, longitude, category, rating, opening_hours, roaster_info, description, tags, google_place_id) VALUES (` +
     [q(s.id), q(s.name), q(s.address), s.latitude, s.longitude, q(s.category), s.rating,
      q(JSON.stringify(s.openingHours)), q(s.roasterInfo), q(s.description),
-     q(JSON.stringify(s.tags))].join(', ') + `);\n`;
+     q(JSON.stringify(s.tags)), q(s.googlePlaceId ?? null)].join(', ') + `);\n`;
 }
 
 // ── Seed reviews (mirrors the old MockReviewService pools) ───────────────────

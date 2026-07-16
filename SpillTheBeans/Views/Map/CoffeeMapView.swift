@@ -1,40 +1,24 @@
 import SwiftUI
-import MapKit
 import CoreLocation
 
 // Make CLLocationCoordinate2D Equatable so we can use it with SwiftUI's onChange
-extension CLLocationCoordinate2D: Equatable {
+extension CLLocationCoordinate2D: @retroactive Equatable {
     public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
         lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
 }
-
-// Default camera region — centred over the Netherlands so Rotterdam, Amsterdam
-// and Utrecht are all visible on first launch.
-private let defaultRegion = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: 52.15, longitude: 4.85),
-    span: MKCoordinateSpan(latitudeDelta: 0.70, longitudeDelta: 1.00)
-)
 
 struct CoffeeMapView: View {
     @State private var viewModel        = CoffeeShopViewModel()
     @State private var locationManager  = LocationManager()
     @State private var showingFilter    = false
 
-    // Camera position owned here so SwiftUI holds the Binding cleanly.
-    @State private var cameraPosition: MapCameraPosition = .region(defaultRegion)
+    // One-shot camera commands consumed by GoogleMapView.
+    @State private var cameraCommand: MapCameraCommand?
 
-    // Live camera state — updated via onMapCameraChange so the custom
+    // Live camera state — updated via onCameraChange so the custom
     // reset-north button can rotate its arrow and snap back precisely.
-    @State private var cameraHeading:  Double = 0
-    @State private var cameraCenter:   CLLocationCoordinate2D? = nil
-    @State private var cameraDistance: Double = 80_000   // metres
-
-    // Current visible region — used to show only annotations inside the viewport.
-    @State private var visibleRegion: MKCoordinateRegion = defaultRegion
-
-    // Namespace links our freestanding map-control buttons to the Map view.
-    @Namespace private var mapScope
+    @State private var cameraHeading: Double = 0
 
     var body: some View {
         NavigationStack {
@@ -42,7 +26,7 @@ struct CoffeeMapView: View {
 
                 // ─── Map is ALWAYS in the hierarchy ───────────────────────
                 // When the user switches to list mode we overlay the list view
-                // ON TOP instead of destroying and recreating the Map.
+                // ON TOP instead of destroying and recreating the map.
                 // This is what keeps camera position intact across mode switches.
                 mapView
 
@@ -90,14 +74,7 @@ struct CoffeeMapView: View {
             // Fly to a tapped shop annotation
             .onChange(of: viewModel.selectedShop) { _, shop in
                 guard let shop else { return }
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    cameraPosition = .region(
-                        MKCoordinateRegion(
-                            center: shop.coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                        )
-                    )
-                }
+                cameraCommand = .region(center: shop.coordinate, latDelta: 0.01, lonDelta: 0.01)
             }
             // Location updates → forward to VM (distance sort) and, on the very
             .onChange(of: locationManager.userLocation) { oldValue, newValue in
@@ -106,14 +83,7 @@ struct CoffeeMapView: View {
 
                 if oldValue == nil {
                     // First real GPS fix after permission was granted — zoom in.
-                    withAnimation(.easeInOut(duration: 0.9)) {
-                        cameraPosition = .region(
-                            MKCoordinateRegion(
-                                center: coordinate,
-                                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-                            )
-                        )
-                    }
+                    cameraCommand = .region(center: coordinate, latDelta: 0.05, lonDelta: 0.05)
                 }
             }
             .task {
@@ -126,48 +96,16 @@ struct CoffeeMapView: View {
         }
     }
 
-    // MARK: - Viewport filter
-
-    /// Only the shops whose coordinates fall inside the currently visible map region.
-    /// Updates automatically as the camera moves because `visibleRegion` is @State.
-    private var shopsInViewport: [CoffeeShop] {
-        let halfLat = visibleRegion.span.latitudeDelta  / 2
-        let halfLon = visibleRegion.span.longitudeDelta / 2
-        let cLat    = visibleRegion.center.latitude
-        let cLon    = visibleRegion.center.longitude
-        return viewModel.filteredShops.filter { shop in
-            abs(shop.latitude  - cLat) <= halfLat &&
-            abs(shop.longitude - cLon) <= halfLon
-        }
-    }
-
     // MARK: - Map
 
     private var mapView: some View {
-        Map(position: $cameraPosition, scope: mapScope) {
-            // Blue pulsing user-location dot — shown once permission is granted
-            UserAnnotation()
-
-            ForEach(shopsInViewport) { shop in
-                Annotation(shop.name, coordinate: shop.coordinate, anchor: .bottom) {
-                    ShopAnnotationView(
-                        shop: shop,
-                        isSelected: viewModel.selectedShop?.id == shop.id
-                    )
-                    .onTapGesture { viewModel.selectShop(shop) }
-                }
-            }
-        }
-        .mapStyle(.standard(elevation: .realistic))
-        // Suppress the default-positioned controls; we position them ourselves.
-        .mapControls { }
-        // Track heading, centre, zoom and visible region continuously.
-        .onMapCameraChange(frequency: .continuous) { ctx in
-            cameraHeading  = ctx.camera.heading
-            cameraCenter   = ctx.camera.centerCoordinate
-            cameraDistance = ctx.camera.distance
-            visibleRegion  = ctx.region
-        }
+        GoogleMapView(
+            shops: viewModel.filteredShops,
+            selectedShopID: viewModel.selectedShop?.id,
+            command: cameraCommand,
+            onShopTap: { shop in viewModel.selectShop(shop) },
+            onCameraChange: { state in cameraHeading = state.heading }
+        )
         .ignoresSafeArea(edges: .top)
     }
 
@@ -178,14 +116,7 @@ struct CoffeeMapView: View {
             // ── Locate-me button ──────────────────────────────────────────
             Button {
                 if let coord = locationManager.userLocation {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        cameraPosition = .region(
-                            MKCoordinateRegion(
-                                center: coord,
-                                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                            )
-                        )
-                    }
+                    cameraCommand = .region(center: coord, latDelta: 0.02, lonDelta: 0.02)
                 } else {
                     locationManager.requestWhenInUseAuthorization()
                 }
@@ -209,17 +140,7 @@ struct CoffeeMapView: View {
             // the current zoom and centre position intact.
             if abs(cameraHeading) > 0.5 {
                 Button {
-                    guard let center = cameraCenter else { return }
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        cameraPosition = .camera(
-                            MapCamera(
-                                centerCoordinate: center,
-                                distance: cameraDistance,
-                                heading: 0,
-                                pitch: 0
-                            )
-                        )
-                    }
+                    cameraCommand = .resetNorth()
                 } label: {
                     ZStack {
                         Circle()
@@ -236,6 +157,7 @@ struct CoffeeMapView: View {
                 .transition(.opacity.combined(with: .scale(scale: 0.8)))
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: abs(cameraHeading) > 0.5)
     }
 
     // MARK: - Category Filter Bar
@@ -317,5 +239,3 @@ struct CoffeeMapView: View {
         .ignoresSafeArea()
     }
 }
-
-

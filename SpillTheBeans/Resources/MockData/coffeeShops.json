@@ -1,0 +1,2792 @@
+[
+  {
+    "id": "A1B2C3D4-1001-0000-0000-000000000001",
+    "name": "Roast",
+    "address": "Scheepstimmermanslaan 69, 3011 BS Rotterdam",
+    "latitude": 51.91048,
+    "longitude": 4.47828,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Roasts in-house on a Probat drum, rotating single-origins with a clean, classic Nordic-leaning profile.",
+    "description": "An industrial-chic roastery in Scheepvaartkwartier, a benchmark for third-wave coffee in Rotterdam and one of the most photographed cafés in the city.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly",
+      "Outdoor Seating"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1002-0000-0000-000000000002",
+    "name": "Cafecito Meent",
+    "address": "Meent 52, 3011 JM Rotterdam",
+    "latitude": 51.92279,
+    "longitude": 4.48413,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "7:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "7:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "7:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "7:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "7:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A small, buzzing espresso bar on Meent — famous for its Cuban-sandwich lunches, sharp flat whites and a rotating bean list.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1003-0000-0000-000000000003",
+    "name": "Schot Coffee Roasters",
+    "address": "Pelgrimsstraat 5C, 3029 PA Rotterdam",
+    "latitude": 51.9051,
+    "longitude": 4.444,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Father-and-son micro-roastery dialling in light-to-medium roasts on a small Giesen, with a strong focus on seasonal African lots.",
+    "description": "A tucked-away roastery-café in the Agniesebuurt — open, bright, and favoured by Rotterdam's coffee geeks for the rotating V60 menu.",
+    "tags": [
+      "Single Origin",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1004-0000-0000-000000000004",
+    "name": "Ripsnorter",
+    "address": "Mariniersweg 65, 3011 NG Rotterdam",
+    "latitude": 51.92297,
+    "longitude": 4.48895,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A warm neighbourhood espresso bar on Nieuwe Binnenweg — changing guest roasters, a short natural-wine list, and the city's friendliest baristas.",
+    "tags": [
+      "Alt Milk",
+      "Pet Friendly",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1005-0000-0000-000000000005",
+    "name": "unfiltered",
+    "address": "Van Oldenbarneveltstraat 125A, 3012 GT Rotterdam",
+    "latitude": 51.91905,
+    "longitude": 4.47322,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Works with European micro-roasters on a rotation; expect a lot from Friedhats, April and Manhattan Coffee Roasters.",
+    "description": "A minimalist brew bar on Nieuwe Binnenweg — all white tile, Hario V60s and single-origin filters. Go for the slow-bar experience.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1006-0000-0000-000000000006",
+    "name": "Espressobar Kopi Soesoe",
+    "address": "Sumatraweg 15, 3072 ZP Rotterdam",
+    "latitude": 51.90118,
+    "longitude": 4.48427,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:30 AM – 5:30 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:30 AM – 5:30 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A tiny, Indonesian-inflected espresso bar on the Kralingen side of the dike. Flat whites, homemade cookies, and a warm welcome.",
+    "tags": [
+      "Alt Milk",
+      "Specialty Food",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1007-0000-0000-000000000007",
+    "name": "Sound Kitchen",
+    "address": "Samuel Soesmanstraat 52, 3015 GL Rotterdam",
+    "latitude": 51.90851,
+    "longitude": 4.4644,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A music-loving all-day café and kitchen — strong brunch menu, Man Met Bril beans on espresso, and vinyl always on the turntable.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1008-0000-0000-000000000008",
+    "name": "Harvest Cafe & Bakery",
+    "address": "Glashaven 105, 3011 XJ Rotterdam",
+    "latitude": 51.91575,
+    "longitude": 4.4858,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A bright café-bakery where the sourdough and cinnamon buns are as considered as the coffee. Family-run and almost always busy on weekends.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Outdoor Seating"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1009-0000-0000-000000000009",
+    "name": "Hopper Noord",
+    "address": "Zwaanshals 474, 3035 KS Rotterdam",
+    "latitude": 51.93202,
+    "longitude": 4.48574,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "The Oude Noorden outpost of Hopper — a bright, high-ceilinged café that doubles as a local office for freelancers. Great lunches, solid espresso.",
+    "tags": [
+      "Specialty Food",
+      "Work-Friendly",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1010-0000-0000-00000000000A",
+    "name": "Man Met Bril Koffie",
+    "address": "Vijverhofstraat 70, 3032 SN Rotterdam",
+    "latitude": 51.93044,
+    "longitude": 4.47413,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "Philip Reade's roastery, housed under the old railway viaduct in Agniesebuurt. One of the most respected roasters in the Netherlands.",
+    "description": "Rotterdam's signature roaster — iconic viaduct location, friendly team, and beans that appear on menus across the country.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1011-0000-0000-00000000000B",
+    "name": "Man Met Bril Koffie — Hotel New York",
+    "address": "Koninginnenhoofd 1, 3072 AD Rotterdam",
+    "latitude": 51.90402,
+    "longitude": 4.48434,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "Serves Man Met Bril's rotating roasts on La Marzocco.",
+    "description": "The Man Met Bril bar tucked inside Hotel New York on the Kop van Zuid — stunning water views and a full filter menu.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1012-0000-0000-00000000000C",
+    "name": "Giraffe Coffee Bar & Academy",
+    "address": "Hoogstraat 46A, 3011 PS Rotterdam",
+    "latitude": 51.9227,
+    "longitude": 4.49339,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A combined bar and training academy — the team here has coached multiple Dutch Barista Championship finalists. Ask about latte art classes.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1013-0000-0000-00000000000D",
+    "name": "Evermore",
+    "address": "Coolhaven 158A, 3024 AM Rotterdam",
+    "latitude": 51.90755,
+    "longitude": 4.45506,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "10:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "10:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "10:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A plant-filled central café with a short, precise coffee menu and a loyal lunch crowd from the surrounding offices.",
+    "tags": [
+      "Specialty Food",
+      "Work-Friendly",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1014-0000-0000-00000000000E",
+    "name": "No 10 Coffee",
+    "address": "Hoogstraat 47A, 3011 PG Rotterdam",
+    "latitude": 51.9229,
+    "longitude": 4.4934,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A cosy espresso bar in Rotterdam's gallery district. Great cortados and enough window seats for an afternoon's reading.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1015-0000-0000-00000000000F",
+    "name": "33rd Street Coffee",
+    "address": "Nieuwe Binnenweg 33, 3014 GB Rotterdam",
+    "latitude": 51.91729,
+    "longitude": 4.4705,
+    "category": "Coffee Shop",
+    "rating": 4.4,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A New-York-styled neighbourhood café with bagels, drip brew and a friendly, unfussy approach to specialty coffee.",
+    "tags": [
+      "Specialty Food",
+      "Work-Friendly",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1016-0000-0000-000000000010",
+    "name": "SOCOCO Specialty Coffee",
+    "address": "Schiemond 20, 3024 EE Rotterdam",
+    "latitude": 51.90305,
+    "longitude": 4.44969,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": "Part of the SOCOCO social-enterprise project. Roasts in small batches and trains baristas from the local community.",
+    "description": "A harbourside filter bar in Delfshaven's Schiemond — serious about brewing, with weekly cuppings open to the public.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1017-0000-0000-000000000011",
+    "name": "SOCOCO W70 — Social Coffeebar",
+    "address": "Weena 70, 3012 CM Rotterdam",
+    "latitude": 51.92368,
+    "longitude": 4.47552,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "roasterInfo": "Serves SOCOCO Specialty Coffee from the Schiemond roastery.",
+    "description": "The business-district sibling of SOCOCO — quick, consistent espresso for Weena commuters and a purposeful social mission.",
+    "tags": [
+      "Work-Friendly",
+      "Alt Milk",
+      "Single Origin"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1018-0000-0000-000000000012",
+    "name": "Kuub Coffee",
+    "address": "Overblaak 96, 3011 MH Rotterdam",
+    "latitude": 51.92012,
+    "longitude": 4.49088,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "10:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "10:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "10:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A minimalist, cube-shaped café (hence the name) in the Oude Noorden — short menu, polished espresso and a rotating pastry list.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-1019-0000-0000-000000000013",
+    "name": "Dune",
+    "address": "Van Vollenhovenstraat 14A, 3016 BH Rotterdam",
+    "latitude": 51.91058,
+    "longitude": 4.47718,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "Sand-toned interiors, Mediterranean pastries and thoughtful single-origin espresso — a calm spot on a noisy street.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2001-0000-0000-000000000001",
+    "name": "Coffee District",
+    "address": "Willemsparkweg 8, 1071 HD Amsterdam",
+    "latitude": 52.35802,
+    "longitude": 4.87764,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "7:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "7:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "7:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "7:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "7:30 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:30 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Rotates European micro-roasters — regular appearances from La Cabra, The Barn and April.",
+    "description": "A long bar on Willemsparkweg in Oud-Zuid — the perfect pre-Vondelpark flat white. Excellent dial-ins and very friendly staff.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2002-0000-0000-000000000002",
+    "name": "NU Koffie & Delicatessen",
+    "address": "Tweede Egelantiersdwarsstraat 13H, 1015 SB Amsterdam",
+    "latitude": 52.37658,
+    "longitude": 4.88226,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "Part deli, part coffee bar — Italian-leaning pastries, fresh sandwiches and perfectly pulled espresso on Haarlemmerdijk.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2003-0000-0000-000000000003",
+    "name": "Harmani Microroasterie",
+    "address": "Frans Halsstraat 89, 1072 BP Amsterdam",
+    "latitude": 52.3549,
+    "longitude": 4.8886,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 4:30 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Small-batch micro-roastery focused on traceable, single-farm lots with a Nordic light profile.",
+    "description": "A West-side micro-roastery with a tight bar — if you care about origin paperwork, this is the room.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2004-0000-0000-000000000004",
+    "name": "Haku Specialty Coffee",
+    "address": "Haarlemmerdijk 151, 1013 KH Amsterdam",
+    "latitude": 52.38388,
+    "longitude": 4.88485,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Works closely with Japanese and Nordic roasters.",
+    "description": "Japanese-inflected minimalist brew bar on Haarlemmerdijk — V60 experts, matcha soft-serve, and a cult following.",
+    "tags": [
+      "Single Origin",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2005-0000-0000-000000000005",
+    "name": "Uncommon",
+    "address": "Van Woustraat 151, 1074 AL Amsterdam",
+    "latitude": 52.35279,
+    "longitude": 4.903,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:30 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A bright De Pijp bar with a changing guest roaster every fortnight — always worth a detour for the curated bean menu.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2006-0000-0000-000000000006",
+    "name": "Esthétique Café",
+    "address": "Eerste Constantijn Huygensstraat 76, 1054 BV Amsterdam",
+    "latitude": 52.36354,
+    "longitude": 4.87447,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:30 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "Thoughtfully designed all-white café near Vondelpark. Pastel-perfect, but the pour-overs are serious business.",
+    "tags": [
+      "Alt Milk",
+      "Specialty Food",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2007-0000-0000-000000000007",
+    "name": "De Koffieschenkerij",
+    "address": "Oudekerksplein 27, 1012 GX Amsterdam",
+    "latitude": 52.37412,
+    "longitude": 4.89835,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A café attached to the Oude Kerk with a beautiful garden courtyard. A rare quiet pocket in the Red Light District.",
+    "tags": [
+      "Outdoor Seating",
+      "Specialty Food",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2008-0000-0000-000000000008",
+    "name": "Priesthood Coffee",
+    "address": "Stadhouderskade 153, 1074 BC Amsterdam",
+    "latitude": 52.35839,
+    "longitude": 4.90282,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Rotates through European specialty roasters with emphasis on naturals and experimental processes.",
+    "description": "Tiny, obsessively detailed espresso bar on Stadhouderskade. Every shot is dialled in, every pour is weighed.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2009-0000-0000-000000000009",
+    "name": "Five Ways Coffee Roasters — Boerhaaveplein",
+    "address": "Boerhaaveplein 3, 1091 DH Amsterdam",
+    "latitude": 52.35985,
+    "longitude": 4.91231,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:30 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Roasts on-site — a core Colombian for milk drinks and two rotating filter lots.",
+    "description": "Five Ways' roastery location on Boerhaaveplein in Amsterdam-Oost — roomy, plant-filled, always smells of fresh batches.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2010-0000-0000-00000000000A",
+    "name": "Nomos Coffee",
+    "address": "Zeilstraat 45, 1075 SC Amsterdam",
+    "latitude": 52.35071,
+    "longitude": 4.85393,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A quiet, precise little bar in the south of De Pijp — regular guest roasts and an impeccable flat white.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2011-0000-0000-00000000000B",
+    "name": "Caffènation Amsterdam",
+    "address": "Warmondstraat 120, 1058 KZ Amsterdam",
+    "latitude": 52.35473,
+    "longitude": 4.84928,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "The Amsterdam flagship of the long-running Antwerp roaster Caffènation — house blends plus seasonal single origins.",
+    "description": "A spacious West-end bar from one of the Low Countries' most established specialty roasters.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2012-0000-0000-00000000000C",
+    "name": "LERA",
+    "address": "Ferdinand Bolstraat 146, 1072 LS Amsterdam",
+    "latitude": 52.35239,
+    "longitude": 4.8911,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "Serious bar-focused specialty on Haarlemmerstraat — lots of natural wine, small plates at night, and rigorous espresso all day.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Single Origin"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2013-0000-0000-00000000000D",
+    "name": "Taal Coffee",
+    "address": "Van Beuningenstraat 61, 1051 XE Amsterdam",
+    "latitude": 52.38451,
+    "longitude": 4.87796,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A calm Staatsliedenbuurt neighbourhood café — excellent brunch, strong pour-overs, and a soundtrack you'll want to Shazam.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2014-0000-0000-00000000000E",
+    "name": "Five Ways Coffee — Kinkerstraat",
+    "address": "Kinkerstraat 186, 1053 EL Amsterdam",
+    "latitude": 52.36604,
+    "longitude": 4.86734,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Serves Five Ways' own roast from Boerhaaveplein.",
+    "description": "The West outpost of Five Ways — compact, energetic, and where many Kinkerbuurt regulars start their day.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2015-0000-0000-00000000000F",
+    "name": "Rum Baba",
+    "address": "Pretoriusstraat 15, 1092 EW Amsterdam",
+    "latitude": 52.35599,
+    "longitude": 4.92654,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 4:30 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 4:30 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 4:30 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 4:30 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 4:30 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A warm, wood-filled East-side café known for its rum baba cake, hearty brunch menu, and approachable espresso.",
+    "tags": [
+      "Specialty Food",
+      "Alt Milk",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2016-0000-0000-000000000010",
+    "name": "LOT61",
+    "address": "Kinkerstraat 112, 1053 ED Amsterdam",
+    "latitude": 52.36681,
+    "longitude": 4.87031,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "One of Amsterdam's biggest independent roasters, founded by Australians Marcus & Adam and now distributing nationwide.",
+    "description": "The Kinkerstraat café of LOT61 — wide windows, concrete floors, and house roasts you'll recognise from menus all over the country.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2017-0000-0000-000000000011",
+    "name": "Bocca Coffee",
+    "address": "Kerkstraat 96, 1017 GP Amsterdam",
+    "latitude": 52.36445,
+    "longitude": 4.88681,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 7:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 7:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "A Dutch specialty pioneer since 2001 — direct-trade relationships, a roastery in Amsterdam, and a long-running partnership with Amsterdam Coffee Festival.",
+    "description": "Bocca's Canal-Ring flagship on Kerkstraat — the bar where many Amsterdammers first fell in love with specialty coffee.",
+    "tags": [
+      "Single Origin",
+      "Specialty Food",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2018-0000-0000-000000000012",
+    "name": "Scandinavian Embassy",
+    "address": "Sarphatipark 34E, 1072 PB Amsterdam",
+    "latitude": 52.35347,
+    "longitude": 4.89423,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 1:00 PM"
+      }
+    ],
+    "roasterInfo": "Serves exclusively Scandinavian roasters — expect La Cabra, Koppi, Drop Coffee and April.",
+    "description": "An Amsterdam institution — Nordic-leaning coffees, reindeer-meat sandwiches, cardamom buns and a sun-trap of a terrace on Sarphatipark.",
+    "tags": [
+      "Single Origin",
+      "Specialty Food",
+      "Outdoor Seating"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2019-0000-0000-000000000013",
+    "name": "White Label Coffee West",
+    "address": "Jan Evertsenstraat 136, 1056 EK Amsterdam",
+    "latitude": 52.37042,
+    "longitude": 4.85161,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "Francesco and Elmer's roastery — light roasts with a focus on transparent, long-term farm relationships.",
+    "description": "A Bos en Lommer roastery-bar with a calm, lived-in feel. Many consider their filters the best in the west of the city.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2020-0000-0000-000000000014",
+    "name": "Back to Black — Weteringstraat",
+    "address": "Weteringstraat 48, 1017 SP Amsterdam",
+    "latitude": 52.36104,
+    "longitude": 4.88859,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "Rotates European roasters — frequent appearances from Manhattan Coffee Roasters and The Barn.",
+    "description": "The original Back to Black — a sliver of a bar near Rijksmuseum, famous for its cookies and meticulous espresso.",
+    "tags": [
+      "Alt Milk",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2021-0000-0000-000000000015",
+    "name": "Back to Black — Van Hallstraat",
+    "address": "Van Hallstraat 268, 1051 HM Amsterdam",
+    "latitude": 52.3794,
+    "longitude": 4.87146,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "Same curation as Weteringstraat — guest roaster rotations.",
+    "description": "Back to Black's West location — roomier than the original, with the same legendary cookies and precise bar programme.",
+    "tags": [
+      "Alt Milk",
+      "Specialty Food",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2022-0000-0000-000000000016",
+    "name": "Screaming Beans",
+    "address": "Amstelstraat 5, 1017 DA Amsterdam",
+    "latitude": 52.36632,
+    "longitude": 4.89797,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 7:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 7:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "One of Amsterdam's early specialty pioneers, still roasting and serving seasonal blends.",
+    "description": "The Amstelstraat location of Screaming Beans — a steady, reliable central bar for a well-pulled cortado before dinner.",
+    "tags": [
+      "Alt Milk",
+      "Single Origin"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2023-0000-0000-000000000017",
+    "name": "Espressofabriek Westergas",
+    "address": "Pazzanistraat 39, 1014 DB Amsterdam",
+    "latitude": 52.38612,
+    "longitude": 4.87194,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Roasts its own blends and single-origins in small batches — a steady hand at medium profiles.",
+    "description": "Espressofabriek's mothership in Westergasfabriek — a converted industrial space surrounded by Westerpark's greenery.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Specialty Food",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2024-0000-0000-000000000018",
+    "name": "Espressofabriek IJburg",
+    "address": "IJburglaan 1489, 1087 KM Amsterdam",
+    "latitude": 52.35201,
+    "longitude": 5.00191,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Serves Espressofabriek's own roasts.",
+    "description": "The IJburg outpost of Espressofabriek — bigger, brighter, family-friendly. A great first stop after a ferry ride east.",
+    "tags": [
+      "Outdoor Seating",
+      "Specialty Food",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2025-0000-0000-000000000019",
+    "name": "Espressofabriek Slibvijzel",
+    "address": "Roepie Kruizestraat 2, 1095 MC Amsterdam",
+    "latitude": 52.37365,
+    "longitude": 4.9678,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Serves Espressofabriek's own roasts.",
+    "description": "A small Espressofabriek bar on a tucked-away canal. Quick, friendly, and reliably good espresso in the heart of town.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2026-0000-0000-00000000001A",
+    "name": "TOKI",
+    "address": "Binnen Dommersstraat 15, 1013 HK Amsterdam",
+    "latitude": 52.38294,
+    "longitude": 4.88557,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A Japanese-Scandinavian minimalist café in the Haarlemmerbuurt — great matcha, top-tier pour-overs, and the calmest vibe in town.",
+    "tags": [
+      "Single Origin",
+      "Specialty Food",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2027-0000-0000-00000000001B",
+    "name": "Black Gold Amsterdam",
+    "address": "Korte Koningsstraat 13, 1011 EX Amsterdam",
+    "latitude": 52.37177,
+    "longitude": 4.90308,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "Vinyl-lined espresso bar near Nieuwmarkt — records for sale, meticulously brewed coffee, and the best soundtrack in town.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-2028-0000-0000-00000000001C",
+    "name": "Coffee Bru",
+    "address": "Beukenplein 14, 1091 KC Amsterdam",
+    "latitude": 52.35707,
+    "longitude": 4.91771,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": "Works with East African cooperatives and rotates Rwandan and Burundian lots throughout the year.",
+    "description": "A sunny Oost café on Beukenplein with roots in Rwanda — fantastic terrace, strong pour-overs, and a warm community feel.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating",
+      "Specialty Food",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3001-0000-0000-000000000001",
+    "name": "Koffie & Ik",
+    "address": "Voorstraat 35, 3512 AJ Utrecht",
+    "latitude": 52.09466,
+    "longitude": 5.12003,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:30 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A friendly central Utrecht bar — tight menu, cheerful service, and a loyal breakfast-and-laptop crowd.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3002-0000-0000-000000000002",
+    "name": "Dagger Coffee",
+    "address": "Zijdebalenstraat 2, 3513 GZ Utrecht",
+    "latitude": 52.1002,
+    "longitude": 5.11188,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Roasts in small batches on a Giesen — light, clean profiles with serious attention to sourcing.",
+    "description": "A small, design-led roastery-bar tucked away in Zijdebalen. Rotating filter menu and excellent cuppings by appointment.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3003-0000-0000-000000000003",
+    "name": "Fufu Coffee Studio",
+    "address": "Hooghiemstraplein 51B, 3514 AX Utrecht",
+    "latitude": 52.09833,
+    "longitude": 5.12474,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A tiny, precise studio-style bar on Twijnstraat — just a few stools and very good coffee.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3004-0000-0000-000000000004",
+    "name": "Kaffeetaria",
+    "address": "Croeselaan 207, 3521 BN Utrecht",
+    "latitude": 52.0838,
+    "longitude": 5.10944,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A canal-side café-tavern on the Oudegracht — wharf-level terrace, excellent espresso, natural wine after 4 PM.",
+    "tags": [
+      "Outdoor Seating",
+      "Specialty Food",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3005-0000-0000-000000000005",
+    "name": "Koffie Leute",
+    "address": "Westerkade 30, 3511 HB Utrecht",
+    "latitude": 52.07943,
+    "longitude": 5.12254,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A compact, unhurried bar on Voorstraat — excellent flat whites and friendly regulars, perfect for a reading break.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3006-0000-0000-000000000006",
+    "name": "Keen Coffee Bar",
+    "address": "Ganzenmarkt 30, 3512 GE Utrecht",
+    "latitude": 52.0925,
+    "longitude": 5.12001,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": "One of Utrecht's headline roasters — supplies cafés across the Netherlands, with a focus on seasonality and traceability.",
+    "description": "Keen's proeflokaal near Vredenburg — wide bar, full filter menu, and the city's go-to place to discover new origins.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3007-0000-0000-000000000007",
+    "name": "'t Koffieboontje",
+    "address": "Oudegracht 92, 3511 AV Utrecht",
+    "latitude": 52.09383,
+    "longitude": 5.11695,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 4:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 4:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A classic bean shop and café on Ganzenmarkt — wide retail selection and a short espresso menu for in-store tastings.",
+    "tags": [
+      "Single Origin",
+      "Specialty Food"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3008-0000-0000-000000000008",
+    "name": "Ohøj Coffee Roasting",
+    "address": "Rijnlaan 27, 3522 BB Utrecht",
+    "latitude": 52.07635,
+    "longitude": 5.11403,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 1:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 1:00 PM"
+      }
+    ],
+    "roasterInfo": "Scandinavian-influenced light-roast roastery in the Cartesius district — tight focus on under-represented origins.",
+    "description": "A roastery-workshop with an open bar — low-key, friendly, and a favourite stop for coffee geeks making the pilgrimage.",
+    "tags": [
+      "Single Origin",
+      "Work-Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3009-0000-0000-000000000009",
+    "name": "The Village",
+    "address": "Voorstraat 46, 3512 AP Utrecht",
+    "latitude": 52.09495,
+    "longitude": 5.12018,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "7:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "7:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "7:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "7:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "7:30 AM – 6:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:30 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A warm, wood-panelled all-day café on Voorstraat — great for long meetings, cheese toasties and afternoon filter refills.",
+    "tags": [
+      "Work-Friendly",
+      "Specialty Food",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3010-0000-0000-00000000000A",
+    "name": "Rocking Chair",
+    "address": "Willem van Noortstraat 88, 3514 GG Utrecht",
+    "latitude": 52.10121,
+    "longitude": 5.12069,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:30 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:30 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:30 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:30 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:30 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 6:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "9:00 AM – 6:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A snug espresso bar just off the Domtoren — eclectic interiors, precise shots, and a menu that changes with the roaster's lots.",
+    "tags": [
+      "Alt Milk",
+      "Single Origin",
+      "Pet Friendly"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3011-0000-0000-00000000000B",
+    "name": "Cupp",
+    "address": "Nobelstraat 239, 3512 EM Utrecht",
+    "latitude": 52.09289,
+    "longitude": 5.12569,
+    "category": "Coffee Shop",
+    "rating": 4.5,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "8:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A popular Nobelstraat café with great cakes and consistently well-dialled espresso. A favourite among students.",
+    "tags": [
+      "Specialty Food",
+      "Work-Friendly",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3012-0000-0000-00000000000C",
+    "name": "30ML Nachtegaalstraat",
+    "address": "Nachtegaalstraat 61, 3581 AD Utrecht",
+    "latitude": 52.09147,
+    "longitude": 5.13161,
+    "category": "Coffee Shop",
+    "rating": 4.7,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A precise, specialty-only espresso bar — 30 millilitres, minimum fuss, maximum attention to the shot.",
+    "tags": [
+      "Single Origin",
+      "Alt Milk"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3013-0000-0000-00000000000D",
+    "name": "Ukiyo Koffie",
+    "address": "Prins Hendriklaan 50A, 3583 EP Utrecht",
+    "latitude": 52.08544,
+    "longitude": 5.14767,
+    "category": "Coffee Shop",
+    "rating": 4.8,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "10:00 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": "Rotates Japanese and European light-roast specialists.",
+    "description": "A wharf-level Japanese-styled brew bar on Twijnstraat — ceramic cups, V60 purism, and some of the city's cleanest filters.",
+    "tags": [
+      "Single Origin",
+      "Outdoor Seating"
+    ]
+  },
+  {
+    "id": "A1B2C3D4-3014-0000-0000-00000000000E",
+    "name": "Mos Coffee Bar",
+    "address": "Biltstraat 32, 3572 BB Utrecht",
+    "latitude": 52.09526,
+    "longitude": 5.12814,
+    "category": "Coffee Shop",
+    "rating": 4.6,
+    "openingHours": [
+      {
+        "day": "Monday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Thursday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Friday",
+        "hours": "8:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:30 AM – 5:00 PM"
+      },
+      {
+        "day": "Sunday",
+        "hours": "10:00 AM – 5:00 PM"
+      }
+    ],
+    "roasterInfo": null,
+    "description": "A laid-back Biltstraat bar — plant-filled, pet-friendly, and consistently well-dialled espresso.",
+    "tags": [
+      "Alt Milk",
+      "Work-Friendly",
+      "Pet Friendly"
+    ]
+  }
+]

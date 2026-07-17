@@ -208,7 +208,7 @@ struct CoffeeMapView: View {
                         : AnyShapeStyle(.regularMaterial),
                     in: Circle()
                 )
-                .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
+                .foregroundStyle(viewModel.selectedCategory != nil ? Color.onEspresso : Color.espresso)
         }
         .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
     }

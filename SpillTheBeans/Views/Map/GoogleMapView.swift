@@ -219,14 +219,14 @@ private struct MarkerPinView: View {
         VStack(spacing: 0) {
             ZStack {
                 Circle()
-                    .fill(isSelected ? Color.espresso : Color.terracotta)
+                    .fill(isSelected ? Color.espressoSolid : Color.terracottaSolid)
                     .frame(width: pinSize, height: pinSize)
                 Image(systemName: systemImage)
                     .font(.system(size: isSelected ? 20 : 15, weight: .semibold))
                     .foregroundStyle(.white)
             }
             MarkerTriangle()
-                .fill(isSelected ? Color.espresso : Color.terracotta)
+                .fill(isSelected ? Color.espressoSolid : Color.terracottaSolid)
                 .frame(width: 12, height: 8)
         }
         .padding(4)   // headroom so nothing is clipped at the bitmap edge

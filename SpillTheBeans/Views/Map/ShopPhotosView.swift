@@ -40,7 +40,7 @@ struct ShopPhotosView: View {
     @ViewBuilder
     private func placeholder(systemImage: String?) -> some View {
         ZStack {
-            Rectangle().fill(Color.cream.opacity(0.5))
+            Rectangle().fill(Color.cardBackground)
             if let systemImage {
                 Image(systemName: systemImage)
                     .font(.title2)

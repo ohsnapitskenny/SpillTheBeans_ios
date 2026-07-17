@@ -105,11 +105,11 @@ struct AuthView: View {
         Button(action: submit) {
             ZStack {
                 if authService.isLoading {
-                    ProgressView().tint(.white)
+                    ProgressView().tint(Color.onEspresso)
                 } else {
                     Text(mode == .signIn ? "Sign In" : "Create Account")
                         .font(.headline)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.onEspresso)
                 }
             }
             .frame(maxWidth: .infinity)

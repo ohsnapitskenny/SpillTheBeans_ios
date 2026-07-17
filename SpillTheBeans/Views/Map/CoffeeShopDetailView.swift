@@ -25,27 +25,12 @@ struct CoffeeShopDetailView: View {
 
                     Divider().padding(.horizontal)
 
-                    // Tags
-                    if !shop.tags.isEmpty {
+                    // Tags — from Google place attributes, DB tags as fallback
+                    if !displayedTags.isEmpty {
                         FlowLayout(spacing: 6) {
-                            ForEach(shop.tags) { tag in
-                                TagPill(title: tag.rawValue)
+                            ForEach(displayedTags, id: \.self) { tag in
+                                TagPill(title: tag)
                             }
-                        }
-                        .padding(.horizontal)
-                    }
-
-                    // About
-                    descriptionSection
-                        .padding(.horizontal)
-
-                    // Roaster info
-                    if let info = shop.roasterInfo {
-                        VStack(alignment: .leading, spacing: 8) {
-                            SectionHeader(title: "Roaster")
-                            Text(info)
-                                .font(.body)
-                                .foregroundStyle(.secondary)
                         }
                         .padding(.horizontal)
                     }
@@ -53,9 +38,15 @@ struct CoffeeShopDetailView: View {
                     // Hours
                     hoursSection
                         .padding(.horizontal)
-                        .padding(.bottom, 32)
+
+                    // Google reviews
+                    if let reviews = place?.reviews, !reviews.isEmpty {
+                        reviewsSection(reviews)
+                            .padding(.horizontal)
+                    }
                 }
                 .padding(.top)
+                .padding(.bottom, 32)
             }
             .background(Color.creamBackground)
             .navigationBarTitleDisplayMode(.inline)
@@ -106,13 +97,10 @@ struct CoffeeShopDetailView: View {
         }
     }
 
-    private var descriptionSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            SectionHeader(title: "About")
-            Text(shop.description)
-                .font(.body)
-                .fixedSize(horizontal: false, vertical: true)
-        }
+    /// Google-derived tags when available, otherwise the tags stored in the DB.
+    private var displayedTags: [String] {
+        if let tags = place?.tags, !tags.isEmpty { return tags }
+        return shop.tags.map(\.rawValue)
     }
 
     /// Google hours when available, otherwise the hours stored in the database.
@@ -137,6 +125,91 @@ struct CoffeeShopDetailView: View {
                         Spacer()
                     }
                 }
+            }
+        }
+    }
+
+    private func reviewsSection(_ reviews: [PlaceReview]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionHeader(title: "Reviews")
+            VStack(spacing: 10) {
+                ForEach(Array(reviews.enumerated()), id: \.offset) { _, review in
+                    ReviewCard(review: review)
+                }
+            }
+            Text("Reviews from Google")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+        }
+    }
+}
+
+// MARK: - Review card
+
+private struct ReviewCard: View {
+    let review: PlaceReview
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                avatar
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(review.author)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.espresso)
+                    HStack(spacing: 6) {
+                        if let rating = review.rating {
+                            StarRow(rating: rating)
+                        }
+                        Text(review.relativeTime)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+            }
+
+            Text(review.text)
+                .font(.subheadline)
+                .foregroundStyle(.primary)
+                .lineLimit(6)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+    }
+
+    private var avatar: some View {
+        AsyncImage(url: review.authorPhotoURI.flatMap(URL.init(string:))) { phase in
+            if case .success(let image) = phase {
+                image.resizable().scaledToFill()
+            } else {
+                ZStack {
+                    Circle().fill(Color.terracotta.opacity(0.15))
+                    Image(systemName: "person.fill")
+                        .font(.caption)
+                        .foregroundStyle(Color.terracotta)
+                }
+            }
+        }
+        .frame(width: 32, height: 32)
+        .clipShape(Circle())
+    }
+}
+
+private struct StarRow: View {
+    let rating: Double
+
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(1...5, id: \.self) { star in
+                Image(systemName: Double(star) <= rating ? "star.fill" : "star")
+                    .font(.system(size: 9))
+                    .foregroundStyle(Color.terracotta)
             }
         }
     }

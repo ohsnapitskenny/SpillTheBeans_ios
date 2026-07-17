@@ -286,7 +286,32 @@ const PLACE_FIELD_MASK = [
   'photos.name',
   'googleMapsUri',
   'websiteUri',
+  'reviews',
+  'outdoorSeating',
+  'allowsDogs',
+  'dineIn',
+  'takeout',
+  'delivery',
+  'servesVegetarianFood',
+  'servesDessert',
+  'servesBrunch',
+  'goodForGroups',
+  'liveMusic',
 ].join(',');
+
+// Boolean place attributes → the tag pills the app shows.
+const TAG_ATTRIBUTES = [
+  ['outdoorSeating', 'Outdoor Seating'],
+  ['allowsDogs', 'Pet Friendly'],
+  ['dineIn', 'Dine-in'],
+  ['takeout', 'Takeaway'],
+  ['delivery', 'Delivery'],
+  ['servesVegetarianFood', 'Vegetarian Options'],
+  ['servesDessert', 'Desserts'],
+  ['servesBrunch', 'Brunch'],
+  ['goodForGroups', 'Good for Groups'],
+  ['liveMusic', 'Live Music'],
+];
 
 // "Monday: 8:00 AM – 5:00 PM" → { day, hours } (the shape the iOS app renders).
 // Google uses narrow no-break spaces around AM/PM; normalise to plain spaces.
@@ -310,7 +335,8 @@ async function handleGetShopPlace(request, env, ctx, shopId) {
   if (!shop) return json({ error: 'Unknown shop' }, 404);
   if (!shop.google_place_id) return json({ error: 'Shop has no linked Google place' }, 404);
 
-  const cacheKey = `place:${shop.google_place_id}`;
+  // v2: response gained tags + reviews — new key so old cached shapes expire out.
+  const cacheKey = `place:v2:${shop.google_place_id}`;
   const cached = await env.PLACES.get(cacheKey);
   if (cached) return json(JSON.parse(cached));
 
@@ -341,6 +367,17 @@ async function handleGetShopPlace(request, env, ctx, shopId) {
     photos: (place.photos || []).slice(0, 8).map(
       (p) => `${origin}/place-photo?name=${encodeURIComponent(p.name)}&w=1000`
     ),
+    tags: TAG_ATTRIBUTES.filter(([key]) => place[key] === true).map(([, label]) => label),
+    reviews: (place.reviews || [])
+      .map((r) => ({
+        author: r.authorAttribution?.displayName || 'Google user',
+        authorPhotoURI: r.authorAttribution?.photoUri ?? null,
+        rating: r.rating ?? null,
+        relativeTime: r.relativePublishTimeDescription || '',
+        text: r.text?.text || '',
+      }))
+      .filter((r) => r.text)
+      .slice(0, 5),
     googleMapsURI: place.googleMapsUri ?? null,
     websiteURI: place.websiteUri ?? null,
   };

@@ -16,8 +16,23 @@ struct PlaceDetails: Codable, Hashable, Sendable {
     let weekdayHours: [OpeningHours]
     /// Photo URLs served through the worker's photo proxy.
     let photos: [URL]
+    /// Tag pills derived from Google place attributes (outdoor seating,
+    /// pet friendly, …). Empty when Google has no attribute data.
+    let tags: [String]
+    /// Up to five Google user reviews.
+    let reviews: [PlaceReview]
     /// Google Maps listing for the place.
     let googleMapsURI: String?
     /// The shop's own website, when Google knows it.
     let websiteURI: String?
+}
+
+// MARK: - PlaceReview
+
+struct PlaceReview: Codable, Hashable, Sendable {
+    let author: String
+    let authorPhotoURI: String?
+    let rating: Double?
+    let relativeTime: String
+    let text: String
 }

@@ -36,6 +36,9 @@
 		B9B991572F9AD90300598A90 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991552F9AD90300598A90 /* UserProfileView.swift */; };
 		B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991582F9AD91B00598A90 /* SplashView.swift */; };
 		CF000002 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF000001 /* AuthView.swift */; };
+		DD000002 /* PlaceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000002 /* PlaceDetails.swift */; };
+		DD000003 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000003 /* PlaceService.swift */; };
+		DD000004 /* ShopPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000004 /* ShopPhotosView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +74,9 @@
 		B9B991552F9AD90300598A90 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		B9B991582F9AD91B00598A90 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		CF000001 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		DE000002 /* PlaceDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetails.swift; sourceTree = "<group>"; };
+		DE000003 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
+		DE000004 /* ShopPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPhotosView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +114,7 @@
 				B90E9C872F9AD1C400BB06F3 /* CoffeeReview.swift */,
 				AB000003 /* CoffeeShop.swift */,
 				AB000004 /* Coffee.swift */,
+				DE000002 /* PlaceDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -128,6 +135,7 @@
 				B90E9C8B2F9AD1ED00BB06F3 /* ReviewService.swift */,
 				AB000005 /* CoffeeShopService.swift */,
 				AB000006 /* CoffeeService.swift */,
+				DE000003 /* PlaceService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -152,6 +160,7 @@
 				AB000010 /* ShopAnnotationView.swift */,
 				AB000011 /* ShopListView.swift */,
 				AB000012 /* CoffeeShopDetailView.swift */,
+				DE000004 /* ShopPhotosView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -310,6 +319,9 @@
 				AA000007 /* CoffeeShopViewModel.swift in Sources */,
 				AA000008 /* EncyclopediaViewModel.swift in Sources */,
 				AA000009 /* CoffeeMapView.swift in Sources */,
+				DD000002 /* PlaceDetails.swift in Sources */,
+				DD000003 /* PlaceService.swift in Sources */,
+				DD000004 /* ShopPhotosView.swift in Sources */,
 				AA000010 /* ShopAnnotationView.swift in Sources */,
 				AA000011 /* ShopListView.swift in Sources */,
 				AA000012 /* CoffeeShopDetailView.swift in Sources */,
@@ -327,6 +339,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
 
 /* Begin XCBuildConfiguration section */
 		AL000001 /* Debug */ = {

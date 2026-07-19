@@ -20,18 +20,19 @@ CREATE TABLE coffees (
 );
 
 CREATE TABLE coffee_shops (
-  id            TEXT PRIMARY KEY,
-  name          TEXT NOT NULL,
-  address       TEXT NOT NULL,
-  latitude      REAL NOT NULL,
-  longitude     REAL NOT NULL,
-  category      TEXT NOT NULL,
-  rating        REAL NOT NULL,
-  opening_hours TEXT NOT NULL,    -- JSON array of {day, hours}
-  roaster_info  TEXT,
-  description   TEXT NOT NULL,
-  tags          TEXT NOT NULL,    -- JSON array of strings
-  created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+  id              TEXT PRIMARY KEY,
+  name            TEXT NOT NULL,
+  address         TEXT NOT NULL,
+  latitude        REAL NOT NULL,
+  longitude       REAL NOT NULL,
+  category        TEXT NOT NULL,
+  rating          REAL NOT NULL,
+  opening_hours   TEXT NOT NULL,    -- JSON array of {day, hours}
+  roaster_info    TEXT,
+  description     TEXT NOT NULL,
+  tags            TEXT NOT NULL,    -- JSON array of strings
+  google_place_id TEXT,             -- Places API resource id (backfill-place-ids.js)
+  created_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE reviews (

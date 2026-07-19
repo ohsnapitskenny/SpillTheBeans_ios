@@ -56,7 +56,7 @@ struct UserProfileView: View {
                 } label: {
                     Text("Sign In")
                         .font(.headline)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.onEspresso)
                         .frame(maxWidth: .infinity)
                         .frame(height: 52)
                         .background(Color.espresso)

@@ -203,7 +203,7 @@ struct EncyclopediaView: View {
                     : AnyShapeStyle(.regularMaterial),
                 in: Circle()
             )
-            .foregroundStyle(viewModel.hasActiveSearch ? Color.white : Color.espresso)
+            .foregroundStyle(viewModel.hasActiveSearch ? Color.onEspresso : Color.espresso)
         }
         .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
     }

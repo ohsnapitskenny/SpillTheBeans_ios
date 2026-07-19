@@ -22,7 +22,7 @@ struct FilterChip: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .background(isSelected ? Color.espresso : Color.cardBackground)
-            .foregroundStyle(isSelected ? Color.white : Color.espresso)
+            .foregroundStyle(isSelected ? Color.onEspresso : Color.espresso)
             .clipShape(Capsule())
             .shadow(color: .black.opacity(isSelected ? 0.18 : 0.06), radius: 3, y: 1)
         }

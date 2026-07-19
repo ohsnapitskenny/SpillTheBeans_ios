@@ -7,7 +7,7 @@ struct SplashView: View {
 
     var body: some View {
         ZStack {
-            Color.espresso.ignoresSafeArea()
+            Color.espressoSolid.ignoresSafeArea()
 
             VStack(spacing: 0) {
 
@@ -46,7 +46,7 @@ struct SplashView: View {
                     } label: {
                         Text("Sign In")
                             .font(.headline)
-                            .foregroundStyle(Color.espresso)
+                            .foregroundStyle(Color.espressoSolid)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(Color.cream)

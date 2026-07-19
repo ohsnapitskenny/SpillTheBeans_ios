@@ -36,11 +36,9 @@
 		B9B991572F9AD90300598A90 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991552F9AD90300598A90 /* UserProfileView.swift */; };
 		B9B991592F9AD91B00598A90 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B991582F9AD91B00598A90 /* SplashView.swift */; };
 		CF000002 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF000001 /* AuthView.swift */; };
-		DD000001 /* GoogleMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000001 /* GoogleMapView.swift */; };
 		DD000002 /* PlaceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000002 /* PlaceDetails.swift */; };
 		DD000003 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000003 /* PlaceService.swift */; };
 		DD000004 /* ShopPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000004 /* ShopPhotosView.swift */; };
-		DD000010 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = DG000001 /* GoogleMaps */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,7 +74,6 @@
 		B9B991552F9AD90300598A90 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		B9B991582F9AD91B00598A90 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		CF000001 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
-		DE000001 /* GoogleMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapView.swift; sourceTree = "<group>"; };
 		DE000002 /* PlaceDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetails.swift; sourceTree = "<group>"; };
 		DE000003 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
 		DE000004 /* ShopPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPhotosView.swift; sourceTree = "<group>"; };
@@ -87,7 +84,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD000010 /* GoogleMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				AB000009 /* CoffeeMapView.swift */,
-				DE000001 /* GoogleMapView.swift */,
 				AB000010 /* ShopAnnotationView.swift */,
 				AB000011 /* ShopListView.swift */,
 				AB000012 /* CoffeeShopDetailView.swift */,
@@ -256,9 +251,6 @@
 			dependencies = (
 			);
 			name = SpillTheBeans;
-			packageProductDependencies = (
-				DG000001 /* GoogleMaps */,
-			);
 			productName = SpillTheBeans;
 			productReference = AC000001 /* SpillTheBeans.app */;
 			productType = "com.apple.product-type.application";
@@ -287,9 +279,6 @@
 				Base,
 			);
 			mainGroup = AF000002;
-			packageReferences = (
-				DF000001 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
-			);
 			productRefGroup = AF000001 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -330,7 +319,6 @@
 				AA000007 /* CoffeeShopViewModel.swift in Sources */,
 				AA000008 /* EncyclopediaViewModel.swift in Sources */,
 				AA000009 /* CoffeeMapView.swift in Sources */,
-				DD000001 /* GoogleMapView.swift in Sources */,
 				DD000002 /* PlaceDetails.swift in Sources */,
 				DD000003 /* PlaceService.swift in Sources */,
 				DD000004 /* ShopPhotosView.swift in Sources */,
@@ -351,6 +339,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
 
 /* Begin XCBuildConfiguration section */
 		AL000001 /* Debug */ = {
@@ -555,25 +544,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		DF000001 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		DG000001 /* GoogleMaps */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DF000001 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
-			productName = GoogleMaps;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AK000001 /* Project object */;
 }

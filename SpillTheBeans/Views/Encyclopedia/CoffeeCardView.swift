@@ -30,6 +30,14 @@ struct CoffeeCardView: View {
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
 
+            if let roaster = coffee.roaster {
+                Text(roaster)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.terracotta)
+                    .lineLimit(1)
+            }
+
             // Roast bar
             VStack(alignment: .leading, spacing: 3) {
                 Text(coffee.roastLevel.rawValue)

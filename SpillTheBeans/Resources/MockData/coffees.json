@@ -1,194 +1,1228 @@
 [
   {
-    "id": "B1C2D3E4-0001-0001-0001-100000000001",
-    "name": "Yirgacheffe Kochere",
-    "origin": { "country": "Ethiopia", "region": "Yirgacheffe", "flag": "🇪🇹" },
-    "process": "Washed",
-    "roastLevel": "Light",
-    "flavorTags": ["jasmine", "bergamot", "lemon curd", "stone fruit"],
-    "tastingNote": "Delicate and tea-like with a floral jasmine nose, vibrant bergamot acidity, and a silky lemon curd finish. One of the most aromatic coffees on the planet.",
-    "producer": "Kochere Washing Station",
-    "altitude": "1,750–2,200 m",
-    "harvestSeason": "October–December"
+    "id": "C0FFEE01-0001-4000-8000-000000000001",
+    "name": "Hambella",
+    "origin": {
+      "country": "Ethiopia",
+      "region": null,
+      "flag": "🇪🇹"
+    },
+    "process": "Natural",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "blueberry",
+      "raisin",
+      "milk chocolate"
+    ],
+    "tastingNote": "Blueberry, raisin, milk chocolate. Roasted in Rotterdam by Man Met Bril.",
+    "producer": "Hambella Station",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
   },
   {
-    "id": "B1C2D3E4-0002-0002-0002-200000000002",
-    "name": "Guji Natural",
-    "origin": { "country": "Ethiopia", "region": "Guji Zone", "flag": "🇪🇹" },
+    "id": "C0FFEE01-0002-4000-8000-000000000002",
+    "name": "Peru BIO",
+    "origin": {
+      "country": "Peru",
+      "region": null,
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "milk chocolate",
+      "herbal",
+      "floral",
+      "ripe mango",
+      "honey"
+    ],
+    "tastingNote": "Milk chocolate, herbal, floral, ripe mango, honey. Roasted in Rotterdam by Man Met Bril.",
+    "producer": "505 families",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
+  },
+  {
+    "id": "C0FFEE01-0003-4000-8000-000000000003",
+    "name": "House Blend",
+    "origin": {
+      "country": "Brazil & India",
+      "region": "Cerrado & Karnataka",
+      "flag": "🇧🇷"
+    },
+    "process": "Natural",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "dark chocolate",
+      "sweet",
+      "creamy",
+      "nutty",
+      "big body"
+    ],
+    "tastingNote": "Dark chocolate, sweet, creamy, nutty, big body. Roasted in Rotterdam by Man Met Bril.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
+  },
+  {
+    "id": "C0FFEE01-0004-4000-8000-000000000004",
+    "name": "Blendy Blend",
+    "origin": {
+      "country": "Brazil & Ethiopia",
+      "region": "Cerrado Mineiro & Hambella",
+      "flag": "🇧🇷"
+    },
+    "process": "Natural",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "caramel",
+      "creamy",
+      "round mouthfeel"
+    ],
+    "tastingNote": "Chocolate, caramel, creamy, round mouthfeel. Roasted in Rotterdam by Man Met Bril.",
+    "producer": "Pedra Negra & Hambella Washing Station",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
+  },
+  {
+    "id": "C0FFEE01-0005-4000-8000-000000000005",
+    "name": "Los Osos, Colombia",
+    "origin": {
+      "country": "Colombia",
+      "region": "Huila",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "berry jelly",
+      "slightly spicy"
+    ],
+    "tastingNote": "Chocolate, berry jelly, slightly spicy. Roasted in Rotterdam by Man Met Bril.",
+    "producer": "Santa Maria Community",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
+  },
+  {
+    "id": "C0FFEE01-0006-4000-8000-000000000006",
+    "name": "Hotel Blend",
+    "origin": {
+      "country": "Ethiopia",
+      "region": null,
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "berries",
+      "caramel"
+    ],
+    "tastingNote": "Chocolate, berries, caramel. Roasted in Rotterdam by Man Met Bril.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Man Met Bril Koffie"
+  },
+  {
+    "id": "C0FFEE02-0001-4000-8000-000000000001",
+    "name": "El Indio",
+    "origin": {
+      "country": "Colombia",
+      "region": "Planadas, Tolima",
+      "flag": "🇨🇴"
+    },
     "process": "Natural",
     "roastLevel": "Light",
-    "flavorTags": ["blueberry", "dark cherry", "dark chocolate", "lavender"],
-    "tastingNote": "A wild, wine-like natural that bursts with blueberry compote and dark cherry on the palate, underscored by bittersweet dark chocolate and a lingering lavender note.",
-    "producer": "Shakiso Farmers Cooperative",
-    "altitude": "1,900–2,300 m",
-    "harvestSeason": "November–January"
+    "flavorTags": [
+      "fruity",
+      "sweet",
+      "full body"
+    ],
+    "tastingNote": "El Indio is afkomstig van ASOPEP, een coöperatie van meer dan 170 koffieproducerende families uit Planadas, Tolima. Tolima staat bekend als een van Colombia's meest vooraanstaande koffieregio’s en levert al jarenlang koffies die worden geselecteerd voor de prestigieuze Cup of Excellence-competitie.",
+    "producer": "El Indio",
+    "altitude": "1500-2150 m",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0003-0003-0003-300000000003",
-    "name": "Huila Honey",
-    "origin": { "country": "Colombia", "region": "Huila", "flag": "🇨🇴" },
+    "id": "C0FFEE02-0002-4000-8000-000000000002",
+    "name": "Don Osman",
+    "origin": {
+      "country": "Nicaragua",
+      "region": "Nueva Segovia",
+      "flag": "🇳🇮"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "caramel",
+      "sweet",
+      "full body"
+    ],
+    "tastingNote": "Vidita Rojo is a beautiful washed coffee from Sueva Segovia in Nicaragua. The Paguaga family manages five coffee farms here, which they manage with transparency, care for quality and integrity.",
+    "producer": "Osman Gutiérrez Moreno",
+    "altitude": "600-1700 meters",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0004-4000-8000-000000000004",
+    "name": "Zomerspecial - Project Forest",
+    "origin": {
+      "country": "Colombia",
+      "region": "Tolima",
+      "flag": "🇨🇴"
+    },
     "process": "Honey",
-    "roastLevel": "Medium Light",
-    "flavorTags": ["peach", "brown sugar", "milk chocolate", "apricot"],
-    "tastingNote": "Round and sweet with juicy peach and apricot, melting into brown sugar and milk chocolate through the mid-palate. The honey process adds a velvety body that rounds everything out beautifully.",
-    "producer": "La Esperanza Estate",
-    "altitude": "1,600–1,900 m",
-    "harvestSeason": "April–June"
+    "roastLevel": "Light",
+    "flavorTags": [
+      "sweet"
+    ],
+    "tastingNote": "Normaal gesproken kiezen we koffie op basis van wat er al is geoogst of verwerkt, maar deze keer hebben we de rollen omgedraaid. Wij stelden vooraf de gewenste smaak vast, en Shady en Elias van Forest Coffee zorgden voor de koffie.",
+    "producer": "Shady & Elias Bayter",
+    "altitude": "1400-1600 m",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0004-0004-0004-400000000004",
-    "name": "Nariño Washed",
-    "origin": { "country": "Colombia", "region": "Nariño", "flag": "🇨🇴" },
+    "id": "C0FFEE02-0005-4000-8000-000000000005",
+    "name": "Juver Santa Cruz",
+    "origin": {
+      "country": "Peru",
+      "region": "Cajamarca, Cutervo, Callayuc",
+      "flag": "🇵🇪"
+    },
     "process": "Washed",
-    "roastLevel": "Medium Light",
-    "flavorTags": ["red apple", "caramel", "hazelnut", "lime zest"],
-    "tastingNote": "Crisp and bright with red apple and lime zest acidity, transitioning to creamy caramel sweetness and a gentle hazelnut finish. A textbook example of high-altitude Colombian excellence.",
-    "producer": "El Diviso Co-op",
-    "altitude": "1,800–2,100 m",
-    "harvestSeason": "May–August"
+    "roastLevel": "Light",
+    "flavorTags": [
+      "chocolate",
+      "fruity",
+      "sweet"
+    ],
+    "tastingNote": "Deze koffie combineert het vakmanschap van boer Juver Santa Cruz met de transparante werkwijze van importeur Cultivar. Op 1.850 meter hoogte produceert Juver een expressieve koffie die dankzij de zorgvuldige verwerking een fruitig karakter, gebalanceerde zoetheid en chocolade afdronk heeft gekregen.",
+    "producer": "Finca El Eucalipto, Juver Santa Cruz",
+    "altitude": "1850 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0005-0005-0005-500000000005",
-    "name": "Nyeri AA",
-    "origin": { "country": "Kenya", "region": "Nyeri", "flag": "🇰🇪" },
+    "id": "C0FFEE02-0006-4000-8000-000000000006",
+    "name": "Papayo Paradise",
+    "origin": {
+      "country": "Colombia",
+      "region": "Acevedo, Huila",
+      "flag": "🇨🇴"
+    },
     "process": "Washed",
-    "roastLevel": "Medium Light",
-    "flavorTags": ["blackcurrant", "tomato", "grapefruit", "cranberry"],
-    "tastingNote": "Boldly structured with a distinctive blackcurrant and tomato-like savouriness, followed by grapefruit tartness and a clean cranberry finish. Intensely complex and unmistakably Kenyan.",
-    "producer": "Othaya Farmers Co-op Society",
-    "altitude": "1,650–1,850 m",
-    "harvestSeason": "October–December"
+    "roastLevel": "Light",
+    "flavorTags": [
+      "floral",
+      "sweet",
+      "full body"
+    ],
+    "tastingNote": "Voor de tweede keer zijn we enorm enthousiast over deze bijzondere koffie van boerin María Belén Díaz. Haar finca Resina is een indrukwekkende boerderij met unieke variëteiten die ze zelf verwerkt, zoals deze Papayo variëteit.",
+    "producer": "María Belén Díaz",
+    "altitude": "1800 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0006-0006-0006-600000000006",
-    "name": "Kirinyaga Washed",
-    "origin": { "country": "Kenya", "region": "Kirinyaga", "flag": "🇰🇪" },
+    "id": "C0FFEE02-0007-4000-8000-000000000007",
+    "name": "Blawan Estate",
+    "origin": {
+      "country": "Indonesia",
+      "region": "Java, eeuwenlang bekend als “the spice island,” is het op drie na grootste eiland van Indonesië en een belangrijke regio voor koffieteelt. De meeste Arabica groeit op het Ijen Plateau, rondom de Blawan en Jampit estates, waar de combinatie van hoogte, vulkanische bodem en microklimaat zorgt voor uitzonderlijke koffie.",
+      "flag": "🇮🇩"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "full body",
+      "tropical fruit"
+    ],
+    "tastingNote": "Omringd door vulkanen en tropische bossen groeit op de Blawan Coffee Estate een rijke, volle koffie met een stroperige body en zachte aciditeit. Perfect voor liefhebbers van een wat krachtigere, maar mooi gebalanceerde kop koffie.",
+    "producer": "Blawan Coffee Estate",
+    "altitude": "800-1500 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0008-4000-8000-000000000008",
+    "name": "El Jaguar",
+    "origin": {
+      "country": "Nicaragua",
+      "region": "El Jaguar",
+      "flag": "🇳🇮"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "caramel"
+    ],
+    "tastingNote": "Voor de tweede keer kopen wij koffie van Jean-Yves Duriaux zijn familieboerderij El Jaguar en afgelopen jaar is hij bij onze branderij langsgekomen om zijn assortiment te proeven met ons team. Deze bijzondere plek ligt in een nevelwoud in de bergen van de Jinotega regio in Nicaragua.",
+    "producer": null,
+    "altitude": "1200-1400 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0009-4000-8000-000000000009",
+    "name": "Girma Sentayehu",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Yirgacheffe",
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "citrus",
+      "berries"
+    ],
+    "tastingNote": "Ethiopische koffie wordt vaak verhandeld als community lot: bonen van tientallen tot honderden kleine boeren die samen worden verwerkt bij een centraal washing station. Deze Yirgacheffe is echter afkomstig van één enkele producent: Girma Sentayehu.",
+    "producer": "Girma Sentayehu",
+    "altitude": "1750 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0010-4000-8000-000000000010",
+    "name": "Torra",
+    "origin": {
+      "country": "Colombia",
+      "region": "Cauca",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "chocolate",
+      "citrus",
+      "full body",
+      "berries"
+    ],
+    "tastingNote": "Torra is een community lot uit het Valle del Cauca in Colombia, geproduceerd door de coöperatie Cafenorte. De koffiebessen van maar liefst 246 kleine producenten worden gebundeld in één blend, waardoor kwaliteit en volume consistent blijven.",
+    "producer": "Café Norte",
+    "altitude": "1500-1900 MASL",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0011-4000-8000-000000000011",
+    "name": "Bela Vista Blend",
+    "origin": {
+      "country": "Brazil & Colombia",
+      "region": null,
+      "flag": "🇧🇷"
+    },
     "process": "Washed",
     "roastLevel": "Medium",
-    "flavorTags": ["raspberry", "lemon verbena", "black tea", "floral"],
-    "tastingNote": "More delicate than classic Nyeri lots, with raspberry jam sweetness, lemon verbena brightness, and a long floral aftertaste reminiscent of a fine Darjeeling.",
-    "producer": "Gichatha-ini Factory",
-    "altitude": "1,500–1,750 m",
-    "harvestSeason": "October–November"
+    "flavorTags": [
+      "chocolate",
+      "full body",
+      "creamy"
+    ],
+    "tastingNote": "De Bela Vista Blend is onze krachtigste blend en dat proef je!Deze koffie komt uit Brazilië en Colombia en smaakt rijk en romig, met subtiele tonen van toffee en pure chocolade. De oplosbaarheid van deze koffie in water gaat wat sneller, daarom leent deze koffie zich uitermate goed voor volautomaten",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0007-0007-0007-700000000007",
-    "name": "Huehuetenango SHB",
-    "origin": { "country": "Guatemala", "region": "Huehuetenango", "flag": "🇬🇹" },
+    "id": "C0FFEE02-0012-4000-8000-000000000012",
+    "name": "DECAF Condor",
+    "origin": {
+      "country": "Colombia",
+      "region": "Tolima",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "full body"
+    ],
+    "tastingNote": "Als het James Hoffmann-project ons iets heeft laten zien, is het dat zorgvuldig decafeïneren uitstekende koffies kan opleveren. Daarom werken we samen met Forest Coffee.",
+    "producer": "Elias & Shady Bayter",
+    "altitude": "1700-1950 masl",
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0013-4000-8000-000000000013",
+    "name": "Fazenda Guardabaxo",
+    "origin": {
+      "country": "Brazil",
+      "region": "Morgiana",
+      "flag": "🇧🇷"
+    },
+    "process": "Natural",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "caramel",
+      "nutty",
+      "sweet",
+      "full body"
+    ],
+    "tastingNote": "Deze Braziliaanse koffie voeren wij nu al voor het derde jaar. Dit oogstjaar is er een deel oogst van een nabijgelegen plantage toegevoegd om een consistentere en hogere kwaliteit koffie te produceren.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0014-4000-8000-000000000014",
+    "name": "Pacific Blend",
+    "origin": {
+      "country": "Brazil & Colombia & Indonesia",
+      "region": null,
+      "flag": "🇧🇷"
+    },
     "process": "Washed",
     "roastLevel": "Medium",
-    "flavorTags": ["toffee", "apple", "almond", "dried apricot"],
-    "tastingNote": "A well-balanced, crowd-pleasing cup with toffee sweetness, crisp apple acidity, and a roasted almond nuttiness. The dried apricot note lingers warmly through the finish.",
-    "producer": "ASDECOHUE Co-op",
-    "altitude": "1,500–2,000 m",
-    "harvestSeason": "December–March"
+    "flavorTags": [
+      "sweet",
+      "spicy",
+      "full body"
+    ],
+    "tastingNote": "De Pacific Blend is zo samengesteld dat kruidige aroma’s en zoethout van een Indonesische koffie een spannend accent geven aan een klassieke volzoete basis van Braziliaanse en Colombiaanse bonen. Dit is een bijzondere koffie met smaaktonen die je niet vaak samen tegenkomt, maar juist dat bijzondere ",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
   },
   {
-    "id": "B1C2D3E4-0008-0008-0008-800000000008",
-    "name": "Tarrazu Anaerobic",
-    "origin": { "country": "Costa Rica", "region": "Tarrazú", "flag": "🇨🇷" },
+    "id": "C0FFEE02-0015-4000-8000-000000000015",
+    "name": "Organic Blend",
+    "origin": {
+      "country": "Peru & Honduras",
+      "region": null,
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "caramel",
+      "sweet",
+      "creamy"
+    ],
+    "tastingNote": "De Organic Blend is een zoete blend met tonen van melkchocolade, karamel en toffee. Deze selectie bestaat uit 100% biologisch geteelde koffies uit Peru en Honduras.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0016-4000-8000-000000000016",
+    "name": "Latin America Blend",
+    "origin": {
+      "country": "Brazil & Nicaragua",
+      "region": "Minas Gerais",
+      "flag": "🇧🇷"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "sweet",
+      "spicy",
+      "full body"
+    ],
+    "tastingNote": "De Latin America is onze zoete en kruidige blend. Voor liefhebbers van een cappuccino is onze Latin America heerlijk.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE02-0017-4000-8000-000000000017",
+    "name": "Original Blend",
+    "origin": {
+      "country": "Brazil & Ethiopia",
+      "region": null,
+      "flag": "🇧🇷"
+    },
+    "process": "Washed",
+    "roastLevel": "Medium",
+    "flavorTags": [
+      "chocolate",
+      "fruity",
+      "sweet"
+    ],
+    "tastingNote": "Our Original Blend brings together the best of two continents. A super sweet Brazilian coffee with chocolate tones to which we give a fresh accent with a fruity Yirgacheffe from Ethiopia.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Giraffe Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0001-4000-8000-000000000001",
+    "name": "El Ingenio-Meraki",
+    "origin": {
+      "country": "El Salvador",
+      "region": null,
+      "flag": "🇸🇻"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "dried fruit",
+      "green apple",
+      "fudge",
+      "rounded mouthfeel"
+    ],
+    "tastingNote": "Attention! This coffee has a sticker on the packaging with a brewing recipe designed exclusively for the Meraki espresso machine.",
+    "producer": "El Ingenio in El Salvador by the Urrutia family",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0002-4000-8000-000000000002",
+    "name": "Finca Soledad",
+    "origin": {
+      "country": "Ecuador",
+      "region": "Imbabura",
+      "flag": "🇪🇨"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "apricot pie",
+      "elderflower",
+      "clementine"
+    ],
+    "tastingNote": "We’re excited to introduce a new coffee from our friend Pepe Jijón — Finca Soledad. This washed Typica lot is exceptionally elegant, with a vibrant, juicy mouthfeel that keeps us coming back for another cup.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0003-4000-8000-000000000003",
+    "name": "Pepe Jijón",
+    "origin": {
+      "country": "Ecuador",
+      "region": "Imbabura",
+      "flag": "🇪🇨"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "complex",
+      "clean"
+    ],
+    "tastingNote": "We’re excited to introduce a new coffee from our friend Pepe Jijón! This exceptional Sidra from Finca Soledad is one we simply couldn’t wait to share with you.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0004-4000-8000-000000000004",
+    "name": "Shyira",
+    "origin": {
+      "country": "Rwanda",
+      "region": null,
+      "flag": "🇷🇼"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "sweet orange",
+      "redcurrant",
+      "rooibos"
+    ],
+    "tastingNote": "We’re excited to share another delicious coffee from Rwanda! The Shyira coffee is named after the Shyira Coffee Washing Station, which showcases the resilience and potential of coffee farming in Nyabihu.",
+    "producer": null,
+    "altitude": "1,850–2,300 m",
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0005-4000-8000-000000000005",
+    "name": "Acacia Hills",
+    "origin": {
+      "country": "Tanzania",
+      "region": null,
+      "flag": "🇹🇿"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "cloudberry",
+      "chamomile",
+      "cane sugar"
+    ],
+    "tastingNote": "This washed Geisha is produced by Leon and Aideen Christianakis at Acacia Hills Coffee Estate in Oldeani, Karatu, at elevations ranging from 1,750 to 1,950 meters above sea level. It is a coffee that beautifully showcases the extraordinary potential of Tanzanian specialty coffee.",
+    "producer": "Leon and Aideen Christianakis at Acacia Hills Coffe",
+    "altitude": "1,750–1,950 m",
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0006-4000-8000-000000000006",
+    "name": "El Ingenio",
+    "origin": {
+      "country": "El Salvador",
+      "region": null,
+      "flag": "🇸🇻"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "dried fruit",
+      "green apple",
+      "fudge",
+      "rounded mouthfeel"
+    ],
+    "tastingNote": "This coffee is grown at El Ingenio in El Salvador by the Urrutia family. Once picked, the coffee cherries are transported to San Antonio, the wet mill run by Enrique Urrutia.",
+    "producer": "El Ingenio in El Salvador by the Urrutia family",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0007-4000-8000-000000000007",
+    "name": "Rosa Dominguez",
+    "origin": {
+      "country": "Peru",
+      "region": null,
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "red apple",
+      "clementine",
+      "fudge",
+      "rounded aftertaste"
+    ],
+    "tastingNote": "For the first time, we are proud to present a coffee from Peru as part of our selection. At Manhattan Coffee Roasters, we are constantly working to expand our range and discover new and exciting flavor experiences.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0008-4000-8000-000000000008",
+    "name": "Kalila Kantengwa",
+    "origin": {
+      "country": "Rwanda",
+      "region": null,
+      "flag": "🇷🇼"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "complex",
+      "clean"
+    ],
+    "tastingNote": "We are excited to announce the release of a very special coffee from Rwanda. This marks the first time we have curated a Rwandan coffee for our World Class category, and the experience of tasting it was tremendous!",
+    "producer": null,
+    "altitude": "1650–1900 m",
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0009-4000-8000-000000000009",
+    "name": "Keramo",
+    "origin": {
+      "country": "Ethiopia",
+      "region": null,
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "bright yellow apple",
+      "fresh lime"
+    ],
+    "tastingNote": "This washed coffee is a vibrant addition to our Ethiopian lineup, alongside Natural Bombe and Decaffeinated Kebena. Grown in the Bombe mountains at elevations of up to 2,300 meters, Keramo is produced by around 1,500 smallholder farmers working in partnership with Daye Bensa.",
+    "producer": null,
+    "altitude": "2,300 m",
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0010-4000-8000-000000000010",
+    "name": "Bombe",
+    "origin": {
+      "country": "Ethiopia",
+      "region": null,
+      "flag": "🇪🇹"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "complex",
+      "clean"
+    ],
+    "tastingNote": "We’re excited to welcome another exceptional Ethiopian coffee to our lineup. This naturally processed lot from Daye Bensa Coffee, produced by Assefa and Mulugeta Dukamo, showcases everything we love about high-elevation Sidama coffees — clarity, elegance, and vibrant fruit character.",
+    "producer": "Assefa and Mulugeta Dukamo",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0011-4000-8000-000000000011",
+    "name": "Sweet Valley",
+    "origin": {
+      "country": "Colombia",
+      "region": null,
+      "flag": "🇨🇴"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "complex",
+      "clean"
+    ],
+    "tastingNote": "This coffee was originally discontinued, but in collaboration with CGLE we were able to help revive this coffee and redevelop the processing and production to bring it back to life, exclusively for us! For those new to this coffee, it is a naturally processed Colombia varietal coming from the Potosi",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE03-0012-4000-8000-000000000012",
+    "name": "Jose Jijón",
+    "origin": {
+      "country": "Ecuador",
+      "region": "Putushio",
+      "flag": "🇪🇨"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clementine",
+      "white grape",
+      "rose"
+    ],
+    "tastingNote": "We are excited to announce the return of the incredible Mejorado from Pepe and Jose Jijon! This new batch comes from their high-altitude farm, Putushio, located at 2,222 meters above sea level.",
+    "producer": null,
+    "altitude": "2,222 m",
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE04-0001-4000-8000-000000000001",
+    "name": "Bryan Bautista",
+    "origin": {
+      "country": "Honduras",
+      "region": "La Paz",
+      "flag": "🇭🇳"
+    },
     "process": "Anaerobic",
     "roastLevel": "Light",
-    "flavorTags": ["tropical fruit", "passion fruit", "hibiscus", "grape"],
-    "tastingNote": "An adventurous anaerobic that leads with explosive passion fruit and tropical aromatics. Hibiscus tea acidity and a grape-skin finish make this one for the experimentally minded.",
-    "producer": "Finca La Pastora",
-    "altitude": "1,700–1,900 m",
-    "harvestSeason": "December–February"
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Sometimes, we just feel like buying some amazing coffees that come across our paths. This is one of them.",
+    "producer": null,
+    "altitude": "1,750 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   },
   {
-    "id": "B1C2D3E4-0009-0009-0009-900000000009",
-    "name": "Sumatra Mandheling",
-    "origin": { "country": "Indonesia", "region": "North Sumatra", "flag": "🇮🇩" },
-    "process": "Wet Hulled",
-    "roastLevel": "Medium Dark",
-    "flavorTags": ["cedar", "dark chocolate", "earthy", "tobacco"],
-    "tastingNote": "Full-bodied and syrupy, with distinctive earthy cedar and tobacco notes underscored by bittersweet dark chocolate. The wet-hulled process gives this an unmistakably Indonesian character.",
-    "producer": "Wahana Estate",
-    "altitude": "1,200–1,500 m",
-    "harvestSeason": "June–October"
+    "id": "C0FFEE04-0002-4000-8000-000000000002",
+    "name": "Cultivares",
+    "origin": {
+      "country": "Colombia",
+      "region": "Pitalito, Huila",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Founded by 4th generation farmer Santiago Noriega only 5 years ago, this farm puts its focus on rare, exotic varieties.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   },
   {
-    "id": "B1C2D3E4-0010-0010-0010-A00000000010",
-    "name": "Geisha Natural",
-    "origin": { "country": "Panama", "region": "Boquete", "flag": "🇵🇦" },
+    "id": "C0FFEE04-0003-4000-8000-000000000003",
+    "name": "Passeio",
+    "origin": {
+      "country": "Brazil",
+      "region": "Sul-de-minas",
+      "flag": "🇧🇷"
+    },
     "process": "Natural",
     "roastLevel": "Light",
-    "flavorTags": ["peach nectar", "orange blossom", "white tea", "honey"],
-    "tastingNote": "The legendary Geisha varietal at its most expressive. Peach nectar and orange blossom perfume the cup, with white tea delicacy and a long honey sweetness that simply refuses to fade.",
-    "producer": "Hacienda La Esmeralda",
-    "altitude": "1,600–1,900 m",
-    "harvestSeason": "March–April"
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Natural-processed Yellow Catuai, Mundo Novo, Acaia from Sul-de-minas, Brazil.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   },
   {
-    "id": "B1C2D3E4-0011-0011-0011-B00000000011",
-    "name": "Kayanza Washed",
-    "origin": { "country": "Burundi", "region": "Kayanza", "flag": "🇧🇮" },
+    "id": "C0FFEE04-0004-4000-8000-000000000004",
+    "name": "La Villa",
+    "origin": {
+      "country": "Colombia",
+      "region": "Isnos, Huila",
+      "flag": "🇨🇴"
+    },
     "process": "Washed",
     "roastLevel": "Light",
-    "flavorTags": ["red plum", "blood orange", "brown sugar", "clean"],
-    "tastingNote": "Bright and clean with red plum sweetness, blood orange acidity, and a comforting brown sugar finish. Exceptional clarity and sweetness make this a great introduction to East African coffees.",
-    "producer": "Mpanga Washing Station",
-    "altitude": "1,800–2,000 m",
-    "harvestSeason": "April–June"
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Sometimes, I just feel like buying some amazing coffees that come across my path. This is one of them.",
+    "producer": null,
+    "altitude": "1950 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   },
   {
-    "id": "B1C2D3E4-0012-0012-0012-C00000000012",
-    "name": "Nyungwe Honey",
-    "origin": { "country": "Rwanda", "region": "Nyungwe Forest", "flag": "🇷🇼" },
-    "process": "Honey",
-    "roastLevel": "Medium Light",
-    "flavorTags": ["caramel apple", "nectarine", "vanilla", "floral"],
-    "tastingNote": "Soft and fruit-forward, with caramel apple and nectarine sweetness balanced by a subtle vanilla creaminess. The honey process adds texture without losing the natural clarity of the varietal.",
-    "producer": "Kinini Washing Station",
-    "altitude": "1,700–2,100 m",
-    "harvestSeason": "March–May"
-  },
-  {
-    "id": "B1C2D3E4-0013-0013-0013-D00000000013",
-    "name": "Cajamarca Natural",
-    "origin": { "country": "Peru", "region": "Cajamarca", "flag": "🇵🇪" },
-    "process": "Natural",
-    "roastLevel": "Medium",
-    "flavorTags": ["strawberry", "molasses", "walnut", "milk chocolate"],
-    "tastingNote": "A rich, fruit-forward natural from Peru's northern highlands. Fresh strawberry and molasses sweetness lead, with a walnut and milk chocolate backbone that makes it an ideal everyday drinker.",
-    "producer": "CENFROCAFE Co-op",
-    "altitude": "1,400–1,900 m",
-    "harvestSeason": "May–July"
-  },
-  {
-    "id": "B1C2D3E4-0014-0014-0014-E00000000014",
-    "name": "Marcala Carbonic",
-    "origin": { "country": "Honduras", "region": "La Paz (Marcala)", "flag": "🇭🇳" },
-    "process": "Carbonic Maceration",
-    "roastLevel": "Light",
-    "flavorTags": ["strawberry soda", "rose", "guava", "lime"],
-    "tastingNote": "A wildly experimental carbonic maceration with strawberry soda aromatics and rose petal sweetness. Guava and lime acidity make it effervescent and unlike anything else in the bag. Best black.",
-    "producer": "Finca Santa Rosa",
-    "altitude": "1,400–1,700 m",
-    "harvestSeason": "November–February"
-  },
-  {
-    "id": "B1C2D3E4-0015-0015-0015-F00000000015",
-    "name": "Chiapas Oaxaca Blend",
-    "origin": { "country": "Mexico", "region": "Chiapas / Oaxaca", "flag": "🇲🇽" },
+    "id": "C0FFEE04-0005-4000-8000-000000000005",
+    "name": "El Renacer",
+    "origin": {
+      "country": "Colombia",
+      "region": null,
+      "flag": "🇨🇴"
+    },
     "process": "Washed",
-    "roastLevel": "Medium",
-    "flavorTags": ["dark chocolate", "orange peel", "cinnamon", "toasted almond"],
-    "tastingNote": "A comforting blend of two great Mexican regions. Dark chocolate and toasted almond dominate, with a bright orange peel top note and a whisper of cinnamon that makes it perfect for the morning.",
-    "producer": "CESMACH Co-op",
-    "altitude": "1,100–1,600 m",
-    "harvestSeason": "November–February"
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "My first thermal shock coffee; a temperature-based process that creates depth and intensity.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   },
   {
-    "id": "B1C2D3E4-0016-0016-0016-000000000016",
-    "name": "Mokha Port Natural",
-    "origin": { "country": "Yemen", "region": "Haraz Mountains", "flag": "🇾🇪" },
+    "id": "C0FFEE04-0006-4000-8000-000000000006",
+    "name": "Kianamui",
+    "origin": {
+      "country": "Kenya",
+      "region": "Kirinyaga",
+      "flag": "🇰🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "An affordable, seasonal special to get people acquainted with the brightness Kenyan coffees have to offer.",
+    "producer": null,
+    "altitude": "1,800 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0007-4000-8000-000000000007",
+    "name": "Mae Chedi",
+    "origin": {
+      "country": "Thailand",
+      "region": "Mae Chedi, Chiang Rai",
+      "flag": "🇹🇭"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "This coffee is grown in a region where tea was once the dominant crop, and where coffee is now being taken seriously by a new generation of farmers. It comes from a cooperative of nineteen young farmers who are experimenting with modern processing techniques to create unique flavor profiles. Their c",
+    "producer": null,
+    "altitude": "1,100 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0008-4000-8000-000000000008",
+    "name": "Mooleh Manay Excelsa",
+    "origin": {
+      "country": "India",
+      "region": "Coorg, Karnataka",
+      "flag": "🇮🇳"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "The Excelsa variety is a unique and relatively unknown specie of coffee that does not belong to the Arabica family. It grows on trees rather than shrubs, has a distinct round shape and tastes different from any Arabica we’ve ever encountered!",
+    "producer": null,
+    "altitude": "900-1200 M",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0009-4000-8000-000000000009",
+    "name": "Fausto Romo",
+    "origin": {
+      "country": "Ecuador",
+      "region": "Pichincha",
+      "flag": "🇪🇨"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "We added Sidra to our collection because we were curious about the variety. It’s not one you see often, and when we tasted the first samples, it immediately stood out. It wasn’t necessarily loud or flashy, but quietly beautiful. Clean, elegant, layered, and with some similarities to Gesha. After a s",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0010-4000-8000-000000000010",
+    "name": "Huila decaf",
+    "origin": {
+      "country": "Colombia",
+      "region": "Pitalito, Huila",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "dark chocolate",
+      "red wine",
+      "pear",
+      "plums",
+      "dark chocolate"
+    ],
+    "tastingNote": "Decaffeinated using ethyl acetate: a by-product of sugar cane production which is in abundance in Colombia.",
+    "producer": null,
+    "altitude": "1,400 – 2,100 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0011-4000-8000-000000000011",
+    "name": "Espana",
+    "origin": {
+      "country": "El Salvador",
+      "region": "Canton Quezalapa, Apaneca",
+      "flag": "🇸🇻"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Sometimes, we just feel like buying some amazing coffees that come across our paths. This is one of them.",
+    "producer": null,
+    "altitude": "1,400 – 1,500 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0012-4000-8000-000000000012",
+    "name": "Fontana",
+    "origin": {
+      "country": "Brazil",
+      "region": "Socorro, São Paulo",
+      "flag": "🇧🇷"
+    },
     "process": "Natural",
-    "roastLevel": "Medium",
-    "flavorTags": ["dried fig", "tamarind", "cacao nib", "aged wood"],
-    "tastingNote": "An ancient coffee with a story to match. Dried fig sweetness, tamarind tartness, and cacao nib depth are woven through a woody, almost smoky base that speaks to centuries of unbroken cultivation.",
-    "producer": "Al-Qafari Farm",
-    "altitude": "1,500–2,500 m",
-    "harvestSeason": "October–November"
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "Whenever you want a Brazilian coffee that feels like more than just another Brazilian, Fontana is the one. Creamy, comforting and just curious enough to stand out. It placed second in the 2024 regional championships and marks Ellen Fontana’s first export to Europe. With her commitment to agroforestr",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0013-4000-8000-000000000013",
+    "name": "Sironko",
+    "origin": {
+      "country": "Uganda",
+      "region": "Rwenzori",
+      "flag": "🇺🇬"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "A combination of the renowned SL varieties, the rich Rwenzori soil, and careful monitoring by AgriEvolve brings out the full potential of Ugandan coffee.",
+    "producer": null,
+    "altitude": "1,500 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0014-4000-8000-000000000014",
+    "name": "Argote Anaerobic",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "nutmeg",
+      "elderflower",
+      "red berry",
+      "blackcurrant",
+      "darjeeling tea"
+    ],
+    "tastingNote": "After extensive fermentation classes and experiments, Juan Pablo started actively controlling his coffee’s fermentation.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0015-4000-8000-000000000015",
+    "name": "Argote Juan Pablo Super Special",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "rum",
+      "strawberry",
+      "raisin",
+      "toffee",
+      "dark chocolate"
+    ],
+    "tastingNote": "This is what happens when you give an excited producer total freedom to apply his newfound knowledge of fermentation.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0016-4000-8000-000000000016",
+    "name": "Ana Restrepo",
+    "origin": {
+      "country": "Colombia",
+      "region": "Vereda Totoró, Sevilla, Valle de Cauca",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "marzipan",
+      "honey",
+      "red apples",
+      "dark chocolate"
+    ],
+    "tastingNote": "After returning to her parents’ farm to continue the family trade, Ana Restrepo decided to transform her coffee into a specialty grade experience.",
+    "producer": null,
+    "altitude": "1,500 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0017-4000-8000-000000000017",
+    "name": "Argote Peaberry",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "chocolate",
+      "red apple",
+      "raspberry",
+      "darjeeling tea",
+      "chocolate"
+    ],
+    "tastingNote": "This peaberry selection requires a labour-intensive process, but gives us a brighter, more explosive coffee.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0018-4000-8000-000000000018",
+    "name": "Argote Lactic Anaerobic",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "nutmeg",
+      "elderflower",
+      "red berry",
+      "blackcurrant",
+      "darjeeling tea"
+    ],
+    "tastingNote": "After extensive fermentation classes and experiments, Juan Pablo started actively controlling his coffee’s fermentation.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0019-4000-8000-000000000019",
+    "name": "Argote Natural",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "rum",
+      "strawberry",
+      "raisin",
+      "toffee",
+      "dark chocolate"
+    ],
+    "tastingNote": "After an explosive interest in Colombian naturals, we produced one together with Juan Pablo Argote to diversify his flavour portfolio.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0020-4000-8000-000000000020",
+    "name": "Keramo Natural",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Bensa, Sidama",
+      "flag": "🇪🇹"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "lavender",
+      "passion fruit",
+      "strawberry",
+      "lime",
+      "rum"
+    ],
+    "tastingNote": "This incredible Ethiopian cooperative has made a name for itself over the past years with true dedication to quality processes.",
+    "producer": null,
+    "altitude": "2,400 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0021-4000-8000-000000000021",
+    "name": "Bant Sawk",
+    "origin": {
+      "country": "Myanmar",
+      "region": "Taunggy, Southern Shan",
+      "flag": "🇲🇲"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "candied orange",
+      "strawberry",
+      "banana",
+      "spiced toffee"
+    ],
+    "tastingNote": "Fed up with oppression by opium drug lords and local authorities, this farmer group embraced specialty coffee to collectively pave their road to independence.",
+    "producer": null,
+    "altitude": "1,100 – 1,600 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0022-4000-8000-000000000022",
+    "name": "Churupampa",
+    "origin": {
+      "country": "Peru",
+      "region": "Chirinos, San Ignacio",
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "clean",
+      "sweet"
+    ],
+    "tastingNote": "The result of a quality-oriented, sustainable mindset where the entire community benefits from the years of effort by a passionate family.",
+    "producer": null,
+    "altitude": "1,600 – 1,900 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0023-4000-8000-000000000023",
+    "name": "Argote Washed",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "chocolate",
+      "red apple",
+      "raspberry",
+      "darjeeling tea",
+      "chocolate"
+    ],
+    "tastingNote": "The story about how Juan Pablo and Efrain Argote became pioneers and took the community around them into the world of specialty coffee.",
+    "producer": null,
+    "altitude": "1,950 – 2,000 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE04-0024-4000-8000-000000000024",
+    "name": "Keramo Washed",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Bensa, Sidama",
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "jasmin",
+      "passion fruit",
+      "peach",
+      "caramel",
+      "earl grey tea"
+    ],
+    "tastingNote": "This incredible Ethiopian cooperative has made a name for itself over the past years with true dedication to quality processes.",
+    "producer": null,
+    "altitude": "2,400 m.a.s.l.",
+    "harvestSeason": null,
+    "roaster": "Shokunin Coffee"
   }
 ]

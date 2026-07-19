@@ -50,6 +50,12 @@ struct CoffeeDetailView: View {
                     .joined(separator: ", "))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                if let roaster = coffee.roaster {
+                    Label(roaster, systemImage: "flame")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color.terracotta)
+                }
             }
             Spacer()
             ProcessBadge(process: coffee.process)

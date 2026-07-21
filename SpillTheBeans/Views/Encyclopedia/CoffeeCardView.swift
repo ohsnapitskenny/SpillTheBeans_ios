@@ -7,13 +7,9 @@ struct CoffeeCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Flag + process badge row
-            HStack(alignment: .top) {
-                Text(coffee.origin.flag)
-                    .font(.system(size: 36))
-                Spacer()
-                ProcessBadge(process: coffee.process)
-            }
+            // Flag
+            Text(coffee.origin.flag)
+                .font(.system(size: 36))
 
             // Name
             Text(coffee.name)
@@ -38,22 +34,15 @@ struct CoffeeCardView: View {
                     .lineLimit(1)
             }
 
+            // Push the roast bar to the bottom so cards align in the grid row
+            Spacer(minLength: 0)
+
             // Roast bar
             VStack(alignment: .leading, spacing: 3) {
                 Text(coffee.roastLevel.rawValue)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                 RoastLevelBar(level: coffee.roastLevel)
-            }
-
-            // Push flavor tags to bottom so cards align in the grid row
-            Spacer(minLength: 0)
-
-            // First 3 flavor tags
-            FlowLayout(spacing: 4) {
-                ForEach(coffee.flavorTags.prefix(3), id: \.self) { tag in
-                    FlavorTagView(tag: tag)
-                }
             }
         }
         .padding(14)
@@ -71,13 +60,8 @@ struct CoffeeCarouselCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Flag + process badge
-            HStack(alignment: .top) {
-                Text(coffee.origin.flag)
-                    .font(.system(size: 32))
-                Spacer()
-                ProcessBadge(process: coffee.process)
-            }
+            Text(coffee.origin.flag)
+                .font(.system(size: 32))
 
             Text(coffee.name)
                 .font(.subheadline)
@@ -93,17 +77,20 @@ struct CoffeeCarouselCard: View {
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
 
+            if let roaster = coffee.roaster {
+                Text(roaster)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.terracotta)
+                    .lineLimit(1)
+            }
+
             Spacer(minLength: 0)
 
-            // First 2 flavor tags
-            FlowLayout(spacing: 4) {
-                ForEach(coffee.flavorTags.prefix(2), id: \.self) { tag in
-                    FlavorTagView(tag: tag)
-                }
-            }
+            RoastLevelBar(level: coffee.roastLevel)
         }
         .padding(14)
-        .frame(width: 160, alignment: .topLeading)
+        .frame(width: 160, height: 150, alignment: .topLeading)
         .background(Color.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.07), radius: 6, y: 3)

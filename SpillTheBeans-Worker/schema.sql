@@ -16,6 +16,7 @@ CREATE TABLE coffees (
   producer       TEXT,
   altitude       TEXT,
   harvest_season TEXT,
+  roaster        TEXT,            -- Dutch roaster whose lineup this bean is from
   created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

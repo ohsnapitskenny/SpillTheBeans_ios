@@ -163,6 +163,7 @@ function coffeeFromRow(r) {
     producer: r.producer,
     altitude: r.altitude,
     harvestSeason: r.harvest_season,
+    roaster: r.roaster,
   };
 }
 

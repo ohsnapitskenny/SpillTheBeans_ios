@@ -13,6 +13,8 @@ struct Coffee: Identifiable, Codable, Hashable {
     let producer: String?
     let altitude: String?
     let harvestSeason: String?
+    /// The Dutch roaster whose lineup this bean comes from.
+    let roaster: String?
 }
 
 // MARK: - Origin

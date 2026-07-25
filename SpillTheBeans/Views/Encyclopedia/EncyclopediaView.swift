@@ -147,12 +147,31 @@ struct EncyclopediaView: View {
                 .frame(minHeight: 200)
             } else {
                 LazyVGrid(columns: columns, spacing: 14) {
-                    ForEach(viewModel.filteredCoffees) { coffee in
+                    ForEach(viewModel.displayedCoffees) { coffee in
                         NavigationLink(value: coffee) {
                             CoffeeCardView(coffee: coffee)
                         }
                         .buttonStyle(.plain)
+                        .onAppear {
+                            // Reaching the last visible card = hit the bottom.
+                            if coffee.id == viewModel.displayedCoffees.last?.id {
+                                Task { await viewModel.loadNextPage() }
+                            }
+                        }
                     }
+                }
+
+                if viewModel.isLoadingMore {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .tint(Color.espresso)
+                        Text("Loading more beans…")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                    }
+                    .padding(.vertical, 12)
                 }
             }
         }

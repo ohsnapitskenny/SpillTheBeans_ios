@@ -9,10 +9,24 @@ final class EncyclopediaViewModel {
     var coffees: [Coffee] = []
     var isLoading = false
     var errorMessage: String?
-    var searchText = ""
-    var selectedProcess: ProcessingMethod?
-    var selectedCountry: String?
-    var selectedFlavorTag: String?
+    var searchText = "" {
+        didSet { resetPagination() }
+    }
+    var selectedProcess: ProcessingMethod? {
+        didSet { resetPagination() }
+    }
+    var selectedCountry: String? {
+        didSet { resetPagination() }
+    }
+    var selectedFlavorTag: String? {
+        didSet { resetPagination() }
+    }
+
+    // MARK: Pagination
+    // The grid shows pages of 20; scrolling to the bottom loads the next page.
+    private static let pageSize = 20
+    private(set) var visibleCount = EncyclopediaViewModel.pageSize
+    var isLoadingMore = false
 
     private let service: any CoffeeServiceProtocol
 
@@ -47,6 +61,7 @@ final class EncyclopediaViewModel {
             result = result.filter {
                 $0.name.localizedCaseInsensitiveContains(searchText)
                 || $0.origin.country.localizedCaseInsensitiveContains(searchText)
+                || ($0.roaster?.localizedCaseInsensitiveContains(searchText) ?? false)
                 || $0.flavorTags.contains { $0.localizedCaseInsensitiveContains(searchText) }
             }
         }
@@ -56,6 +71,15 @@ final class EncyclopediaViewModel {
         if let tag    = selectedFlavorTag { result = result.filter { $0.flavorTags.contains(tag) } }
 
         return result
+    }
+
+    /// The slice of filtered coffees currently shown in the grid.
+    var displayedCoffees: [Coffee] {
+        Array(filteredCoffees.prefix(visibleCount))
+    }
+
+    var canLoadMore: Bool {
+        visibleCount < filteredCoffees.count
     }
 
     var hasActiveFilters: Bool {
@@ -78,6 +102,21 @@ final class EncyclopediaViewModel {
             errorMessage = error.localizedDescription
         }
         isLoading = false
+    }
+
+    /// Called when the last visible card scrolls into view.
+    /// The brief delay lets the bottom spinner read as a loading step instead
+    /// of the grid growing instantly.
+    func loadNextPage() async {
+        guard canLoadMore, !isLoadingMore else { return }
+        isLoadingMore = true
+        try? await Task.sleep(nanoseconds: 400_000_000)
+        visibleCount = min(visibleCount + Self.pageSize, filteredCoffees.count)
+        isLoadingMore = false
+    }
+
+    private func resetPagination() {
+        visibleCount = Self.pageSize
     }
 
     func clearFilters() {

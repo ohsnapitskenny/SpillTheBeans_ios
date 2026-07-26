@@ -42,12 +42,16 @@ enum DataServiceError: LocalizedError, Sendable {
     case resourceNotFound(String)
     case decodingFailed(String)
     case networkUnavailable
+    case requestFailed(String)
+    case notAuthenticated
 
     var errorDescription: String? {
         switch self {
         case .resourceNotFound(let name): return "Bundle resource not found: \(name)"
         case .decodingFailed(let detail): return "Decoding error: \(detail)"
         case .networkUnavailable:         return "No network connection."
+        case .requestFailed(let detail):  return detail
+        case .notAuthenticated:           return "You need to be signed in to do that."
         }
     }
 }

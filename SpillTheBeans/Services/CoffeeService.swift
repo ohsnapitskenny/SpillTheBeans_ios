@@ -37,6 +37,33 @@ enum API {
         }
         return try makeDecoder().decode(T.self, from: data)
     }
+
+    static func post<Body: Encodable, T: Decodable>(
+        _ path: String, body: Body, token: String? = nil
+    ) async throws -> T {
+        var request = URLRequest(url: baseURL.appendingPathComponent(path))
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        request.httpBody = try JSONEncoder().encode(body)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse else {
+            throw DataServiceError.networkUnavailable
+        }
+        guard http.statusCode == 200 else {
+            // Surface the worker's error message when it sends one.
+            let message = (try? JSONDecoder().decode(APIErrorBody.self, from: data))?.error
+            throw DataServiceError.requestFailed(message ?? "Request failed (\(http.statusCode))")
+        }
+        return try makeDecoder().decode(T.self, from: data)
+    }
+}
+
+private struct APIErrorBody: Decodable {
+    let error: String
 }
 
 // MARK: - Protocol

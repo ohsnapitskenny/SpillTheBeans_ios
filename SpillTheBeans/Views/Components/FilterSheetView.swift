@@ -8,53 +8,53 @@ struct FilterSheetView: View {
     var body: some View {
         NavigationStack {
             List {
-                // Process filter
+                // Process filter — multi-select
                 Section("Processing Method") {
                     noneRow(
                         label: "All methods",
-                        isSelected: viewModel.selectedProcess == nil
-                    ) { viewModel.selectedProcess = nil }
+                        isSelected: viewModel.selectedProcesses.isEmpty
+                    ) { viewModel.selectedProcesses = [] }
 
                     ForEach(ProcessingMethod.allCases) { method in
                         filterRow(
                             label: method.rawValue,
-                            isSelected: viewModel.selectedProcess == method
+                            isSelected: viewModel.selectedProcesses.contains(method)
                         ) {
-                            viewModel.selectedProcess = (viewModel.selectedProcess == method) ? nil : method
+                            viewModel.selectedProcesses.toggleMembership(method)
                         }
                     }
                 }
 
-                // Country filter
+                // Country filter — multi-select
                 Section("Origin Country") {
                     noneRow(
                         label: "All countries",
-                        isSelected: viewModel.selectedCountry == nil
-                    ) { viewModel.selectedCountry = nil }
+                        isSelected: viewModel.selectedCountries.isEmpty
+                    ) { viewModel.selectedCountries = [] }
 
                     ForEach(viewModel.availableCountries, id: \.self) { country in
                         filterRow(
                             label: country,
-                            isSelected: viewModel.selectedCountry == country
+                            isSelected: viewModel.selectedCountries.contains(country)
                         ) {
-                            viewModel.selectedCountry = (viewModel.selectedCountry == country) ? nil : country
+                            viewModel.selectedCountries.toggleMembership(country)
                         }
                     }
                 }
 
-                // Flavor tag filter
+                // Flavor tag filter — multi-select
                 Section("Flavor Note") {
                     noneRow(
                         label: "All flavors",
-                        isSelected: viewModel.selectedFlavorTag == nil
-                    ) { viewModel.selectedFlavorTag = nil }
+                        isSelected: viewModel.selectedFlavorTags.isEmpty
+                    ) { viewModel.selectedFlavorTags = [] }
 
                     ForEach(viewModel.availableFlavorTags, id: \.self) { tag in
                         filterRow(
                             label: tag,
-                            isSelected: viewModel.selectedFlavorTag == tag
+                            isSelected: viewModel.selectedFlavorTags.contains(tag)
                         ) {
-                            viewModel.selectedFlavorTag = (viewModel.selectedFlavorTag == tag) ? nil : tag
+                            viewModel.selectedFlavorTags.toggleMembership(tag)
                         }
                     }
                 }
@@ -110,5 +110,14 @@ struct FilterSheetView: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Set toggle helper
+
+private extension Set {
+    /// Inserts the element if absent, removes it if present.
+    mutating func toggleMembership(_ element: Element) {
+        if contains(element) { remove(element) } else { insert(element) }
     }
 }

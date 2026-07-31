@@ -6,10 +6,14 @@ import Charts
 struct UserProfileView: View {
     @Environment(AuthService.self) private var authService
     @State private var reviews: [CoffeeReview] = []
+    /// Flavor tags for every coffee, keyed by id — used to derive the flavor
+    /// radar from the coffees the user has reviewed (reviews carry only the id).
+    @State private var coffeeTags: [UUID: [String]] = [:]
     @State private var isLoading = false
     @State private var showAuth  = false
     @State private var authMode  = AuthMode.signIn
     private let reviewService = APIReviewService()
+    private let coffeeService = APICoffeeService()
 
     var body: some View {
         NavigationStack {
@@ -103,7 +107,12 @@ struct UserProfileView: View {
                 } else if reviews.isEmpty {
                     emptyReviewsNote
                 } else {
-                    flavorProfileSection
+                    flavorRadarSection
+                        .padding(.horizontal)
+
+                    Divider().padding(.horizontal)
+
+                    brewMethodSection
                         .padding(.horizontal)
 
                     Divider().padding(.horizontal)
@@ -128,6 +137,12 @@ struct UserProfileView: View {
         .task {
             isLoading = true
             reviews = (try? await reviewService.fetchMyReviews(userId: user.id)) ?? []
+            if let coffees = try? await coffeeService.fetchCoffees() {
+                coffeeTags = Dictionary(
+                    coffees.map { ($0.id, $0.flavorTags) },
+                    uniquingKeysWith: { first, _ in first }
+                )
+            }
             isLoading = false
         }
     }
@@ -167,11 +182,91 @@ struct UserProfileView: View {
         .padding(.horizontal)
     }
 
-    // MARK: - Flavor Profile Chart
+    // MARK: - Flavor Radar
 
-    private var flavorProfileSection: some View {
+    private var flavorRadarSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             SectionHeader(title: "Flavor Profile")
+            Text("Based on the beans you've reviewed")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            let scores = flavorScores
+            if scores.contains(where: { $0.rawCount > 0 }) {
+                RadarChartView(scores: scores)
+                    .frame(height: 260)
+                    .padding(.top, 4)
+
+                if let top = scores.max(by: { $0.rawCount < $1.rawCount }), top.rawCount > 0 {
+                    HStack(spacing: 6) {
+                        Image(systemName: "sparkles")
+                            .font(.caption)
+                        Text("Your palate leans **\(top.name.lowercased())**")
+                            .font(.subheadline)
+                    }
+                    .foregroundStyle(Color.terracotta)
+                    .frame(maxWidth: .infinity)
+                }
+            } else {
+                Text("Review a few more coffees to reveal your flavor profile.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, minHeight: 120)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .padding()
+        .background(Color.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
+    }
+
+    /// Broad flavor axes for the radar, with the tag keywords that feed each.
+    private static let flavorCategories: [(name: String, keywords: [String])] = [
+        ("Fruity", ["berry","berries","blueberry","raspberry","strawberry","cherry","currant",
+                    "cranberry","apple","pear","peach","apricot","plum","nectarine","mango",
+                    "pineapple","tropical","passion","guava","lychee","grape","melon","fig",
+                    "raisin","date","banana","goji","cactus","gooseberry","papaya","fruit"]),
+        ("Citrus", ["citrus","orange","lemon","lime","grapefruit","bergamot","mandarin",
+                    "clementine","tangerine"]),
+        ("Floral", ["floral","jasmin","jasmine","rose","lavender","hibiscus","elderflower",
+                    "blossom","chamomile","lilac","magnolia","honeysuckle","violet","tea",
+                    "earl grey","darjeeling","rooibos","herbal"]),
+        ("Sweet", ["sweet","caramel","honey","sugar","toffee","molasses","vanilla","fudge",
+                   "nougat","syrup","candied"]),
+        ("Chocolate", ["chocolate","cocoa","cacao"]),
+        ("Nutty", ["nutty","almond","hazelnut","walnut","pecan","macadamia","cashew",
+                   "peanut","marzipan"]),
+    ]
+
+    /// Category scores from the reviewed coffees' flavor tags, normalised so the
+    /// strongest flavor reaches the outer ring.
+    private var flavorScores: [RadarChartView.Score] {
+        var counts: [String: Int] = [:]
+        for review in reviews {
+            guard let tags = coffeeTags[review.coffeeId] else { continue }
+            for tag in tags {
+                let t = tag.lowercased()
+                for cat in Self.flavorCategories
+                where cat.keywords.contains(where: { t.contains($0) }) {
+                    counts[cat.name, default: 0] += 1
+                }
+            }
+        }
+        let maxCount = max(counts.values.max() ?? 0, 1)
+        return Self.flavorCategories.map { cat in
+            let c = counts[cat.name] ?? 0
+            return RadarChartView.Score(name: cat.name,
+                                        value: Double(c) / Double(maxCount),
+                                        rawCount: c)
+        }
+    }
+
+    // MARK: - Brew Method Chart
+
+    private var brewMethodSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            SectionHeader(title: "Brew Methods")
             Text("Your brew method breakdown")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -256,3 +351,89 @@ struct UserProfileView: View {
 }
 
 // ReviewRowView and StarRatingView live in SharedComponents.swift
+
+// MARK: - RadarChartView
+
+/// A basic radar (spider) chart drawn with Canvas. Values are pre-normalised
+/// to 0...1, where 1 reaches the outer ring.
+struct RadarChartView: View {
+    struct Score: Identifiable {
+        let id = UUID()
+        let name: String
+        let value: Double   // 0...1
+        let rawCount: Int
+    }
+
+    let scores: [Score]
+
+    var body: some View {
+        Canvas { context, size in
+            let n = scores.count
+            guard n >= 3 else { return }
+
+            let center = CGPoint(x: size.width / 2, y: size.height / 2)
+            // Leave room around the plot for the axis labels.
+            let radius = min(size.width, size.height) / 2 - 30
+
+            func point(_ index: Int, _ r: Double) -> CGPoint {
+                let angle = -Double.pi / 2 + 2 * Double.pi * Double(index) / Double(n)
+                return CGPoint(x: center.x + cos(angle) * radius * r,
+                               y: center.y + sin(angle) * radius * r)
+            }
+
+            func polygon(at r: Double) -> Path {
+                var path = Path()
+                for i in 0..<n {
+                    let p = point(i, r)
+                    if i == 0 { path.move(to: p) } else { path.addLine(to: p) }
+                }
+                path.closeSubpath()
+                return path
+            }
+
+            // Concentric grid rings
+            for ring in stride(from: 0.25, through: 1.0, by: 0.25) {
+                context.stroke(polygon(at: ring), with: .color(.gray.opacity(0.18)), lineWidth: 1)
+            }
+
+            // Spokes
+            for i in 0..<n {
+                var spoke = Path()
+                spoke.move(to: center)
+                spoke.addLine(to: point(i, 1.0))
+                context.stroke(spoke, with: .color(.gray.opacity(0.15)), lineWidth: 1)
+            }
+
+            // Data polygon
+            var data = Path()
+            for i in 0..<n {
+                let p = point(i, max(0.04, scores[i].value))
+                if i == 0 { data.move(to: p) } else { data.addLine(to: p) }
+            }
+            data.closeSubpath()
+            context.fill(data, with: .color(Color.terracotta.opacity(0.25)))
+            context.stroke(data, with: .color(Color.terracotta), lineWidth: 2)
+
+            // Vertex dots
+            for i in 0..<n {
+                let p = point(i, max(0.04, scores[i].value))
+                let dot = Path(ellipseIn: CGRect(x: p.x - 3, y: p.y - 3, width: 6, height: 6))
+                context.fill(dot, with: .color(Color.terracotta))
+            }
+
+            // Axis labels
+            for i in 0..<n {
+                let p = point(i, 1.16)
+                let label = context.resolve(
+                    Text(scores[i].name)
+                        .font(.caption2)
+                        .foregroundStyle(Color.espresso)
+                )
+                let anchor: UnitPoint =
+                    abs(p.x - center.x) < 4 ? .center : (p.x < center.x ? .trailing : .leading)
+                context.draw(label, at: p, anchor: anchor)
+            }
+        }
+        .accessibilityLabel("Flavor profile radar chart")
+    }
+}

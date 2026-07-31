@@ -187,15 +187,7 @@ struct EncyclopediaView: View {
                             viewModel.searchText = ""
                     }
                 }
-                if let p = viewModel.selectedProcess {
-                    ActiveFilterChip(title: p.rawValue) { viewModel.selectedProcess = nil }
-                }
-                if let c = viewModel.selectedCountry {
-                    ActiveFilterChip(title: c) { viewModel.selectedCountry = nil }
-                }
-                if let t = viewModel.selectedFlavorTag {
-                    ActiveFilterChip(title: t) { viewModel.selectedFlavorTag = nil }
-                }
+                ActiveFilterChips(viewModel: viewModel)
                 Button("Clear all") { viewModel.clearFilters() }
                     .font(.caption)
                     .foregroundStyle(Color.terracotta)
@@ -305,20 +297,37 @@ struct SearchView: View {
     private var activeFiltersStrip: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                if let p = viewModel.selectedProcess {
-                    ActiveFilterChip(title: p.rawValue) { viewModel.selectedProcess = nil }
-                }
-                if let c = viewModel.selectedCountry {
-                    ActiveFilterChip(title: c) { viewModel.selectedCountry = nil }
-                }
-                if let t = viewModel.selectedFlavorTag {
-                    ActiveFilterChip(title: t) { viewModel.selectedFlavorTag = nil }
-                }
+                ActiveFilterChips(viewModel: viewModel)
                 Button("Clear all") { viewModel.clearFilters() }
                     .font(.caption)
                     .foregroundStyle(Color.terracotta)
             }
         }
         .padding(.vertical, 6)
+    }
+}
+
+// MARK: - Active filter chips (shared)
+
+/// One dismissible chip per selected filter value, across all facets.
+private struct ActiveFilterChips: View {
+    @Bindable var viewModel: EncyclopediaViewModel
+
+    var body: some View {
+        ForEach(ProcessingMethod.allCases.filter(viewModel.selectedProcesses.contains)) { method in
+            ActiveFilterChip(title: method.rawValue) {
+                viewModel.selectedProcesses.remove(method)
+            }
+        }
+        ForEach(viewModel.selectedCountries.sorted(), id: \.self) { country in
+            ActiveFilterChip(title: country) {
+                viewModel.selectedCountries.remove(country)
+            }
+        }
+        ForEach(viewModel.selectedFlavorTags.sorted(), id: \.self) { tag in
+            ActiveFilterChip(title: tag) {
+                viewModel.selectedFlavorTags.remove(tag)
+            }
+        }
     }
 }

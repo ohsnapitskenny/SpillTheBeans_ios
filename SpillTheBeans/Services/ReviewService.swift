@@ -6,7 +6,16 @@ import Foundation
 protocol ReviewServiceProtocol: Sendable {
     func fetchReviews(for coffeeId: UUID) async throws -> [CoffeeReview]
     func fetchMyReviews(userId: String) async throws -> [CoffeeReview]
-} 
+    func createReview(coffeeId: UUID, brewMethod: BrewMethod, rating: Int, note: String) async throws -> CoffeeReview
+}
+
+// Body for POST /reviews — the worker resolves the author from the session token.
+private struct NewReviewRequest: Encodable {
+    let coffeeId: String
+    let brewMethod: String
+    let rating: Int
+    let note: String
+}
 
 // MARK: - API Implementation
 
@@ -24,6 +33,19 @@ final class APIReviewService: ReviewServiceProtocol, Sendable {
             return []
         }
         return try await API.get("my/reviews", token: token)
+    }
+
+    func createReview(coffeeId: UUID, brewMethod: BrewMethod, rating: Int, note: String) async throws -> CoffeeReview {
+        guard let token = UserDefaults.standard.string(forKey: "spillthebeans.authToken") else {
+            throw DataServiceError.notAuthenticated
+        }
+        let body = NewReviewRequest(
+            coffeeId: coffeeId.uuidString,
+            brewMethod: brewMethod.rawValue,
+            rating: rating,
+            note: note
+        )
+        return try await API.post("reviews", body: body, token: token)
     }
 }
 
@@ -138,6 +160,20 @@ final class MockReviewService: ReviewServiceProtocol, Sendable {
                 date: date
             )
         }
+    }
+
+    func createReview(coffeeId: UUID, brewMethod: BrewMethod, rating: Int, note: String) async throws -> CoffeeReview {
+        try await Task.sleep(for: .milliseconds(150))
+        return CoffeeReview(
+            id: UUID(),
+            coffeeId: coffeeId,
+            userId: "me",
+            username: "me",
+            brewMethod: brewMethod,
+            rating: rating,
+            note: note,
+            date: Date()
+        )
     }
 }
 

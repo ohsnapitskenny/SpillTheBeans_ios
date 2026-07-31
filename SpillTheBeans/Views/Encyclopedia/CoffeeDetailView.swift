@@ -3,9 +3,19 @@ import SwiftUI
 struct CoffeeDetailView: View {
     let coffee: Coffee
 
+    @Environment(AuthService.self) private var authService
+
     @State private var reviews: [CoffeeReview] = []
     @State private var reviewsLoading = true
+    @State private var showingAddReview = false
+    @State private var showingSignInPrompt = false
     private let reviewService = APIReviewService()
+
+    /// Only signed-in (non-guest) users can post a review.
+    private var canReview: Bool {
+        guard let user = authService.currentUser else { return false }
+        return !user.isGuest
+    }
 
     var body: some View {
         ScrollView {
@@ -32,6 +42,25 @@ struct CoffeeDetailView: View {
         .task {
             reviews = (try? await reviewService.fetchReviews(for: coffee.id)) ?? []
             reviewsLoading = false
+        }
+        .sheet(isPresented: $showingAddReview) {
+            AddReviewView(coffee: coffee) { newReview in
+                // Show the new review immediately at the top of the list.
+                reviews.insert(newReview, at: 0)
+            }
+        }
+        .alert("Sign in to review", isPresented: $showingSignInPrompt) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Create an account or sign in from the Me tab to write a review.")
+        }
+    }
+
+    private func addReviewTapped() {
+        if canReview {
+            showingAddReview = true
+        } else {
+            showingSignInPrompt = true
         }
     }
 
@@ -164,13 +193,19 @@ struct CoffeeDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 SectionHeader(title: "Reviews")
-                Spacer()
                 if !reviews.isEmpty {
                     Text("\(reviews.count)")
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(.secondary)
                 }
+                Spacer()
+                Button(action: addReviewTapped) {
+                    Label("Add Review", systemImage: "square.and.pencil")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                }
+                .tint(Color.terracotta)
             }
 
             if reviewsLoading {
@@ -178,16 +213,132 @@ struct CoffeeDetailView: View {
                     .tint(Color.espresso)
                     .frame(maxWidth: .infinity, minHeight: 80)
             } else if reviews.isEmpty {
-                Text("No reviews yet.")
-                    .font(.subheadline)
+                Button(action: addReviewTapped) {
+                    VStack(spacing: 6) {
+                        Image(systemName: "square.and.pencil")
+                            .font(.title3)
+                        Text("Be the first to review this coffee")
+                            .font(.subheadline)
+                    }
                     .foregroundStyle(.secondary)
-                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
+                }
+                .buttonStyle(.plain)
             } else {
                 VStack(spacing: 10) {
                     ForEach(reviews) { review in
                         ReviewRowView(review: review)
                     }
                 }
+            }
+        }
+    }
+}
+
+// MARK: - Add Review composer
+
+struct AddReviewView: View {
+    let coffee: Coffee
+    /// Called with the newly created review after a successful post.
+    var onSubmitted: (CoffeeReview) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var rating = 0
+    @State private var brewMethod: BrewMethod = .pourOver
+    @State private var note = ""
+    @State private var isSubmitting = false
+    @State private var errorMessage: String?
+
+    private let reviewService = APIReviewService()
+
+    private var isValid: Bool {
+        rating > 0 && !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Your Rating") {
+                    StarRatingPicker(rating: $rating)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 4)
+                }
+
+                Section("Brew Method") {
+                    Picker("Brew Method", selection: $brewMethod) {
+                        ForEach(BrewMethod.allCases) { method in
+                            Label(method.rawValue, systemImage: method.systemImage).tag(method)
+                        }
+                    }
+                }
+
+                Section("Your Review") {
+                    TextField("How did it taste?", text: $note, axis: .vertical)
+                        .lineLimit(4...8)
+                }
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
+                }
+            }
+            .navigationTitle("Review \(coffee.name)")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }
+                        .foregroundStyle(Color.espresso)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if isSubmitting {
+                        ProgressView()
+                    } else {
+                        Button("Post") { Task { await submit() } }
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.espresso)
+                            .disabled(!isValid)
+                    }
+                }
+            }
+            .tint(Color.espresso)
+        }
+    }
+
+    private func submit() async {
+        isSubmitting = true
+        errorMessage = nil
+        do {
+            let review = try await reviewService.createReview(
+                coffeeId: coffee.id,
+                brewMethod: brewMethod,
+                rating: rating,
+                note: note.trimmingCharacters(in: .whitespacesAndNewlines)
+            )
+            onSubmitted(review)
+            dismiss()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isSubmitting = false
+    }
+}
+
+// MARK: - Star rating picker
+
+private struct StarRatingPicker: View {
+    @Binding var rating: Int
+
+    var body: some View {
+        HStack(spacing: 10) {
+            ForEach(1...5, id: \.self) { star in
+                Image(systemName: star <= rating ? "star.fill" : "star")
+                    .font(.title)
+                    .foregroundStyle(star <= rating ? Color.terracotta : Color.secondary.opacity(0.4))
+                    .onTapGesture { rating = star }
+                    .accessibilityLabel("\(star) star\(star == 1 ? "" : "s")")
             }
         }
     }

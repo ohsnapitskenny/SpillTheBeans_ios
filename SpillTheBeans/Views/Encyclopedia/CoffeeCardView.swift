@@ -1,8 +1,11 @@
 import SwiftUI
 
-// MARK: - CoffeeCardView (Grid — equal height)
+// MARK: - Shared card content
+// Both the grid card and the horizontal-carousel card render this identical
+// body so the two never drift in look. Only the outer frame differs: the grid
+// card fills its cell, the carousel card is a fixed size.
 
-struct CoffeeCardView: View {
+private struct CoffeeCardContent: View {
     let coffee: Coffee
 
     var body: some View {
@@ -34,7 +37,7 @@ struct CoffeeCardView: View {
                     .lineLimit(1)
             }
 
-            // Push the roast bar to the bottom so cards align in the grid row
+            // Push the roast bar to the bottom so cards align
             Spacer(minLength: 0)
 
             // Roast bar
@@ -46,53 +49,42 @@ struct CoffeeCardView: View {
             }
         }
         .padding(14)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.07), radius: 7, y: 3)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 }
 
-// MARK: - CoffeeCarouselCard (Horizontal carousel — fixed width)
+private extension View {
+    /// Shared card chrome so both variants match exactly.
+    func coffeeCardChrome() -> some View {
+        self
+            .background(Color.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.07), radius: 7, y: 3)
+    }
+}
+
+// MARK: - CoffeeCardView (Grid — fills the cell, equal height per row)
+
+struct CoffeeCardView: View {
+    let coffee: Coffee
+
+    var body: some View {
+        CoffeeCardContent(coffee: coffee)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .coffeeCardChrome()
+    }
+}
+
+// MARK: - CoffeeCarouselCard (Horizontal carousel — fixed size)
 
 struct CoffeeCarouselCard: View {
     let coffee: Coffee
 
+    // Matches the grid card's ~half-screen width and content height so the two
+    // sections read as the same card. Height fits a two-line name without clipping.
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(coffee.origin.flag)
-                .font(.system(size: 32))
-
-            Text(coffee.name)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(Color.espresso)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Text([coffee.origin.country, coffee.origin.region]
-                .compactMap { $0 }
-                .joined(separator: ", "))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-
-            if let roaster = coffee.roaster {
-                Text(roaster)
-                    .font(.caption2)
-                    .fontWeight(.medium)
-                    .foregroundStyle(Color.terracotta)
-                    .lineLimit(1)
-            }
-
-            Spacer(minLength: 0)
-
-            RoastLevelBar(level: coffee.roastLevel)
-        }
-        .padding(14)
-        .frame(width: 160, height: 150, alignment: .topLeading)
-        .background(Color.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.07), radius: 6, y: 3)
+        CoffeeCardContent(coffee: coffee)
+            .frame(width: 175, height: 205, alignment: .topLeading)
+            .coffeeCardChrome()
     }
 }

@@ -12,13 +12,15 @@ final class EncyclopediaViewModel {
     var searchText = "" {
         didSet { resetPagination() }
     }
-    var selectedProcess: ProcessingMethod? {
+    // Multi-select filters: within a facet the selections are combined with OR,
+    // across facets with AND. Empty set means "no filter for this facet".
+    var selectedProcesses: Set<ProcessingMethod> = [] {
         didSet { resetPagination() }
     }
-    var selectedCountry: String? {
+    var selectedCountries: Set<String> = [] {
         didSet { resetPagination() }
     }
-    var selectedFlavorTag: String? {
+    var selectedFlavorTags: Set<String> = [] {
         didSet { resetPagination() }
     }
 
@@ -66,9 +68,17 @@ final class EncyclopediaViewModel {
             }
         }
 
-        if let process = selectedProcess { result = result.filter { $0.process == process } }
-        if let country = selectedCountry { result = result.filter { $0.origin.country == country } }
-        if let tag    = selectedFlavorTag { result = result.filter { $0.flavorTags.contains(tag) } }
+        if !selectedProcesses.isEmpty {
+            result = result.filter { selectedProcesses.contains($0.process) }
+        }
+        if !selectedCountries.isEmpty {
+            result = result.filter { selectedCountries.contains($0.origin.country) }
+        }
+        if !selectedFlavorTags.isEmpty {
+            result = result.filter { coffee in
+                !selectedFlavorTags.isDisjoint(with: coffee.flavorTags)
+            }
+        }
 
         return result
     }
@@ -83,7 +93,7 @@ final class EncyclopediaViewModel {
     }
 
     var hasActiveFilters: Bool {
-        selectedProcess != nil || selectedCountry != nil || selectedFlavorTag != nil
+        !selectedProcesses.isEmpty || !selectedCountries.isEmpty || !selectedFlavorTags.isEmpty
     }
 
     var hasActiveSearch: Bool {
@@ -120,9 +130,9 @@ final class EncyclopediaViewModel {
     }
 
     func clearFilters() {
-        selectedProcess = nil
-        selectedCountry = nil
-        selectedFlavorTag = nil
+        selectedProcesses = []
+        selectedCountries = []
+        selectedFlavorTags = []
         searchText = ""
     }
 }

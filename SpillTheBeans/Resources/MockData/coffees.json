@@ -1221,5 +1221,361 @@
     "altitude": "2,400 m.a.s.l.",
     "harvestSeason": null,
     "roaster": "Shokunin Coffee"
+  },
+  {
+    "id": "C0FFEE05-0001-4000-8000-000000000001",
+    "name": "Tanzania Acacia Hills Kent",
+    "origin": {
+      "country": "Tanzania",
+      "region": "Ngorongoro, Oldeani",
+      "flag": "🇹🇿"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "green apple",
+      "pecan",
+      "goji berry"
+    ],
+    "tastingNote": "The history of coffee in northern Tanzania begins in the 19th century. Coffee trees were brought to northern Tanzania from Reunion Island near Madagascar and immigrants from Germany, the occupying country at the time, developed it into an industry. Most of the coffee plantations here in northern Tanzania seem to have b",
+    "producer": "Acacia Hills",
+    "altitude": "2,000 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0002-4000-8000-000000000002",
+    "name": "Ecuador El Dorado Wush Wush Natural",
+    "origin": {
+      "country": "Ecuador",
+      "region": "Loja",
+      "flag": "🇪🇨"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "blueberry",
+      "pineapple",
+      "raisin"
+    ],
+    "tastingNote": "El Dorado Farm is run by the Elder family, who bought it in 2017. It is also part of the cooperative ChocoVilcaMundo (CVM), an Ecuadorian agricultural company owned by Bernard Uhe and his coffee-growing family from Colombia. The Elders and CVM worked together on a plan to grow almonds, but later decided to grow coffee",
+    "producer": "El Dorado",
+    "altitude": "1,700–1,760 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0003-4000-8000-000000000003",
+    "name": "Indonesia Ribang Gayo Natural",
+    "origin": {
+      "country": "Indonesia",
+      "region": "Pantan Musara, Aceh, Sumatra",
+      "flag": "🇮🇩"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "strawberry yoghurt",
+      "gooseberry",
+      "dill"
+    ],
+    "tastingNote": "The Ribang Gayo Musara Cooperative was established as a result of the dedication and commitment of the coffee farming community in the Gayo highland area, particularly in Pantan Musara Village, Pegasing District, Central Aceh Regency, and its surrounding regions. Driven by the vision of progress and a desire to improve",
+    "producer": "ers",
+    "altitude": "1,600–1,700 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0004-4000-8000-000000000004",
+    "name": "Colombia La Macarena Decaf",
+    "origin": {
+      "country": "Colombia",
+      "region": "Pitalito,",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "lychee",
+      "lilac",
+      "cactus fruit"
+    ],
+    "tastingNote": "Wilton Benitez has been growing coffee for over 26 years, with more than 20 years focusing on specialty coffee. He is a distinguished roaster and Q-grader processor. His expertise in coffee tasting, developed over a lifetime, sets him apart in the industry. Granja Paraíso 92 is a family-owned project known for its inno",
+    "producer": "Granja Paraíso 92",
+    "altitude": "1,900 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0005-4000-8000-000000000005",
+    "name": "Peru Blanca Padilla Geisha",
+    "origin": {
+      "country": "Peru",
+      "region": "Tabaconas, San Ignacio",
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "jasmine",
+      "honeydew melon",
+      "peach"
+    ],
+    "tastingNote": "“El Chachacaspe” farm is located in the Tabaconas district, a four-hour drive from the city of Jaén, where most of the coffee produced in the department of Cajamarca is processed and marketed. Blanca (37) has been growing coffee since she was 12 years old, helping her parents on the farm with varieties such as caturra,",
+    "producer": "Blanca Padilla Campos",
+    "altitude": "1,800 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0006-4000-8000-000000000006",
+    "name": "Thailand Mae Jan Tai",
+    "origin": {
+      "country": "Thailand",
+      "region": "Mae Jan Tai, Chiang Rai",
+      "flag": "🇹🇭"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "star anise",
+      "cashew",
+      "date"
+    ],
+    "tastingNote": "From our relationship with Beanspire, we are excited to offer this year’s harvest of the Mae Jan Tai washed lot. Led by Fuadi Pitsuwan and Jane Kittirattanapaiboon, Beanspire collaborates closely with the 19-member cooperative in the region of Chiang Rai. Mae Jan Tai is an Akha hill tribe village perched at 1,350–1,500",
+    "producer": "er",
+    "altitude": "1,350 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0007-4000-8000-000000000007",
+    "name": "Colombia El Oasis Geisha",
+    "origin": {
+      "country": "Colombia",
+      "region": "Ortega, Tolima",
+      "flag": "🇨🇴"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "rose petals",
+      "apricot",
+      "strawberry jam"
+    ],
+    "tastingNote": "We sourced this coffee through Cata Export in France. We met the owner of Cata – Cat- at World of Coffee in Copenhagen in 2024. We got talking and she gave us a small (15 gram) sample of a coffee. She was very confident we would like it. After a few days, when we came back from the fair, we brewed the coffee and were a",
+    "producer": "El Oasis",
+    "altitude": "2,150 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0008-4000-8000-000000000008",
+    "name": "Peru Hugo Pareja SL9",
+    "origin": {
+      "country": "Peru",
+      "region": "Inkawasi, Cusco",
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "mandarin",
+      "galia melon",
+      "magnolia"
+    ],
+    "tastingNote": "Hugo Pareja and his wife, Flor Lopez, a young married couple who are guided by the coffee tradition of Hugo’s mother, have made coffee their main livelihood. Hugo has been growing coffee on his own farm since he was 17 years old.  Now at 40, he shares this work with his wife and his three children. Initially, they cult",
+    "producer": "Hugo Pareja",
+    "altitude": "2,200 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0009-4000-8000-000000000009",
+    "name": "Colombia Casa",
+    "origin": {
+      "country": "Colombia",
+      "region": "Armenia, Quindio",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "cacao nibs",
+      "orange",
+      "almonds"
+    ],
+    "tastingNote": "Casa is the newest addition to our year-round line. Think of it as the Colombian version of our Brazilian Dulce. The epitome of a comfort cup. Extremely balanced, with high sweetness and low, yet citric, acidity. We have teamed up with Cofinet to offer a selection of their coffees with such a taste profile, so freshnes",
+    "producer": "er",
+    "altitude": "1,350–1,400 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0010-4000-8000-000000000010",
+    "name": "Colombia Jesús Cerón",
+    "origin": {
+      "country": "Colombia",
+      "region": "Genova, Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "lemon",
+      "plum",
+      "nougat"
+    ],
+    "tastingNote": "This is our oldest direct relationship, with first purchase back in 2016. One of the first projects with our sourcing/import partner This Side Up. Back then it was from JP Argote. Production, harvest, wet- and dry-milling are all done by the Argote family. Produced without pesticides, the Argote family inspects all cof",
+    "producer": "Jesús Cerón",
+    "altitude": "1,950–2,000 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0011-4000-8000-000000000011",
+    "name": "Peru Carnaval",
+    "origin": {
+      "country": "Peru",
+      "region": "Callayuc, Sector El Campo, Cajamarca",
+      "flag": "🇵🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "almond",
+      "red apple",
+      "caramel"
+    ],
+    "tastingNote": "This coffee lot is specially prepared by Cultivar, the exporter. They selected the coffees with the most daring, unexpected and fun notes that we they tasted this last year. They could have given it several names, but found a perfect one for it: Carnaval. Cajamarca region in Peru,  best known for its dairy products and",
+    "producer": "4 smallholder farmers",
+    "altitude": "1,900 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0012-4000-8000-000000000012",
+    "name": "Colombia Marcel Ordonez Pink Bourbon",
+    "origin": {
+      "country": "Colombia",
+      "region": "Genova, Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "grapefruit",
+      "nougat",
+      "orange blossom"
+    ],
+    "tastingNote": "This is our oldest direct relationship, with first purchase back in 2016. One of the first projects with our sourcing/import partner This Side Up. Back then it was from JP Argote. Production, harvest, wet- and dry-milling are all done by the Argote family. Produced without pesticides, the Argote family inspects all cof",
+    "producer": "Marcel Ordonez",
+    "altitude": "1,950–2,000 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0013-4000-8000-000000000013",
+    "name": "Thailand Doi Pangkhon Lactic Natural",
+    "origin": {
+      "country": "Thailand",
+      "region": "Doi Pangkhon, Chiang Rai",
+      "flag": "🇹🇭"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "purple grape",
+      "cocoa nibs",
+      "black tea"
+    ],
+    "tastingNote": "Doi Pangkhon has come a long way in a short time. We partnered with Beanspire (exporter) / This Side Up (importer) and  this farmer group in Chiang Rai in 2016. While the coffee is still relatively new to the international market, the 300 Akha Hilltribe farmers at Doi Pangkhon (which means Timberland Peak) have been gr",
+    "producer": "Doi Pangkhon group – Jane lot",
+    "altitude": "1,250–1,500 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0014-4000-8000-000000000014",
+    "name": "Ethiopia Kebena Natural Decaf",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Limu Kossa Woreda, Jimma",
+      "flag": "🇪🇹"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "honey",
+      "orange",
+      "macadamia"
+    ],
+    "tastingNote": "Haider Aba owns and operates a 532ha coffee farm located in the Limu Kossa Woreda of Ethiopia’s Jimma Zone, in the Galle Kamese Kebele. The farm sits at elevations ranging from 1.865 to 2.090 meters above sea level and is planted with Ethiopian varieties 7410, 74140, and 7440, with trees ranging in age from 4 to 14 yea",
+    "producer": null,
+    "altitude": "1,865–2,090 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0015-4000-8000-000000000015",
+    "name": "Ethiopia Mensur Abahika Decaf",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Kota Kebele, Goma District, Jimma",
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "peach",
+      "milk chocolate",
+      "earl grey"
+    ],
+    "tastingNote": "During the 2019/2020 harvest, Mensur Abahika became the first single producer Osito purchased coffee from in Ethiopia. He remains a central figure in the Tokuma Farmer Group – a collective in Western Ethiopia where farmers collaborate to market their coffees and share knowledge to improve quality. Since Osito began wor",
+    "producer": null,
+    "altitude": "1,950–2,000 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0016-4000-8000-000000000016",
+    "name": "Ethiopia Sawana Washed",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Guji",
+      "flag": "🇪🇹"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "rose hip",
+      "bergamot",
+      "iced tea"
+    ],
+    "tastingNote": "Sewda Natural Coffee Processing Wet Mill, where this Sawana lot comes from, is located in the region of Oromia, Guji, Ethiopia. It is a purchasing and processing station, where local coffee farmers harvest ripe cherries and deliver them daily. It serves around 600 smallholder farmers in the area. Upon delivery, cherrie",
+    "producer": "Sewda Wet Mill",
+    "altitude": "1,920–2,150 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE05-0017-4000-8000-000000000017",
+    "name": "Brazil Dulce",
+    "origin": {
+      "country": "Brazil",
+      "region": "Paraná",
+      "flag": "🇧🇷"
+    },
+    "process": "Honey",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "chocolate",
+      "walnut"
+    ],
+    "tastingNote": "[New crop alert!] Quality and consistency. It’s not easy when you’re a farmer, with changing weather and different circumstances on a yearly or even seasonal basis, to match the same flavor profile as last year. It might even be impossible. For this reason, the team of Q-graders of Capricornio Coffees cups all the coff",
+    "producer": "Capricornio Coffee Partners",
+    "altitude": "700–1000 m",
+    "harvestSeason": null,
+    "roaster": "Schot Coffee Roasters"
   }
 ]

@@ -55,10 +55,13 @@ struct EncyclopediaView: View {
     private var mainContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                // Single navigation destination for the entire view tree
+                // Navigation destinations for the entire view tree
                 Color.clear.frame(height: 0)
                     .navigationDestination(for: Coffee.self) { coffee in
                         CoffeeDetailView(coffee: coffee)
+                    }
+                    .navigationDestination(for: Roaster.self) { roaster in
+                        RoasterDetailView(roaster: roaster)
                     }
 
                 // ── Active search/filter strip ─────────────────────────────

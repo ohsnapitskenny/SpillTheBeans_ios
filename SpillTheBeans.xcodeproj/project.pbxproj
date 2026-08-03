@@ -39,6 +39,8 @@
 		DD000002 /* PlaceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000002 /* PlaceDetails.swift */; };
 		DD000003 /* PlaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000003 /* PlaceService.swift */; };
 		DD000004 /* ShopPhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE000004 /* ShopPhotosView.swift */; };
+		EA000001 /* Roaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB000001 /* Roaster.swift */; };
+		EA000002 /* RoasterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB000002 /* RoasterDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		DE000002 /* PlaceDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetails.swift; sourceTree = "<group>"; };
 		DE000003 /* PlaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceService.swift; sourceTree = "<group>"; };
 		DE000004 /* ShopPhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPhotosView.swift; sourceTree = "<group>"; };
+		EB000001 /* Roaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Roaster.swift; sourceTree = "<group>"; };
+		EB000002 /* RoasterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoasterDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,7 @@
 				AB000003 /* CoffeeShop.swift */,
 				AB000004 /* Coffee.swift */,
 				DE000002 /* PlaceDetails.swift */,
+				EB000001 /* Roaster.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 				AB000013 /* EncyclopediaView.swift */,
 				AB000014 /* CoffeeCardView.swift */,
 				AB000015 /* CoffeeDetailView.swift */,
+				EB000002 /* RoasterDetailView.swift */,
 			);
 			path = Encyclopedia;
 			sourceTree = "<group>";
@@ -329,6 +335,8 @@
 				B90E9C882F9AD1C400BB06F3 /* CoffeeReview.swift in Sources */,
 				AA000014 /* CoffeeCardView.swift in Sources */,
 				AA000015 /* CoffeeDetailView.swift in Sources */,
+				EA000001 /* Roaster.swift in Sources */,
+				EA000002 /* RoasterDetailView.swift in Sources */,
 				AA000016 /* FilterChipView.swift in Sources */,
 				AA000017 /* SharedComponents.swift in Sources */,
 				AA000018 /* CoffeeComponents.swift in Sources */,

@@ -36,6 +36,18 @@ struct CoffeeMapView: View {
     // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
+    /// How far the map is rotated away from true north, 0…180°. Uses circular
+    /// distance so a heading just west of north (e.g. 359.7°) counts as ~0.3°,
+    /// not 359.7° — otherwise the reset-north button would never hide there.
+    private var headingOffNorth: Double {
+        let h = cameraHeading.truncatingRemainder(dividingBy: 360)
+        let positive = h < 0 ? h + 360 : h
+        return min(positive, 360 - positive)
+    }
+
+    /// True north is considered "reached" within half a degree.
+    private var isPointingNorth: Bool { headingOffNorth <= 0.5 }
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .center) {
@@ -205,7 +217,7 @@ struct CoffeeMapView: View {
             // The arrow rotates counter to the live heading so it always points
             // to actual north on screen. Tap snaps heading to 0 while keeping
             // the current zoom and centre position intact.
-            if abs(cameraHeading) > 0.5 {
+            if !isPointingNorth {
                 Button {
                     guard let center = cameraCenter else { return }
                     withAnimation(.easeInOut(duration: 0.4)) {
@@ -229,6 +241,8 @@ struct CoffeeMapView: View {
                 .transition(.opacity.combined(with: .scale(scale: 0.8)))
             }
         }
+        // Animate the reset-north button fading in/out as north is reached.
+        .animation(.easeInOut(duration: 0.2), value: isPointingNorth)
     }
 
     // MARK: - Category Filter Bar

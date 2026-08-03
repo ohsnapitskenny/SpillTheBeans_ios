@@ -150,7 +150,11 @@ final class CoffeeShopViewModel {
         guard let userLoc = userLocation else { return nil }
         let metres = CLLocation(latitude: shop.latitude, longitude: shop.longitude)
             .distance(from: CLLocation(latitude: userLoc.latitude, longitude: userLoc.longitude))
-        return String(format: "%.1f mi", metres / 1609.34)
+        // Under 1 km, show metres (e.g. "650 m"); otherwise kilometres ("1.2 km").
+        if metres < 1000 {
+            return String(format: "%.0f m", metres)
+        }
+        return String(format: "%.1f km", metres / 1000)
     }
 
     func updateUserLocation(_ coordinate: CLLocationCoordinate2D) {

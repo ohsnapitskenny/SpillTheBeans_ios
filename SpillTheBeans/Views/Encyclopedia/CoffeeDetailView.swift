@@ -80,10 +80,23 @@ struct CoffeeDetailView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 if let roaster = coffee.roaster {
-                    Label(roaster, systemImage: "flame")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(Color.terracotta)
+                    if let info = Roaster.named(roaster) {
+                        NavigationLink(value: info) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "flame")
+                                Text(roaster)
+                                Image(systemName: "chevron.right").font(.caption2)
+                            }
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.terracotta)
+                        }
+                    } else {
+                        Label(roaster, systemImage: "flame")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.terracotta)
+                    }
                 }
             }
             Spacer()

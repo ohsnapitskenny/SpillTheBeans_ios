@@ -36,6 +36,18 @@ struct CoffeeMapView: View {
     // Namespace links our freestanding map-control buttons to the Map view.
     @Namespace private var mapScope
 
+    /// How far the map is rotated away from true north, 0…180°. Uses circular
+    /// distance so a heading just west of north (e.g. 359.7°) counts as ~0.3°,
+    /// not 359.7° — otherwise the reset-north button would never hide there.
+    private var headingOffNorth: Double {
+        let h = cameraHeading.truncatingRemainder(dividingBy: 360)
+        let positive = h < 0 ? h + 360 : h
+        return min(positive, 360 - positive)
+    }
+
+    /// True north is considered "reached" within half a degree.
+    private var isPointingNorth: Bool { headingOffNorth <= 0.5 }
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .center) {
@@ -174,7 +186,7 @@ struct CoffeeMapView: View {
     // MARK: - Map Controls Overlay
 
     private var mapControlsOverlay: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 14) {
             // ── Locate-me button ──────────────────────────────────────────
             Button {
                 if let coord = locationManager.userLocation {
@@ -196,18 +208,16 @@ struct CoffeeMapView: View {
                         : "location"
                 )
                 .font(.system(size: 16, weight: .medium))
-                .frame(width: 36, height: 36)
-                .background(.regularMaterial, in: Circle())
+                .frame(width: 20, height: 20)
             }
-            .tint(Color.espresso)
-            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+            .glassCircleButton()
 
             // ── Reset-north button ────────────────────────────────────────
             // Hidden when the map is already pointing true north (heading ≈ 0).
             // The arrow rotates counter to the live heading so it always points
             // to actual north on screen. Tap snaps heading to 0 while keeping
             // the current zoom and centre position intact.
-            if abs(cameraHeading) > 0.5 {
+            if !isPointingNorth {
                 Button {
                     guard let center = cameraCenter else { return }
                     withAnimation(.easeInOut(duration: 0.4)) {
@@ -221,21 +231,18 @@ struct CoffeeMapView: View {
                         )
                     }
                 } label: {
-                    ZStack {
-                        Circle()
-                            .fill(.regularMaterial)
-                            .frame(width: 36, height: 36)
-                        Image(systemName: "arrow.up")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(Color.espresso)
-                            .rotationEffect(.degrees(-cameraHeading))
-                            .animation(.easeOut(duration: 0.15), value: cameraHeading)
-                    }
+                    Image(systemName: "arrow.up")
+                        .font(.system(size: 15, weight: .semibold))
+                        .rotationEffect(.degrees(-cameraHeading))
+                        .animation(.easeOut(duration: 0.15), value: cameraHeading)
+                        .frame(width: 20, height: 20)
                 }
-                .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+                .glassCircleButton()
                 .transition(.opacity.combined(with: .scale(scale: 0.8)))
             }
         }
+        // Animate the reset-north button fading in/out as north is reached.
+        .animation(.easeInOut(duration: 0.2), value: isPointingNorth)
     }
 
     // MARK: - Category Filter Bar
@@ -262,7 +269,6 @@ struct CoffeeMapView: View {
             .padding(.vertical, 10)
         }
         .glassEffect(in: .rect(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 
     // MARK: - Filter FAB
@@ -279,16 +285,9 @@ struct CoffeeMapView: View {
                     ? "line.3.horizontal.decrease"
                     : "line.3.horizontal.decrease.circle.fill"))
                 .font(.system(size: 16, weight: .medium))
-                .frame(width: 36, height: 36)
-                .background(
-                    viewModel.selectedCategory != nil
-                        ? AnyShapeStyle(Color.espresso)
-                        : AnyShapeStyle(.regularMaterial),
-                    in: Circle()
-                )
-                .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
+                .frame(width: 20, height: 20)
         }
-        .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+        .glassCircleButton(prominent: viewModel.selectedCategory != nil)
     }
 
     // MARK: - View Mode Toggle

@@ -196,6 +196,7 @@ struct CoffeeMapView: View {
                         : "location"
                 )
                 .font(.system(size: 16, weight: .medium))
+                .frame(width: 20, height: 20)
             }
             .glassCircleButton()
 
@@ -222,6 +223,7 @@ struct CoffeeMapView: View {
                         .font(.system(size: 15, weight: .semibold))
                         .rotationEffect(.degrees(-cameraHeading))
                         .animation(.easeOut(duration: 0.15), value: cameraHeading)
+                        .frame(width: 20, height: 20)
                 }
                 .glassCircleButton()
                 .transition(.opacity.combined(with: .scale(scale: 0.8)))
@@ -269,6 +271,7 @@ struct CoffeeMapView: View {
                     ? "line.3.horizontal.decrease"
                     : "line.3.horizontal.decrease.circle.fill"))
                 .font(.system(size: 16, weight: .medium))
+                .frame(width: 20, height: 20)
         }
         .glassCircleButton(prominent: viewModel.selectedCategory != nil)
     }

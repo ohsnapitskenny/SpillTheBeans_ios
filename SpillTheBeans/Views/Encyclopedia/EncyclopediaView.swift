@@ -210,7 +210,6 @@ struct EncyclopediaView: View {
                     : "magnifyingglass"
             )
             .font(.system(size: 16, weight: .medium))
-            .frame(width: 44, height: 44)
         }
         .glassCircleButton(prominent: viewModel.hasActiveSearch)
     }

@@ -184,3 +184,24 @@ struct EmptyStateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+// MARK: - Liquid Glass helpers
+
+extension View {
+    /// Standard Liquid Glass treatment for a circular icon button. Uses the
+    /// system `.glass` / `.glassProminent` button styles rather than a bespoke
+    /// material + shadow, so the control renders as true Liquid Glass and
+    /// floats correctly above content.
+    @ViewBuilder
+    func glassCircleButton(prominent: Bool = false, tint: Color = .espresso) -> some View {
+        if prominent {
+            buttonStyle(.glassProminent)
+                .buttonBorderShape(.circle)
+                .tint(tint)
+        } else {
+            buttonStyle(.glass)
+                .buttonBorderShape(.circle)
+                .tint(tint)
+        }
+    }
+}

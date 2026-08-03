@@ -211,15 +211,8 @@ struct EncyclopediaView: View {
             )
             .font(.system(size: 16, weight: .medium))
             .frame(width: 44, height: 44)
-            .background(
-                viewModel.hasActiveSearch
-                    ? AnyShapeStyle(Color.espresso)
-                    : AnyShapeStyle(.regularMaterial),
-                in: Circle()
-            )
-            .foregroundStyle(viewModel.hasActiveSearch ? Color.onEspresso : Color.espresso)
         }
-        .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
+        .glassCircleButton(prominent: viewModel.hasActiveSearch)
     }
 
     // MARK: - Filter Indicator (toolbar)

@@ -196,11 +196,9 @@ struct CoffeeMapView: View {
                         : "location"
                 )
                 .font(.system(size: 16, weight: .medium))
-                .frame(width: 36, height: 36)
-                .background(.regularMaterial, in: Circle())
+                .frame(width: 44, height: 44)
             }
-            .tint(Color.espresso)
-            .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+            .glassCircleButton()
 
             // ── Reset-north button ────────────────────────────────────────
             // Hidden when the map is already pointing true north (heading ≈ 0).
@@ -221,18 +219,13 @@ struct CoffeeMapView: View {
                         )
                     }
                 } label: {
-                    ZStack {
-                        Circle()
-                            .fill(.regularMaterial)
-                            .frame(width: 36, height: 36)
-                        Image(systemName: "arrow.up")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(Color.espresso)
-                            .rotationEffect(.degrees(-cameraHeading))
-                            .animation(.easeOut(duration: 0.15), value: cameraHeading)
-                    }
+                    Image(systemName: "arrow.up")
+                        .font(.system(size: 15, weight: .semibold))
+                        .rotationEffect(.degrees(-cameraHeading))
+                        .animation(.easeOut(duration: 0.15), value: cameraHeading)
+                        .frame(width: 44, height: 44)
                 }
-                .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+                .glassCircleButton()
                 .transition(.opacity.combined(with: .scale(scale: 0.8)))
             }
         }
@@ -262,7 +255,6 @@ struct CoffeeMapView: View {
             .padding(.vertical, 10)
         }
         .glassEffect(in: .rect(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.08), radius: 6, y: 2)
     }
 
     // MARK: - Filter FAB
@@ -279,16 +271,9 @@ struct CoffeeMapView: View {
                     ? "line.3.horizontal.decrease"
                     : "line.3.horizontal.decrease.circle.fill"))
                 .font(.system(size: 16, weight: .medium))
-                .frame(width: 36, height: 36)
-                .background(
-                    viewModel.selectedCategory != nil
-                        ? AnyShapeStyle(Color.espresso)
-                        : AnyShapeStyle(.regularMaterial),
-                    in: Circle()
-                )
-                .foregroundStyle(viewModel.selectedCategory != nil ? Color.white : Color.espresso)
+                .frame(width: 44, height: 44)
         }
-        .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
+        .glassCircleButton(prominent: viewModel.selectedCategory != nil)
     }
 
     // MARK: - View Mode Toggle

@@ -446,17 +446,34 @@ function rowToDetails(row, origin) {
 
 // Refresh every linked shop's place details from Google. Used by the daily cron
 // and the admin endpoint. Returns a summary.
-async function refreshAllPlaces(env) {
+// A single Worker invocation may make at most 50 fetch subrequests, so we
+// refresh at most this many places per run — the stalest (and never-cached)
+// first. With ~60 places the daily cron rotates through everything within a
+// day or two; anything not yet cached also self-heals on first view.
+const PLACES_REFRESH_BATCH = 45;
+
+async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
   if (!env.GOOGLE_MAPS_API_KEY) {
     console.error('places refresh: GOOGLE_MAPS_API_KEY not set');
     return { ok: 0, failed: 0, total: 0 };
   }
-  const { results } = await env.DB.prepare(
-    "SELECT DISTINCT google_place_id FROM coffee_shops WHERE google_place_id IS NOT NULL AND google_place_id <> ''"
-  ).all();
+  const batch = Math.max(1, Math.min(limit, PLACES_REFRESH_BATCH));
 
+  // Never-cached places (NULL updated_at) sort first in ASC order, then the
+  // oldest — so each run tackles the most out-of-date entries.
+  const { results } = await env.DB.prepare(
+    `SELECT cs.google_place_id AS placeId
+       FROM coffee_shops cs
+       LEFT JOIN place_details pd ON pd.google_place_id = cs.google_place_id
+      WHERE cs.google_place_id IS NOT NULL AND cs.google_place_id <> ''
+      GROUP BY cs.google_place_id
+      ORDER BY MAX(pd.updated_at) ASC
+      LIMIT ?1`
+  ).bind(batch).all();
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   let ok = 0, failed = 0;
-  for (const { google_place_id: placeId } of results) {
+  for (const { placeId } of results) {
     try {
       const place = await fetchGooglePlace(env, placeId);
       await upsertPlaceStmt(env, placeToRow(placeId, place)).run();
@@ -469,6 +486,7 @@ async function refreshAllPlaces(env) {
       failed++;
       console.error('places refresh failed for', placeId, e.message);
     }
+    await sleep(80);
   }
   console.log(`places refresh: ${ok} ok, ${failed} failed of ${results.length}`);
   return { ok, failed, total: results.length };

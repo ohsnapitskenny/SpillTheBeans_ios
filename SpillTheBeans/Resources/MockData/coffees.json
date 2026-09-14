@@ -1577,5 +1577,152 @@
     "altitude": "700–1000 m",
     "harvestSeason": null,
     "roaster": "Schot Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0001-4000-8000-000000000001",
+    "name": "El Paseo",
+    "origin": {
+      "country": "Colombia",
+      "region": "Nariño",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "violet",
+      "lychee",
+      "dragon fruit"
+    ],
+    "tastingNote": "Produced by Huver Castillo in Nariño, this Caturra undergoes a six-day controlled anaerobic fermentation with added leachates and enzymes for a distinctive floral profile — vibrant and expressive with a smooth mouthfeel.",
+    "producer": "Huver Castillo",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0002-4000-8000-000000000002",
+    "name": "Karimikui",
+    "origin": {
+      "country": "Kenya",
+      "region": null,
+      "flag": "🇰🇪"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "redcurrant",
+      "cassis",
+      "purple grape"
+    ],
+    "tastingNote": "A washed return from Kenya — overnight fermentation, density grading in clean water channels and slow drying on raised African beds give a juicy cup of redcurrant, cassis and purple grape.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0003-4000-8000-000000000003",
+    "name": "Yilver Pajoy",
+    "origin": {
+      "country": "Colombia",
+      "region": null,
+      "flag": "🇨🇴"
+    },
+    "process": "Washed",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "yellow plum",
+      "fig",
+      "earl grey"
+    ],
+    "tastingNote": "COPA DE ORO '25, 5th Place Western Division — an award-winning washed Gesha microlot. Elegant and refined, with yellow plum, fig and Earl Grey over a beautifully refined sweetness.",
+    "producer": "Yilver Pajoy",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0004-4000-8000-000000000004",
+    "name": "Las Marias",
+    "origin": {
+      "country": "Colombia",
+      "region": null,
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "pineapple",
+      "orange",
+      "bergamot"
+    ],
+    "tastingNote": "An experimental Wush Wush from José Giraldo, pushed further with an extended anaerobic fermentation — vibrant pineapple, orange and bergamot over a juicy, refreshing mouthfeel.",
+    "producer": "José Giraldo",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0005-4000-8000-000000000005",
+    "name": "Rio Dulce",
+    "origin": {
+      "country": "Colombia",
+      "region": "Las Marías",
+      "flag": "🇨🇴"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "rose",
+      "plum",
+      "vanilla"
+    ],
+    "tastingNote": "A Geisha from José Giraldo's Las Marías, built through three fermentation stages controlled at 14°C for clarity and elegance — beautifully floral with rose, plum and vanilla.",
+    "producer": "José Giraldo",
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0006-4000-8000-000000000006",
+    "name": "Shoondhisa Natural",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Guji",
+      "flag": "🇪🇹"
+    },
+    "process": "Natural",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "berry compote",
+      "strawberry",
+      "white sugar"
+    ],
+    "tastingNote": "A Guji gem, naturally processed — a round mouthfeel with rich notes of berry compote, strawberry juice and a hint of white sugar sweetness.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
+  },
+  {
+    "id": "C0FFEE06-0007-4000-8000-000000000007",
+    "name": "Shoondhisa Anaerobic",
+    "origin": {
+      "country": "Ethiopia",
+      "region": "Guji",
+      "flag": "🇪🇹"
+    },
+    "process": "Anaerobic",
+    "roastLevel": "Light",
+    "flavorTags": [
+      "berry compote",
+      "strawberry",
+      "fruity"
+    ],
+    "tastingNote": "The same Guji lot as Shoondhisa Natural, taken through an anaerobic fermentation for a deeper, more intense and fruit-forward expression.",
+    "producer": null,
+    "altitude": null,
+    "harvestSeason": null,
+    "roaster": "Manhattan Coffee Roasters"
   }
 ]

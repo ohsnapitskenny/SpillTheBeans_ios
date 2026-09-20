@@ -10,11 +10,11 @@ id = "d54032cae9f44c5aa6f4ea2ecce5c6b8"
 binding = "SESSIONS"
 id = "fd8f8e9f73484d6499d5e31b08983a0e"
 
-[[kv_namespaces]]
-binding = "PLACES"
-id = "bd344fcb609946f28b528359cc13e0fe"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "spillthebeans-db"
 database_id = "05659ec7-8a0b-4103-aaa0-5ba6d9c2b8a5"
+
+# Google Places details are cached in D1 and refreshed once a day.
+[triggers]
+crons = ["0 3 * * *"]   # 03:00 UTC daily (~04:00–05:00 Amsterdam)

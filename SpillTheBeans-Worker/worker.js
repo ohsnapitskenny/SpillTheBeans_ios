@@ -13,17 +13,21 @@
 //   POST /reviews                 — create a review (authenticated)
 //
 // Google Places endpoints (key stays server-side):
-//   GET  /shops/:id/place         — live Places details (rating, hours, photos)
+//   GET  /shops/:id/place         — place details, served from the D1 cache
 //   GET  /place-photo?name=&w=    — streams a Places photo through the worker
+//   POST /admin/refresh-places    — force a full refresh (Authorization: Bearer ADMIN_TOKEN)
+//
+// The place cache (D1 table `place_details`) is refreshed once a day by the
+// scheduled() cron handler, so normal app traffic hits Google zero times.
 //
 // Bindings (set in wrangler.toml):
 //   USERS    (KV) — user records keyed by username
 //   SESSIONS (KV) — session tokens with 90-day TTL
-//   PLACES   (KV) — 24h cache of Google Places details
-//   DB       (D1) — coffees, coffee_shops, reviews tables
+//   DB       (D1) — coffees, coffee_shops, reviews, place_details tables
 //
 // Secrets:
 //   GOOGLE_MAPS_API_KEY — Places API key (wrangler secret put GOOGLE_MAPS_API_KEY)
+//   ADMIN_TOKEN         — guards POST /admin/refresh-places (wrangler secret put ADMIN_TOKEN)
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -274,9 +278,10 @@ async function handleCreateReview(request, env) {
 
 // ── Google Places (server-side proxy) ─────────────────────────────────────────
 // The app never talks to Google directly: this keeps the API key out of the
-// bundle and lets us cache responses for 24h so 61 shops don't hammer billing.
-
-const PLACE_CACHE_TTL = 60 * 60 * 24;   // seconds
+// bundle. Place details are stored in D1 (table `place_details`) and refreshed
+// once a day by the scheduled (cron) handler, so browsing the app makes no
+// Google Places API calls — only the daily refresh (and a one-off self-heal for
+// a place the cron hasn't reached yet) does.
 
 const PLACE_FIELD_MASK = [
   'rating',
@@ -298,6 +303,8 @@ const PLACE_FIELD_MASK = [
   'servesBrunch',
   'goodForGroups',
   'liveMusic',
+  'regularOpeningHours.periods',
+  'formattedAddress',
 ].join(',');
 
 // Boolean place attributes → the tag pills the app shows.
@@ -325,75 +332,201 @@ function weekdayDescriptionsToHours(descriptions) {
   });
 }
 
-async function handleGetShopPlace(request, env, ctx, shopId) {
-  if (!env.GOOGLE_MAPS_API_KEY) {
-    return json({ error: 'Places API not configured' }, 503);
-  }
+// Fetch the raw place from the Google Places API. Throws on a non-200.
+async function fetchGooglePlace(env, placeId) {
+  const resp = await fetch(
+    `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
+    { headers: { 'X-Goog-Api-Key': env.GOOGLE_MAPS_API_KEY, 'X-Goog-FieldMask': PLACE_FIELD_MASK } }
+  );
+  if (!resp.ok) throw new Error(`Places ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
+  return resp.json();
+}
 
+// Map a raw Google place into the columns stored in `place_details`.
+function placeToRow(placeId, place) {
+  return {
+    google_place_id:   placeId,
+    rating:            place.rating ?? null,
+    user_rating_count: place.userRatingCount ?? null,
+    weekday_hours: JSON.stringify(weekdayDescriptionsToHours(
+      place.currentOpeningHours?.weekdayDescriptions ??
+      place.regularOpeningHours?.weekdayDescriptions
+    )),
+    periods: JSON.stringify(
+      place.regularOpeningHours?.periods ?? place.currentOpeningHours?.periods ?? []
+    ),
+    photo_names: JSON.stringify((place.photos || []).slice(0, 8).map((p) => p.name)),
+    tags: JSON.stringify(
+      TAG_ATTRIBUTES.filter(([key]) => place[key] === true).map(([, label]) => label)
+    ),
+    reviews: JSON.stringify(
+      (place.reviews || [])
+        .map((r) => ({
+          author: r.authorAttribution?.displayName || 'Google user',
+          authorPhotoURI: r.authorAttribution?.photoUri ?? null,
+          rating: r.rating ?? null,
+          relativeTime: r.relativePublishTimeDescription || '',
+          text: r.text?.text || '',
+        }))
+        .filter((r) => r.text)
+        .slice(0, 5)
+    ),
+    google_maps_uri: place.googleMapsUri ?? null,
+    website_uri:     place.websiteUri ?? null,
+    address:         place.formattedAddress ?? null,
+  };
+}
+
+// Upsert one stored place row into D1.
+function upsertPlaceStmt(env, row) {
+  return env.DB.prepare(
+    `INSERT INTO place_details
+       (google_place_id, rating, user_rating_count, weekday_hours, periods,
+        photo_names, tags, reviews, google_maps_uri, website_uri, address, updated_at)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, datetime('now'))
+     ON CONFLICT(google_place_id) DO UPDATE SET
+       rating=excluded.rating, user_rating_count=excluded.user_rating_count,
+       weekday_hours=excluded.weekday_hours, periods=excluded.periods,
+       photo_names=excluded.photo_names, tags=excluded.tags, reviews=excluded.reviews,
+       google_maps_uri=excluded.google_maps_uri, website_uri=excluded.website_uri,
+       address=excluded.address, updated_at=datetime('now')`
+  ).bind(row.google_place_id, row.rating, row.user_rating_count, row.weekday_hours,
+         row.periods, row.photo_names, row.tags, row.reviews, row.google_maps_uri,
+         row.website_uri, row.address);
+}
+
+// Current wall-clock in the shops' timezone (all are in the Netherlands).
+// Returns { day: 0=Sun…6=Sat, minutes: since local midnight } to match the
+// day numbering Google uses in opening-hours periods.
+function nowInAmsterdam() {
+  const local = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  return { day: local.getDay(), minutes: local.getHours() * 60 + local.getMinutes() };
+}
+
+// Compute open/closed from Google opening-hours periods, live at request time,
+// so a once-a-day refresh still yields an accurate badge. null = unknown.
+function computeOpenNow(periods) {
+  if (!Array.isArray(periods) || periods.length === 0) return null;
+  const { day, minutes } = nowInAmsterdam();
+  for (const p of periods) {
+    if (!p.open) continue;
+    if (!p.close) return true; // open 24/7
+    const openMin  = (p.open.hour  || 0) * 60 + (p.open.minute  || 0);
+    const closeMin = (p.close.hour || 0) * 60 + (p.close.minute || 0);
+    if (p.open.day === p.close.day) {
+      if (day === p.open.day && minutes >= openMin && minutes < closeMin) return true;
+    } else {
+      // Spans midnight / multiple days: open from openMin on open.day until
+      // closeMin on close.day.
+      if (day === p.open.day  && minutes >= openMin)  return true;
+      if (day === p.close.day && minutes <  closeMin) return true;
+    }
+  }
+  return false;
+}
+
+// Build the app-facing response from a stored row + request origin. Photo URLs
+// are rebuilt from the stored names so they always point at this worker, and
+// open-now is computed live.
+function rowToDetails(row, origin) {
+  const names = JSON.parse(row.photo_names || '[]');
+  return {
+    rating:          row.rating ?? null,
+    userRatingCount: row.user_rating_count ?? null,
+    openNow:         computeOpenNow(JSON.parse(row.periods || '[]')),
+    weekdayHours:    JSON.parse(row.weekday_hours || '[]'),
+    photos: names.map((n) => `${origin}/place-photo?name=${encodeURIComponent(n)}&w=1000`),
+    tags:            JSON.parse(row.tags || '[]'),
+    reviews:         JSON.parse(row.reviews || '[]'),
+    googleMapsURI:   row.google_maps_uri ?? null,
+    websiteURI:      row.website_uri ?? null,
+    address:         row.address ?? null,
+  };
+}
+
+// Refresh every linked shop's place details from Google. Used by the daily cron
+// and the admin endpoint. Returns a summary.
+// A single Worker invocation may make at most 50 fetch subrequests, so we
+// refresh at most this many places per run — the stalest (and never-cached)
+// first. With ~60 places the daily cron rotates through everything within a
+// day or two; anything not yet cached also self-heals on first view.
+const PLACES_REFRESH_BATCH = 45;
+
+async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
+  if (!env.GOOGLE_MAPS_API_KEY) {
+    console.error('places refresh: GOOGLE_MAPS_API_KEY not set');
+    return { ok: 0, failed: 0, total: 0 };
+  }
+  const batch = Math.max(1, Math.min(limit, PLACES_REFRESH_BATCH));
+
+  // Never-cached places (NULL updated_at) sort first in ASC order, then the
+  // oldest — so each run tackles the most out-of-date entries.
+  const { results } = await env.DB.prepare(
+    `SELECT cs.google_place_id AS placeId
+       FROM coffee_shops cs
+       LEFT JOIN place_details pd ON pd.google_place_id = cs.google_place_id
+      WHERE cs.google_place_id IS NOT NULL AND cs.google_place_id <> ''
+      GROUP BY cs.google_place_id
+      ORDER BY MAX(pd.updated_at) ASC
+      LIMIT ?1`
+  ).bind(batch).all();
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  let ok = 0, failed = 0;
+  for (const { placeId } of results) {
+    try {
+      const place = await fetchGooglePlace(env, placeId);
+      await upsertPlaceStmt(env, placeToRow(placeId, place)).run();
+      if (typeof place.rating === 'number') {
+        await env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE google_place_id = ?2')
+          .bind(place.rating, placeId).run();
+      }
+      ok++;
+    } catch (e) {
+      failed++;
+      console.error('places refresh failed for', placeId, e.message);
+    }
+    await sleep(80);
+  }
+  console.log(`places refresh: ${ok} ok, ${failed} failed of ${results.length}`);
+  return { ok, failed, total: results.length };
+}
+
+async function handleGetShopPlace(request, env, ctx, shopId) {
   const shop = await env.DB.prepare(
     'SELECT id, google_place_id FROM coffee_shops WHERE id = ?1 COLLATE NOCASE'
   ).bind(shopId).first();
   if (!shop) return json({ error: 'Unknown shop' }, 404);
   if (!shop.google_place_id) return json({ error: 'Shop has no linked Google place' }, 404);
 
-  // v2: response gained tags + reviews — new key so old cached shapes expire out.
-  const cacheKey = `place:v2:${shop.google_place_id}`;
-  const cached = await env.PLACES.get(cacheKey);
-  if (cached) return json(JSON.parse(cached));
-
-  const resp = await fetch(
-    `https://places.googleapis.com/v1/places/${encodeURIComponent(shop.google_place_id)}`,
-    {
-      headers: {
-        'X-Goog-Api-Key': env.GOOGLE_MAPS_API_KEY,
-        'X-Goog-FieldMask': PLACE_FIELD_MASK,
-      },
-    }
-  );
-  if (!resp.ok) {
-    console.error('Places API error', resp.status, await resp.text());
-    return json({ error: 'Places lookup failed' }, 502);
-  }
-  const place = await resp.json();
-
   const origin = new URL(request.url).origin;
-  const details = {
-    rating: place.rating ?? null,
-    userRatingCount: place.userRatingCount ?? null,
-    openNow: place.currentOpeningHours?.openNow ?? null,
-    weekdayHours: weekdayDescriptionsToHours(
-      place.currentOpeningHours?.weekdayDescriptions ??
-      place.regularOpeningHours?.weekdayDescriptions
-    ),
-    photos: (place.photos || []).slice(0, 8).map(
-      (p) => `${origin}/place-photo?name=${encodeURIComponent(p.name)}&w=1000`
-    ),
-    tags: TAG_ATTRIBUTES.filter(([key]) => place[key] === true).map(([, label]) => label),
-    reviews: (place.reviews || [])
-      .map((r) => ({
-        author: r.authorAttribution?.displayName || 'Google user',
-        authorPhotoURI: r.authorAttribution?.photoUri ?? null,
-        rating: r.rating ?? null,
-        relativeTime: r.relativePublishTimeDescription || '',
-        text: r.text?.text || '',
-      }))
-      .filter((r) => r.text)
-      .slice(0, 5),
-    googleMapsURI: place.googleMapsUri ?? null,
-    websiteURI: place.websiteUri ?? null,
-  };
 
-  ctx.waitUntil(env.PLACES.put(cacheKey, JSON.stringify(details), { expirationTtl: PLACE_CACHE_TTL }));
+  // Primary path: serve from our own D1 cache (no Google call).
+  let row = await env.DB.prepare(
+    'SELECT * FROM place_details WHERE google_place_id = ?1'
+  ).bind(shop.google_place_id).first();
 
-  // Keep the list view's rating column converging on the live Google rating.
-  if (typeof details.rating === 'number') {
-    ctx.waitUntil(
-      env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE id = ?2')
-        .bind(details.rating, shop.id).run()
-    );
+  // Self-heal: a place the daily cron hasn't populated yet is fetched once and
+  // stored, so it's cached for everyone from then on.
+  if (!row) {
+    if (!env.GOOGLE_MAPS_API_KEY) return json({ error: 'Places API not configured' }, 503);
+    try {
+      const place = await fetchGooglePlace(env, shop.google_place_id);
+      row = placeToRow(shop.google_place_id, place);
+      ctx.waitUntil(upsertPlaceStmt(env, row).run());
+      if (typeof row.rating === 'number') {
+        ctx.waitUntil(
+          env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE id = ?2')
+            .bind(row.rating, shop.id).run()
+        );
+      }
+    } catch (e) {
+      console.error('place self-heal failed', e.message);
+      return json({ error: 'Places lookup failed' }, 502);
+    }
   }
 
-  return json(details);
+  return json(rowToDetails(row, origin));
 }
 
 async function handleGetPlacePhoto(request, env, ctx) {
@@ -464,10 +597,26 @@ export default {
         return handleGetPlacePhoto(request, env, ctx);
       }
 
+      // Admin: force a full refresh of the place cache (also runs daily via cron).
+      if (pathname === '/admin/refresh-places' && request.method === 'POST') {
+        const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
+        if (!env.ADMIN_TOKEN || token !== env.ADMIN_TOKEN) {
+          return json({ error: 'Unauthorized' }, 401);
+        }
+        const summary = await refreshAllPlaces(env);
+        return json(summary);
+      }
+
       return json({ error: 'Not found' }, 404);
     } catch (e) {
       console.error(e);
       return json({ error: 'Internal server error' }, 500);
     }
+  },
+
+  // Daily cron (see [triggers] in wrangler.toml): refresh the place cache so the
+  // app serves entirely from D1 and Google is queried at most once per day.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(refreshAllPlaces(env));
   },
 };

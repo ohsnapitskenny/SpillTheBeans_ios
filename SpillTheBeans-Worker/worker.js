@@ -4,6 +4,7 @@
 //   POST /auth/login     { username, password }
 //   GET  /auth/verify    Authorization: Bearer <token>
 //   POST /auth/logout    Authorization: Bearer <token>
+//   GET  /admin/me       Authorization: Bearer <token> — 200 for admins, 403 otherwise
 //
 // Data endpoints (backed by D1):
 //   GET  /coffees                 — all coffee beans
@@ -149,6 +150,20 @@ async function handleLogout(request, env) {
   const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
   if (token) await env.SESSIONS.delete(`session:${token}`);
   return json({ success: true });
+}
+
+// Admins are the usernames listed in ADMIN_USERNAMES (comma-separated, see wrangler.toml).
+function isAdmin(env, username) {
+  const admins = (env.ADMIN_USERNAMES || '').split(',').map(u => u.trim().toLowerCase()).filter(Boolean);
+  return admins.includes(username);
+}
+
+// Used by the admin dashboard to check that a signed-in user is an admin.
+async function handleAdminMe(request, env) {
+  const s = await sessionFromRequest(request, env);
+  if (!s) return json({ error: 'Invalid or expired token' }, 401);
+  if (!isAdmin(env, s.username)) return json({ error: 'This account is not an admin' }, 403);
+  return json({ user: { id: s.userId, username: s.username, displayName: s.displayName, email: s.email } });
 }
 
 // ── Data handlers (D1) ────────────────────────────────────────────────────────
@@ -578,6 +593,7 @@ export default {
       if (pathname === '/auth/login'    && request.method === 'POST') return handleLogin(request, env);
       if (pathname === '/auth/verify'   && request.method === 'GET')  return handleVerify(request, env);
       if (pathname === '/auth/logout'   && request.method === 'POST') return handleLogout(request, env);
+      if (pathname === '/admin/me'      && request.method === 'GET')  return handleAdminMe(request, env);
 
       if (pathname === '/coffees'    && request.method === 'GET')  return handleGetCoffees(env);
       if (pathname === '/shops'      && request.method === 'GET')  return handleGetShops(env);

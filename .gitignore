@@ -90,3 +90,7 @@ fastlane/test_output
 
 iOSInjectionProject/
 view raw swift.gitignore hosted with ❤ by GitHub
+## Cloudflare Worker (SpillTheBeans-Worker)
+node_modules/
+.wrangler/
+.dev.vars

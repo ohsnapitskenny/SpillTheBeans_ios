@@ -18,3 +18,7 @@ database_id = "05659ec7-8a0b-4103-aaa0-5ba6d9c2b8a5"
 # Google Places details are cached in D1 and refreshed once a day.
 [triggers]
 crons = ["0 3 * * *"]   # 03:00 UTC daily (~04:00–05:00 Amsterdam)
+
+# Usernames (comma-separated) allowed into the admin dashboard — see GET /admin/me.
+[vars]
+ADMIN_USERNAMES = "ohsnapitskenny"

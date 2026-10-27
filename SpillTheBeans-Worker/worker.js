@@ -18,8 +18,9 @@
 //   GET  /place-photo?name=&w=    — streams a Places photo through the worker
 //   POST /admin/refresh-places    — force a full refresh (Authorization: Bearer ADMIN_TOKEN)
 //
-// The place cache (D1 table `place_details`) is refreshed once a day by the
-// scheduled() cron handler, so normal app traffic hits Google zero times.
+// The place cache (D1 table `place_details`) is refreshed by the worker only:
+// a daily cron, plus a background refresh when a place older than 6 hours is
+// viewed. App requests are always answered from the cache.
 //
 // Bindings (set in wrangler.toml):
 //   USERS    (KV) — user records keyed by username
@@ -293,10 +294,11 @@ async function handleCreateReview(request, env) {
 
 // ── Google Places (server-side proxy) ─────────────────────────────────────────
 // The app never talks to Google directly: this keeps the API key out of the
-// bundle. Place details are stored in D1 (table `place_details`) and refreshed
-// once a day by the scheduled (cron) handler, so browsing the app makes no
-// Google Places API calls — only the daily refresh (and a one-off self-heal for
-// a place the cron hasn't reached yet) does.
+// bundle. Place details are stored in D1 (table `place_details`); the app only
+// ever reads that cache. Google is called by the worker in three cases, all via
+// refreshPlace(): the daily cron, a one-off self-heal for a place that was never
+// cached, and a background refresh when a viewed place is older than 6 hours
+// (at most one call per place per 6 hours, see refreshStalePlace).
 
 const PLACE_FIELD_MASK = [
   'rating',
@@ -410,6 +412,39 @@ function upsertPlaceStmt(env, row) {
          row.website_uri, row.address);
 }
 
+// Fetch one place from Google and store it in D1, also syncing the shop's rating.
+// The only code path that calls the Places details API; used by the daily cron,
+// the first-view self-heal and the refresh-on-view of stale places.
+async function refreshPlace(env, placeId) {
+  const place = await fetchGooglePlace(env, placeId);
+  const row = placeToRow(placeId, place);
+  await upsertPlaceStmt(env, row).run();
+  if (typeof row.rating === 'number') {
+    await env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE google_place_id = ?2')
+      .bind(row.rating, placeId).run();
+  }
+  return row;
+}
+
+// Cached details older than this are refreshed in the background when viewed.
+const PLACE_STALE_AFTER = '-6 hours';
+
+// Refresh-on-view for a stale place. The request first claims the refresh by
+// moving updated_at forward (only if nobody else did in the meantime), so a burst
+// of views on the same stale place makes a single Google call. If Google then
+// fails, the place simply waits for the next claim window or the daily cron.
+async function refreshStalePlace(env, placeId, seenUpdatedAt) {
+  const claim = await env.DB.prepare(
+    "UPDATE place_details SET updated_at = datetime('now') WHERE google_place_id = ?1 AND updated_at = ?2"
+  ).bind(placeId, seenUpdatedAt).run();
+  if (!claim.meta.changes) return;
+  try {
+    await refreshPlace(env, placeId);
+  } catch (e) {
+    console.error('stale place refresh failed for', placeId, e.message);
+  }
+}
+
 // Current wall-clock in the shops' timezone (all are in the Netherlands).
 // Returns { day: 0=Sun…6=Sat, minutes: since local midnight } to match the
 // day numbering Google uses in opening-hours periods.
@@ -490,12 +525,7 @@ async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
   let ok = 0, failed = 0;
   for (const { placeId } of results) {
     try {
-      const place = await fetchGooglePlace(env, placeId);
-      await upsertPlaceStmt(env, placeToRow(placeId, place)).run();
-      if (typeof place.rating === 'number') {
-        await env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE google_place_id = ?2')
-          .bind(place.rating, placeId).run();
-      }
+      await refreshPlace(env, placeId);
       ok++;
     } catch (e) {
       failed++;
@@ -516,29 +546,25 @@ async function handleGetShopPlace(request, env, ctx, shopId) {
 
   const origin = new URL(request.url).origin;
 
-  // Primary path: serve from our own D1 cache (no Google call).
+  // Primary path: serve from our own D1 cache (no Google call on this request).
   let row = await env.DB.prepare(
-    'SELECT * FROM place_details WHERE google_place_id = ?1'
-  ).bind(shop.google_place_id).first();
+    'SELECT *, updated_at < datetime(\'now\', ?2) AS is_stale FROM place_details WHERE google_place_id = ?1'
+  ).bind(shop.google_place_id, PLACE_STALE_AFTER).first();
 
-  // Self-heal: a place the daily cron hasn't populated yet is fetched once and
-  // stored, so it's cached for everyone from then on.
   if (!row) {
+    // Self-heal: a place the daily cron hasn't populated yet is fetched once and
+    // stored, so it's cached for everyone from then on.
     if (!env.GOOGLE_MAPS_API_KEY) return json({ error: 'Places API not configured' }, 503);
     try {
-      const place = await fetchGooglePlace(env, shop.google_place_id);
-      row = placeToRow(shop.google_place_id, place);
-      ctx.waitUntil(upsertPlaceStmt(env, row).run());
-      if (typeof row.rating === 'number') {
-        ctx.waitUntil(
-          env.DB.prepare('UPDATE coffee_shops SET rating = ?1 WHERE id = ?2')
-            .bind(row.rating, shop.id).run()
-        );
-      }
+      row = await refreshPlace(env, shop.google_place_id);
     } catch (e) {
       console.error('place self-heal failed', e.message);
       return json({ error: 'Places lookup failed' }, 502);
     }
+  } else if (row.is_stale && env.GOOGLE_MAPS_API_KEY) {
+    // Stale: answer from cache right away and fetch the latest from Google in
+    // the background, so the next view gets fresh details.
+    ctx.waitUntil(refreshStalePlace(env, shop.google_place_id, row.updated_at));
   }
 
   return json(rowToDetails(row, origin));

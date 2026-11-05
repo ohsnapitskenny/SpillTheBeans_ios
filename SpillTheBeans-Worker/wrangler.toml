@@ -36,7 +36,7 @@ crons = ["0,20,40 3 * * *"]   # Daily from 03:00 UTC (~04:00–05:00 Amsterdam);
 # domain). The RESEND_API_KEY itself is a secret: wrangler secret put RESEND_API_KEY
 [vars]
 ADMIN_USERNAMES = "ohsnapitskenny"
-EMAIL_FROM = "Spill the Beans <login@example.com>"
+EMAIL_FROM = "Spill the Beans <login@spillthebeanscoffee.nl>"
 
 # ────────────────────────────────────────────────────────────────────────────
 # UAT  —  https://spillthebeans-auth-uat.<subdomain>.workers.dev
@@ -66,7 +66,7 @@ crons = ["0,20,40 3 * * *"]
 
 [env.uat.vars]
 ADMIN_USERNAMES = "ohsnapitskenny"
-EMAIL_FROM = "Spill the Beans <login@example.com>"
+EMAIL_FROM = "Spill the Beans <login@spillthebeanscoffee.nl>"
 
 # ────────────────────────────────────────────────────────────────────────────
 # Production  —  https://spillthebeans-auth-production.<subdomain>.workers.dev
@@ -96,4 +96,4 @@ crons = ["0,20,40 3 * * *"]
 
 [env.production.vars]
 ADMIN_USERNAMES = "ohsnapitskenny"
-EMAIL_FROM = "Spill the Beans <login@example.com>"
+EMAIL_FROM = "Spill the Beans <login@spillthebeanscoffee.nl>"

@@ -20,6 +20,9 @@ struct CoffeeDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
+                if let url = coffee.imageURL {
+                    photo(url)
+                }
                 heroSection
                 Divider()
                 originSection
@@ -61,6 +64,29 @@ struct CoffeeDetailView: View {
             showingAddReview = true
         } else {
             showingSignInPrompt = true
+        }
+    }
+
+    // MARK: - Photo
+
+    /// The bag photo; collapses to nothing if it fails to load.
+    private func photo(_ url: URL) -> some View {
+        AsyncImage(url: url) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: 260)
+                    .padding(12)
+                    .background(Color.white, in: RoundedRectangle(cornerRadius: 14))
+            case .failure:
+                EmptyView()
+            default:
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color.secondary.opacity(0.08))
+                    .frame(height: 260)
+            }
         }
     }
 

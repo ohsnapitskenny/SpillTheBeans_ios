@@ -15,6 +15,8 @@ struct Coffee: Identifiable, Codable, Hashable {
     let harvestSeason: String?
     /// The Dutch roaster whose lineup this bean comes from.
     let roaster: String?
+    /// Bag photo served by the Worker (/coffee-images/…); nil when there is none.
+    let imageURL: URL?
 }
 
 // MARK: - Origin

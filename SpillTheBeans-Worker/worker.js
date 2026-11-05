@@ -11,6 +11,7 @@
 //   GET  /admin/shop-candidates                the queue (pending, added, declined)
 //   POST /admin/shop-candidates/:placeId/add   { category? } — add to coffee_shops
 //   POST /admin/shop-candidates/:placeId/decline | /restore
+//   POST /admin/coffees/:id                    { ...fields, imageSourceURL?, removeImage? } — edit a bean
 //   GET  /admin/coffee-candidates              bean import queue
 //   POST /admin/coffee-candidates/:id          { ...fields } — edit a pending bean
 //   POST /admin/coffee-candidates/:id/add      add to coffees (copies the image into KV)
@@ -768,6 +769,60 @@ async function handleAddCoffeeCandidate(request, env, id) {
   return json(coffeeFromRow(coffee, new URL(request.url).origin));
 }
 
+// POST /admin/coffees/:id { ...fields } — edit a bean that is already in the app.
+// Same fields and rules as the import queue, plus harvestSeason. A new
+// imageSourceURL is copied into COFFEE_IMAGES; removeImage clears the photo.
+async function handleUpdateCoffee(request, env, id) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const columns = { ...CANDIDATE_FIELDS, harvestSeason: 'harvest_season' };
+  delete columns.imageSourceURL;
+  const required = { name: 'name', originCountry: 'country', process: 'process', roastLevel: 'roast level', tastingNote: 'tasting note' };
+
+  const sets = [], values = [];
+  const set = (column, value) => { sets.push(`${column} = ?${values.length + 2}`); values.push(value); };
+  for (const [key, column] of Object.entries(columns)) {
+    if (!(key in body)) continue;
+    let v = body[key];
+    if (key === 'flavorTags') {
+      if (!Array.isArray(v)) return json({ error: 'flavorTags must be a list' }, 400);
+      v = JSON.stringify(v.map((t) => String(t).trim().toLowerCase()).filter(Boolean).slice(0, 12));
+    } else if (v === null || v === '') {
+      if (required[key]) return json({ error: `${required[key]} is required` }, 400);
+      v = null;
+    } else if (typeof v !== 'string' || v.length > 1000) {
+      return json({ error: `${key} must be text` }, 400);
+    } else {
+      v = v.trim();
+    }
+    if (key === 'process' && !PROCESSES.includes(v)) return json({ error: `process must be one of ${PROCESSES.join(', ')}` }, 400);
+    if (key === 'roastLevel' && !ROAST_LEVELS.includes(v)) return json({ error: `roastLevel must be one of ${ROAST_LEVELS.join(', ')}` }, 400);
+    set(column, v);
+    if (key === 'originCountry') set('origin_flag', flagForCountry(v));
+  }
+
+  const existing = await env.DB.prepare('SELECT id FROM coffees WHERE id = ?1').bind(id).first();
+  if (!existing) return json({ error: 'Unknown bean' }, 404);
+
+  if (body.removeImage === true) {
+    set('image_key', null);
+  } else if (typeof body.imageSourceURL === 'string' && body.imageSourceURL.trim()) {
+    const url = body.imageSourceURL.trim();
+    if (!/^https:\/\//.test(url)) return json({ error: 'imageSourceURL must be an https URL' }, 400);
+    try {
+      set('image_key', await storeCoffeeImage(env, url));
+    } catch (e) {
+      return json({ error: `Couldn't copy the image: ${e.message}` }, 502);
+    }
+  }
+  if (!sets.length) return json({ error: 'Nothing to update' }, 400);
+
+  await env.DB.prepare(`UPDATE coffees SET ${sets.join(', ')} WHERE id = ?1`).bind(id, ...values).run();
+  const row = await env.DB.prepare('SELECT * FROM coffees WHERE id = ?1').bind(id).first();
+  return json(coffeeFromRow(row, new URL(request.url).origin));
+}
+
 // POST /admin/coffee-candidates/:id/decline — and /restore to undo it.
 async function handleSetCoffeeCandidateStatus(env, id, status) {
   const res = await env.DB.prepare(
@@ -1050,6 +1105,14 @@ export default {
 
       const imageMatch = pathname.match(/^\/coffee-images\/([^/]+)$/);
       if (imageMatch && request.method === 'GET') return handleGetCoffeeImage(env, imageMatch[1]);
+
+      // Admin: edit a bean that is already in the app.
+      const coffeeEditMatch = pathname.match(/^\/admin\/coffees\/([^/]+)$/);
+      if (coffeeEditMatch && request.method === 'POST') {
+        const denied = await adminError(request, env);
+        if (denied) return denied;
+        return handleUpdateCoffee(request, env, decodeURIComponent(coffeeEditMatch[1]));
+      }
 
       // Admin: bean import queue (dashboard Beans page).
       if (pathname.startsWith('/admin/coffee-candidates')) {

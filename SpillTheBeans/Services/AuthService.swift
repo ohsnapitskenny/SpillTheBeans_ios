@@ -3,12 +3,16 @@ import Observation
 
 // MARK: - AuthService
 //
-// Username/password authentication backed by a Cloudflare Worker.
+// Passwordless authentication backed by a Cloudflare Worker.
 //
 // Flow:
 //   1. On launch: restore persisted user + token, verify token with the server.
-//   2. signIn / signUp: POST to the worker, persist the returned token + user.
-//   3. signOut: fire-and-forget DELETE to the server, clear local state.
+//   2. Sign up: POST /auth/register { email, username } — the worker emails a code.
+//      Sign in: POST /auth/request-code { email } — the worker emails a code.
+//      Both set `pendingEmail`, which moves the UI to the code-entry step.
+//   3. verifyCode: POST /auth/verify-code { email, code } — on success the worker
+//      returns a session token + user, which we persist.
+//   4. signOut: fire-and-forget DELETE to the server, clear local state.
 
 @MainActor
 @Observable
@@ -18,10 +22,14 @@ final class AuthService {
 
     var currentUser: AppUser?
 
+    /// Set once a code has been emailed; drives the UI into the code-entry step.
+    /// Nil means we're still collecting the email (and, for sign-up, a username).
+    var pendingEmail: String?
+
     /// True while the launch-time token check is in flight.
     var isRestoringSession = true
 
-    /// Set on sign-in / sign-up failure; cleared before each new attempt.
+    /// Set on request/verify failure; cleared before each new attempt.
     var authError: String?
 
     /// True while a network request is in-flight.
@@ -41,35 +49,64 @@ final class AuthService {
         Task { await restoreSession() }
     }
 
-    // MARK: - Public
+    // MARK: - Public — step 1: request a code
 
-    func signIn(username: String, password: String) async {
+    /// Create a passwordless account and email a login code.
+    func requestSignUp(email: String, username: String) async {
         isLoading = true
         authError = nil
         defer { isLoading = false }
         do {
-            let (user, token) = try await post(
-                path: "/auth/login",
-                body: LoginRequest(username: username, password: password)
-            )
-            apply(user, token: token)
-        } catch let e as APIError {
-            authError = e.message
-        } catch {
-            authError = "Something went wrong. Please try again."
-        }
-    }
-
-    func signUp(username: String, password: String, displayName: String, email: String?) async {
-        isLoading = true
-        authError = nil
-        defer { isLoading = false }
-        do {
-            let (user, token) = try await post(
+            try await postExpectingPending(
                 path: "/auth/register",
-                body: RegisterRequest(username: username, password: password,
-                                      displayName: displayName, email: email)
+                body: RegisterRequest(email: email, username: username)
             )
+            pendingEmail = email
+        } catch let e as APIError {
+            authError = e.message
+        } catch {
+            authError = "Something went wrong. Please try again."
+        }
+    }
+
+    /// Email a login code to an existing account.
+    func requestSignIn(email: String) async {
+        isLoading = true
+        authError = nil
+        defer { isLoading = false }
+        do {
+            try await postExpectingPending(
+                path: "/auth/request-code",
+                body: EmailRequest(email: email)
+            )
+            pendingEmail = email
+        } catch let e as APIError {
+            authError = e.message
+        } catch {
+            authError = "Something went wrong. Please try again."
+        }
+    }
+
+    /// Re-send a code for the email already in flight. The account exists by this
+    /// point (sign-up created it), so this always goes through request-code.
+    func resendCode() async {
+        guard let email = pendingEmail else { return }
+        await requestSignIn(email: email)
+    }
+
+    // MARK: - Public — step 2: verify the code
+
+    func verifyCode(_ code: String) async {
+        guard let email = pendingEmail else { return }
+        isLoading = true
+        authError = nil
+        defer { isLoading = false }
+        do {
+            let (user, token) = try await postExpectingAuth(
+                path: "/auth/verify-code",
+                body: VerifyCodeRequest(email: email, code: code)
+            )
+            pendingEmail = nil
             apply(user, token: token)
         } catch let e as APIError {
             authError = e.message
@@ -77,6 +114,14 @@ final class AuthService {
             authError = "Something went wrong. Please try again."
         }
     }
+
+    /// Return to the email step, discarding the pending code.
+    func cancelCodeEntry() {
+        pendingEmail = nil
+        authError = nil
+    }
+
+    // MARK: - Public — session
 
     func signOut() {
         if let token = UserDefaults.standard.string(forKey: tokenKey) {
@@ -155,7 +200,9 @@ final class AuthService {
         return try JSONDecoder().decode(VerifyResponse.self, from: data).user
     }
 
-    private func post<B: Encodable>(path: String, body: B) async throws -> (AppUser, String) {
+    // MARK: - Networking
+
+    private func postRaw<B: Encodable>(path: String, body: B) async throws -> Data {
         var req = URLRequest(url: URL(string: "\(baseURL)\(path)")!)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -169,7 +216,17 @@ final class AuthService {
                 ?? "Request failed (\(http.statusCode))"
             throw APIError(message: msg)
         }
+        return data
+    }
 
+    /// For endpoints that only acknowledge (register / request-code).
+    private func postExpectingPending<B: Encodable>(path: String, body: B) async throws {
+        _ = try await postRaw(path: path, body: body)
+    }
+
+    /// For endpoints that return a session (verify-code).
+    private func postExpectingAuth<B: Encodable>(path: String, body: B) async throws -> (AppUser, String) {
+        let data = try await postRaw(path: path, body: body)
         let decoded = try JSONDecoder().decode(AuthResponse.self, from: data)
         return (decoded.user, decoded.token)
     }
@@ -177,15 +234,17 @@ final class AuthService {
     // MARK: - Codable helpers
 
     private struct RegisterRequest: Encodable {
+        let email: String
         let username: String
-        let password: String
-        let displayName: String
-        let email: String?
     }
 
-    private struct LoginRequest: Encodable {
-        let username: String
-        let password: String
+    private struct EmailRequest: Encodable {
+        let email: String
+    }
+
+    private struct VerifyCodeRequest: Encodable {
+        let email: String
+        let code: String
     }
 
     private struct AuthResponse: Decodable {

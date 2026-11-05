@@ -1,3 +1,10 @@
+# Three environments share this one worker.js:
+#   Dev         (top-level)      → spillthebeans-auth              — npx wrangler deploy
+#   UAT         [env.uat]        → spillthebeans-auth-uat          — npx wrangler deploy --env uat
+#   Production  [env.production] → spillthebeans-auth-production   — npx wrangler deploy --env production
+# Each environment has its own D1 database, KV namespaces, and secrets. Named
+# environments do NOT inherit the top-level d1/kv/vars/triggers, so they are
+# repeated in full below.
 name = "spillthebeans-auth"
 main = "worker.js"
 compatibility_date = "2024-01-01"
@@ -10,6 +17,11 @@ id = "d54032cae9f44c5aa6f4ea2ecce5c6b8"
 binding = "SESSIONS"
 id = "fd8f8e9f73484d6499d5e31b08983a0e"
 
+# Bean photos copied in by the dashboard import queue (see /coffee-images).
+[[kv_namespaces]]
+binding = "COFFEE_IMAGES"
+id = "d821d0fcfb6c40ada4de9e94f4a2c5c8"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "spillthebeans-db"
@@ -17,8 +29,71 @@ database_id = "05659ec7-8a0b-4103-aaa0-5ba6d9c2b8a5"
 
 # Google Places details are cached in D1 and refreshed once a day.
 [triggers]
-crons = ["0 3 * * *"]   # 03:00 UTC daily (~04:00–05:00 Amsterdam)
+crons = ["0,20,40 3 * * *"]   # Daily from 03:00 UTC (~04:00–05:00 Amsterdam); 3 runs because each refreshes at most 45 places
 
 # Usernames (comma-separated) allowed into the admin dashboard — see GET /admin/me.
+# EMAIL_FROM is the sender for passwordless login codes (must be a Resend-verified
+# domain). The RESEND_API_KEY itself is a secret: wrangler secret put RESEND_API_KEY
 [vars]
 ADMIN_USERNAMES = "ohsnapitskenny"
+EMAIL_FROM = "Spill the Beans <login@example.com>"
+
+# ────────────────────────────────────────────────────────────────────────────
+# UAT  —  https://spillthebeans-auth-uat.<subdomain>.workers.dev
+# Deploy:  npx wrangler deploy --env uat
+# Secrets: npx wrangler secret put GOOGLE_MAPS_API_KEY --env uat   (also ADMIN_TOKEN, RESEND_API_KEY)
+[env.uat]
+
+[[env.uat.kv_namespaces]]
+binding = "USERS"
+id = "989e2ad354ac427ba1aacbf3c104cc22"
+
+[[env.uat.kv_namespaces]]
+binding = "SESSIONS"
+id = "06ca4c9c56364b0c8564423d1a5acdb4"
+
+[[env.uat.kv_namespaces]]
+binding = "COFFEE_IMAGES"
+id = "5a9ee63d320844a49eb8817c52da0af0"
+
+[[env.uat.d1_databases]]
+binding = "DB"
+database_name = "spillthebeans-db-uat"
+database_id = "2742f458-a1b0-4288-86a0-88b196bf23e2"
+
+[env.uat.triggers]
+crons = ["0,20,40 3 * * *"]
+
+[env.uat.vars]
+ADMIN_USERNAMES = "ohsnapitskenny"
+EMAIL_FROM = "Spill the Beans <login@example.com>"
+
+# ────────────────────────────────────────────────────────────────────────────
+# Production  —  https://spillthebeans-auth-production.<subdomain>.workers.dev
+# Deploy:  npx wrangler deploy --env production
+# Secrets: npx wrangler secret put GOOGLE_MAPS_API_KEY --env production   (also ADMIN_TOKEN, RESEND_API_KEY)
+[env.production]
+
+[[env.production.kv_namespaces]]
+binding = "USERS"
+id = "5cf757f2f6174f7a8e67674946061d34"
+
+[[env.production.kv_namespaces]]
+binding = "SESSIONS"
+id = "1dd6fb6b3120496ea9fd268b0e159ff0"
+
+[[env.production.kv_namespaces]]
+binding = "COFFEE_IMAGES"
+id = "6593203313f24af88ca66d2500506c34"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "spillthebeans-db-prod"
+database_id = "d788a598-78ca-41c5-a54d-ae6a06b7fef1"
+
+[env.production.triggers]
+crons = ["0,20,40 3 * * *"]
+
+[env.production.vars]
+ADMIN_USERNAMES = "ohsnapitskenny"
+EMAIL_FROM = "Spill the Beans <login@example.com>"

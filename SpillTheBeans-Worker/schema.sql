@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS coffees;
 DROP TABLE IF EXISTS coffee_shops;
 DROP TABLE IF EXISTS place_details;
+DROP TABLE IF EXISTS shop_candidates;
+DROP TABLE IF EXISTS coffee_candidates;
 
 CREATE TABLE coffees (
   id             TEXT PRIMARY KEY,
@@ -18,6 +20,7 @@ CREATE TABLE coffees (
   altitude       TEXT,
   harvest_season TEXT,
   roaster        TEXT,            -- Dutch roaster whose lineup this bean is from
+  image_key      TEXT,            -- COFFEE_IMAGES KV key, NULL = no image
   created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -66,4 +69,48 @@ CREATE TABLE place_details (
   website_uri       TEXT,
   address           TEXT,   -- Google formatted address
   updated_at        TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Cafés found on Google, waiting for an admin to add or decline them in the
+-- dashboard. Declined places stay here so later searches skip them.
+CREATE TABLE shop_candidates (
+  google_place_id   TEXT PRIMARY KEY,
+  name              TEXT NOT NULL,
+  address           TEXT NOT NULL,
+  latitude          REAL NOT NULL,
+  longitude         REAL NOT NULL,
+  rating            REAL,
+  user_rating_count INTEGER,
+  summary           TEXT,            -- Google editorial summary, used as the description
+  google_maps_uri   TEXT,
+  website_uri       TEXT,
+  search_query      TEXT,            -- the search that found it, e.g. "specialty coffee in Utrecht"
+  status            TEXT NOT NULL DEFAULT 'pending',   -- pending | added | declined
+  shop_id           TEXT,            -- coffee_shops.id once added
+  found_at          TEXT NOT NULL DEFAULT (datetime('now')),
+  decided_at        TEXT
+);
+
+-- Beans imported from shops (e.g. Koffie Kenner), waiting for an admin to
+-- complete, add or decline them in the dashboard.
+CREATE TABLE coffee_candidates (
+  id               TEXT PRIMARY KEY,   -- source:handle, e.g. koffiekenner:syoum-family
+  source           TEXT NOT NULL,      -- e.g. "Koffie Kenner"
+  source_url       TEXT,
+  name             TEXT NOT NULL,
+  roaster          TEXT,
+  origin_country   TEXT,               -- NULL until known; required to add
+  origin_region    TEXT,
+  process          TEXT,               -- Washed | Natural | Honey | Anaerobic; required to add
+  roast_level      TEXT,               -- Light … Dark; required to add
+  flavor_tags      TEXT NOT NULL DEFAULT '[]',
+  tasting_note     TEXT,
+  producer         TEXT,
+  altitude         TEXT,
+  image_source_url TEXT,               -- copied into COFFEE_IMAGES when added
+  research_notes   TEXT,               -- where the data came from, open questions
+  status           TEXT NOT NULL DEFAULT 'pending',   -- pending | added | declined
+  coffee_id        TEXT,               -- coffees.id once added
+  found_at         TEXT NOT NULL DEFAULT (datetime('now')),
+  decided_at       TEXT
 );

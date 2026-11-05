@@ -10,6 +10,11 @@ id = "d54032cae9f44c5aa6f4ea2ecce5c6b8"
 binding = "SESSIONS"
 id = "fd8f8e9f73484d6499d5e31b08983a0e"
 
+# Bean photos copied in by the dashboard import queue (see /coffee-images).
+[[kv_namespaces]]
+binding = "COFFEE_IMAGES"
+id = "d821d0fcfb6c40ada4de9e94f4a2c5c8"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "spillthebeans-db"
@@ -17,7 +22,7 @@ database_id = "05659ec7-8a0b-4103-aaa0-5ba6d9c2b8a5"
 
 # Google Places details are cached in D1 and refreshed once a day.
 [triggers]
-crons = ["0 3 * * *"]   # 03:00 UTC daily (~04:00–05:00 Amsterdam)
+crons = ["0,20,40 3 * * *"]   # Daily from 03:00 UTC (~04:00–05:00 Amsterdam); 3 runs because each refreshes at most 45 places
 
 # Usernames (comma-separated) allowed into the admin dashboard — see GET /admin/me.
 [vars]

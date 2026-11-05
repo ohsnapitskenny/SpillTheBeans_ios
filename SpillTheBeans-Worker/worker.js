@@ -6,6 +6,17 @@
 //   POST /auth/logout    Authorization: Bearer <token>
 //   GET  /admin/me       Authorization: Bearer <token> — 200 for admins, 403 otherwise
 //
+// Admin endpoints (Authorization: Bearer <admin session token>):
+//   POST /admin/shops/discover                 { query? } — search Google, queue new cafés
+//   GET  /admin/shop-candidates                the queue (pending, added, declined)
+//   POST /admin/shop-candidates/:placeId/add   { category? } — add to coffee_shops
+//   POST /admin/shop-candidates/:placeId/decline | /restore
+//   GET  /admin/coffee-candidates              bean import queue
+//   POST /admin/coffee-candidates/:id          { ...fields } — edit a pending bean
+//   POST /admin/coffee-candidates/:id/add      add to coffees (copies the image into KV)
+//   POST /admin/coffee-candidates/:id/decline | /restore
+//   POST /admin/refresh-places                 refresh the stalest cached places (also ADMIN_TOKEN)
+//
 // Data endpoints (backed by D1):
 //   GET  /coffees                 — all coffee beans
 //   GET  /shops                   — all coffee shops
@@ -16,11 +27,11 @@
 // Google Places endpoints (key stays server-side):
 //   GET  /shops/:id/place         — place details, served from the D1 cache
 //   GET  /place-photo?name=&w=    — streams a Places photo through the worker
+//   GET  /coffee-images/:key      — a bean photo stored in COFFEE_IMAGES (KV)
 //   POST /admin/refresh-places    — force a full refresh (Authorization: Bearer ADMIN_TOKEN)
 //
 // The place cache (D1 table `place_details`) is refreshed by the worker only:
-// a daily cron, plus a background refresh when a place older than 6 hours is
-// viewed. App requests are always answered from the cache.
+// a daily cron job. App requests are always answered from the cache.
 //
 // Bindings (set in wrangler.toml):
 //   USERS    (KV) — user records keyed by username
@@ -171,7 +182,8 @@ async function handleAdminMe(request, env) {
 
 // Row mappers reshape flat D1 rows into the exact JSON the iOS models decode.
 
-function coffeeFromRow(r) {
+// imageURL points at this worker's /coffee-images route (origin from the request).
+function coffeeFromRow(r, origin = '') {
   return {
     id: r.id,
     name: r.name,
@@ -184,6 +196,7 @@ function coffeeFromRow(r) {
     altitude: r.altitude,
     harvestSeason: r.harvest_season,
     roaster: r.roaster,
+    imageURL: r.image_key ? `${origin}/coffee-images/${r.image_key}` : null,
   };
 }
 
@@ -216,11 +229,12 @@ function reviewFromRow(r) {
   };
 }
 
-async function handleGetCoffees(env) {
+async function handleGetCoffees(request, env) {
+  const origin = new URL(request.url).origin;
   const { results } = await env.DB.prepare(
     'SELECT * FROM coffees ORDER BY created_at DESC, name'
   ).all();
-  return json(results.map(coffeeFromRow));
+  return json(results.map((r) => coffeeFromRow(r, origin)));
 }
 
 async function handleGetShops(env) {
@@ -295,10 +309,9 @@ async function handleCreateReview(request, env) {
 // ── Google Places (server-side proxy) ─────────────────────────────────────────
 // The app never talks to Google directly: this keeps the API key out of the
 // bundle. Place details are stored in D1 (table `place_details`); the app only
-// ever reads that cache. Google is called by the worker in three cases, all via
-// refreshPlace(): the daily cron, a one-off self-heal for a place that was never
-// cached, and a background refresh when a viewed place is older than 6 hours
-// (at most one call per place per 6 hours, see refreshStalePlace).
+// ever reads that cache. Google is called by the worker via refreshPlace() for the
+// daily cron, a one-off self-heal for a place that was never cached, and an
+// admin's manual refresh.
 
 const PLACE_FIELD_MASK = [
   'rating',
@@ -349,10 +362,16 @@ function weekdayDescriptionsToHours(descriptions) {
   });
 }
 
+// Places API base URL. PLACES_API_BASE only exists to point local tests at a
+// stand-in server; it is never set in wrangler.toml.
+function placesApi(env) {
+  return env.PLACES_API_BASE || 'https://places.googleapis.com/v1';
+}
+
 // Fetch the raw place from the Google Places API. Throws on a non-200.
 async function fetchGooglePlace(env, placeId) {
   const resp = await fetch(
-    `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
+    `${placesApi(env)}/places/${encodeURIComponent(placeId)}`,
     { headers: { 'X-Goog-Api-Key': env.GOOGLE_MAPS_API_KEY, 'X-Goog-FieldMask': PLACE_FIELD_MASK } }
   );
   if (!resp.ok) throw new Error(`Places ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
@@ -426,25 +445,6 @@ async function refreshPlace(env, placeId) {
   return row;
 }
 
-// Cached details older than this are refreshed in the background when viewed.
-const PLACE_STALE_AFTER = '-6 hours';
-
-// Refresh-on-view for a stale place. The request first claims the refresh by
-// moving updated_at forward (only if nobody else did in the meantime), so a burst
-// of views on the same stale place makes a single Google call. If Google then
-// fails, the place simply waits for the next claim window or the daily cron.
-async function refreshStalePlace(env, placeId, seenUpdatedAt) {
-  const claim = await env.DB.prepare(
-    "UPDATE place_details SET updated_at = datetime('now') WHERE google_place_id = ?1 AND updated_at = ?2"
-  ).bind(placeId, seenUpdatedAt).run();
-  if (!claim.meta.changes) return;
-  try {
-    await refreshPlace(env, placeId);
-  } catch (e) {
-    console.error('stale place refresh failed for', placeId, e.message);
-  }
-}
-
 // Current wall-clock in the shops' timezone (all are in the Netherlands).
 // Returns { day: 0=Sun…6=Sat, minutes: since local midnight } to match the
 // day numbering Google uses in opening-hours periods.
@@ -498,11 +498,14 @@ function rowToDetails(row, origin) {
 // and the admin endpoint. Returns a summary.
 // A single Worker invocation may make at most 50 fetch subrequests, so we
 // refresh at most this many places per run — the stalest (and never-cached)
-// first. With ~60 places the daily cron rotates through everything within a
-// day or two; anything not yet cached also self-heals on first view.
+// first. The daily cron therefore fires three times in a row (135 places at
+// most); anything not yet cached also self-heals on first view.
 const PLACES_REFRESH_BATCH = 45;
 
-async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
+// The cron's later runs skip places an earlier run already refreshed today.
+const PLACE_DAILY_MIN_AGE = '-20 hours';
+
+async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH, minAge = '-0 seconds') {
   if (!env.GOOGLE_MAPS_API_KEY) {
     console.error('places refresh: GOOGLE_MAPS_API_KEY not set');
     return { ok: 0, failed: 0, total: 0 };
@@ -517,9 +520,10 @@ async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
        LEFT JOIN place_details pd ON pd.google_place_id = cs.google_place_id
       WHERE cs.google_place_id IS NOT NULL AND cs.google_place_id <> ''
       GROUP BY cs.google_place_id
+     HAVING MAX(pd.updated_at) IS NULL OR MAX(pd.updated_at) < datetime('now', ?2)
       ORDER BY MAX(pd.updated_at) ASC
       LIMIT ?1`
-  ).bind(batch).all();
+  ).bind(batch, minAge).all();
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   let ok = 0, failed = 0;
@@ -537,7 +541,7 @@ async function refreshAllPlaces(env, limit = PLACES_REFRESH_BATCH) {
   return { ok, failed, total: results.length };
 }
 
-async function handleGetShopPlace(request, env, ctx, shopId) {
+async function handleGetShopPlace(request, env, shopId) {
   const shop = await env.DB.prepare(
     'SELECT id, google_place_id FROM coffee_shops WHERE id = ?1 COLLATE NOCASE'
   ).bind(shopId).first();
@@ -548,8 +552,8 @@ async function handleGetShopPlace(request, env, ctx, shopId) {
 
   // Primary path: serve from our own D1 cache (no Google call on this request).
   let row = await env.DB.prepare(
-    'SELECT *, updated_at < datetime(\'now\', ?2) AS is_stale FROM place_details WHERE google_place_id = ?1'
-  ).bind(shop.google_place_id, PLACE_STALE_AFTER).first();
+    'SELECT * FROM place_details WHERE google_place_id = ?1'
+  ).bind(shop.google_place_id).first();
 
   if (!row) {
     // Self-heal: a place the daily cron hasn't populated yet is fetched once and
@@ -561,10 +565,6 @@ async function handleGetShopPlace(request, env, ctx, shopId) {
       console.error('place self-heal failed', e.message);
       return json({ error: 'Places lookup failed' }, 502);
     }
-  } else if (row.is_stale && env.GOOGLE_MAPS_API_KEY) {
-    // Stale: answer from cache right away and fetch the latest from Google in
-    // the background, so the next view gets fresh details.
-    ctx.waitUntil(refreshStalePlace(env, shop.google_place_id, row.updated_at));
   }
 
   return json(rowToDetails(row, origin));
@@ -605,6 +605,403 @@ async function handleGetPlacePhoto(request, env, ctx) {
   return out;
 }
 
+// ── Bean import queue (admin) ─────────────────────────────────────────────────
+// Beans imported from shops (one-off imports such as Koffie Kenner) wait in
+// coffee_candidates. An admin completes missing fields in the dashboard, then
+// adds or declines each one. Adding copies the photo into COFFEE_IMAGES (KV)
+// so the app never depends on the shop's servers.
+
+// The values the iOS app can decode (Coffee.swift ProcessingMethod / RoastLevel).
+const PROCESSES = ['Washed', 'Natural', 'Honey', 'Anaerobic', 'Wet Hulled', 'Carbonic Maceration'];
+const ROAST_LEVELS = ['Light', 'Medium Light', 'Medium', 'Medium Dark', 'Dark'];
+
+// Coffee-growing countries → flag. Blends ("Brazil & Peru") use the first country.
+const COUNTRY_FLAGS = {
+  Bolivia: '🇧🇴', Brazil: '🇧🇷', Burundi: '🇧🇮', China: '🇨🇳', Colombia: '🇨🇴', 'Costa Rica': '🇨🇷',
+  Congo: '🇨🇩', 'DR Congo': '🇨🇩', Ecuador: '🇪🇨', 'El Salvador': '🇸🇻', Ethiopia: '🇪🇹', Guatemala: '🇬🇹',
+  Honduras: '🇭🇳', India: '🇮🇳', Indonesia: '🇮🇩', Jamaica: '🇯🇲', Kenya: '🇰🇪', Malawi: '🇲🇼',
+  Mexico: '🇲🇽', Myanmar: '🇲🇲', Nepal: '🇳🇵', Nicaragua: '🇳🇮', Panama: '🇵🇦', 'Papua New Guinea': '🇵🇬',
+  Peru: '🇵🇪', Rwanda: '🇷🇼', Tanzania: '🇹🇿', Thailand: '🇹🇭', Timor: '🇹🇱', Uganda: '🇺🇬',
+  Vietnam: '🇻🇳', Yemen: '🇾🇪', Zambia: '🇿🇲', Zimbabwe: '🇿🇼',
+};
+
+function flagForCountry(country) {
+  const first = (country || '').split(/\s*[&,/]\s*/)[0].trim();
+  return COUNTRY_FLAGS[first] || '🌍';
+}
+
+function coffeeCandidateFromRow(r) {
+  return {
+    id:             r.id,
+    source:         r.source,
+    sourceURL:      r.source_url,
+    name:           r.name,
+    roaster:        r.roaster,
+    originCountry:  r.origin_country,
+    originRegion:   r.origin_region,
+    process:        r.process,
+    roastLevel:     r.roast_level,
+    flavorTags:     JSON.parse(r.flavor_tags || '[]'),
+    tastingNote:    r.tasting_note,
+    producer:       r.producer,
+    altitude:       r.altitude,
+    imageSourceURL: r.image_source_url,
+    researchNotes:  r.research_notes,
+    status:         r.status,
+    coffeeId:       r.coffee_id,
+    foundAt:        r.found_at,
+    decidedAt:      r.decided_at,
+  };
+}
+
+// Fields an admin may edit, JSON name → column.
+const CANDIDATE_FIELDS = {
+  name: 'name', roaster: 'roaster', originCountry: 'origin_country', originRegion: 'origin_region',
+  process: 'process', roastLevel: 'roast_level', flavorTags: 'flavor_tags', tastingNote: 'tasting_note',
+  producer: 'producer', altitude: 'altitude', imageSourceURL: 'image_source_url',
+};
+
+// GET /admin/coffee-candidates
+async function handleListCoffeeCandidates(env) {
+  const { results } = await env.DB.prepare(
+    `SELECT * FROM coffee_candidates
+      ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, roaster, name`
+  ).all();
+  return json(results.map(coffeeCandidateFromRow));
+}
+
+// POST /admin/coffee-candidates/:id { ...fields } — save edits to a pending bean.
+async function handleUpdateCoffeeCandidate(request, env, id) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const sets = [], values = [];
+  for (const [key, column] of Object.entries(CANDIDATE_FIELDS)) {
+    if (!(key in body)) continue;
+    let v = body[key];
+    if (key === 'flavorTags') {
+      if (!Array.isArray(v)) return json({ error: 'flavorTags must be a list' }, 400);
+      v = JSON.stringify(v.map((t) => String(t).trim().toLowerCase()).filter(Boolean).slice(0, 12));
+    } else if (v === null || v === '') {
+      v = null;
+    } else if (typeof v !== 'string' || v.length > 1000) {
+      return json({ error: `${key} must be text` }, 400);
+    } else {
+      v = v.trim();
+    }
+    if (key === 'name' && !v) return json({ error: 'name is required' }, 400);
+    if (key === 'process' && v && !PROCESSES.includes(v)) return json({ error: `process must be one of ${PROCESSES.join(', ')}` }, 400);
+    if (key === 'roastLevel' && v && !ROAST_LEVELS.includes(v)) return json({ error: `roastLevel must be one of ${ROAST_LEVELS.join(', ')}` }, 400);
+    if (key === 'imageSourceURL' && v && !/^https:\/\//.test(v)) return json({ error: 'imageSourceURL must be an https URL' }, 400);
+    sets.push(`${column} = ?${values.length + 2}`);
+    values.push(v);
+  }
+  if (!sets.length) return json({ error: 'Nothing to update' }, 400);
+
+  const res = await env.DB.prepare(
+    `UPDATE coffee_candidates SET ${sets.join(', ')} WHERE id = ?1 AND status <> 'added'`
+  ).bind(id, ...values).run();
+  if (!res.meta.changes) return json({ error: 'Unknown bean, or already added' }, 404);
+  const row = await env.DB.prepare('SELECT * FROM coffee_candidates WHERE id = ?1').bind(id).first();
+  return json(coffeeCandidateFromRow(row));
+}
+
+const IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+
+// Copy an image into COFFEE_IMAGES and return its key. Throws on failure.
+async function storeCoffeeImage(env, sourceUrl) {
+  const resp = await fetch(sourceUrl, { headers: { Accept: 'image/*' } });
+  const type = resp.headers.get('Content-Type') || '';
+  if (!resp.ok || !type.startsWith('image/')) throw new Error(`image fetch failed (${resp.status} ${type})`);
+  const bytes = await resp.arrayBuffer();
+  if (bytes.byteLength > IMAGE_MAX_BYTES) throw new Error('image is larger than 5 MB');
+  const key = randomHex(16);
+  await env.COFFEE_IMAGES.put(`img:${key}`, bytes, { metadata: { type } });
+  return key;
+}
+
+// POST /admin/coffee-candidates/:id/add — create the coffee (and copy its image).
+async function handleAddCoffeeCandidate(request, env, id) {
+  const c = await env.DB.prepare('SELECT * FROM coffee_candidates WHERE id = ?1').bind(id).first();
+  if (!c) return json({ error: 'Unknown bean' }, 404);
+  if (c.status === 'added') return json({ error: 'This bean is already in the app' }, 409);
+
+  const missing = [
+    !c.origin_country && 'country',
+    !PROCESSES.includes(c.process) && 'process',
+    !ROAST_LEVELS.includes(c.roast_level) && 'roast level',
+  ].filter(Boolean);
+  if (missing.length) return json({ error: `Fill in the ${missing.join(', ')} first` }, 400);
+
+  let imageKey = null;
+  if (c.image_source_url) {
+    try {
+      imageKey = await storeCoffeeImage(env, c.image_source_url);
+    } catch (e) {
+      console.error('coffee image copy failed for', id, e.message);
+      return json({ error: `Couldn't copy the image: ${e.message}` }, 502);
+    }
+  }
+
+  const coffeeId = crypto.randomUUID().toUpperCase();
+  const tags = JSON.parse(c.flavor_tags || '[]');
+  const note = c.tasting_note
+    || [tags.length ? tags.join(', ').replace(/^./, (s) => s.toUpperCase()) + '.' : '', c.roaster ? `Roasted by ${c.roaster}.` : '']
+      .filter(Boolean).join(' ');
+
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO coffees
+         (id, name, origin_country, origin_region, origin_flag, process, roast_level, flavor_tags,
+          tasting_note, producer, altitude, harvest_season, roaster, image_key)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, NULL, ?12, ?13)`
+    ).bind(
+      coffeeId, c.name, c.origin_country, c.origin_region, flagForCountry(c.origin_country), c.process,
+      c.roast_level, JSON.stringify(tags), note, c.producer, c.altitude, c.roaster, imageKey
+    ),
+    env.DB.prepare(
+      "UPDATE coffee_candidates SET status = 'added', coffee_id = ?2, decided_at = datetime('now') WHERE id = ?1"
+    ).bind(id, coffeeId),
+  ]);
+
+  const coffee = await env.DB.prepare('SELECT * FROM coffees WHERE id = ?1').bind(coffeeId).first();
+  return json(coffeeFromRow(coffee, new URL(request.url).origin));
+}
+
+// POST /admin/coffee-candidates/:id/decline — and /restore to undo it.
+async function handleSetCoffeeCandidateStatus(env, id, status) {
+  const res = await env.DB.prepare(
+    `UPDATE coffee_candidates SET status = ?2, decided_at = CASE ?2 WHEN 'pending' THEN NULL ELSE datetime('now') END
+      WHERE id = ?1 AND status <> 'added'`
+  ).bind(id, status).run();
+  if (!res.meta.changes) return json({ error: 'Unknown bean, or already added' }, 404);
+  return json({ success: true });
+}
+
+// GET /coffee-images/:key — public, immutable (a new image gets a new key).
+async function handleGetCoffeeImage(env, key) {
+  if (!/^[0-9a-f]{32}$/.test(key)) return json({ error: 'Not found' }, 404);
+  const { value, metadata } = await env.COFFEE_IMAGES.getWithMetadata(`img:${key}`, { type: 'stream' });
+  if (!value) return json({ error: 'Not found' }, 404);
+  return new Response(value, {
+    headers: {
+      'Content-Type': metadata?.type || 'image/jpeg',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      ...CORS,
+    },
+  });
+}
+
+// ── Café discovery (admin) ────────────────────────────────────────────────────
+// The dashboard's "Find new cafés" searches Google for cafés that aren't in
+// coffee_shops yet and parks them in shop_candidates. An admin then adds or
+// declines each one; declined places stay in the table so they never come back.
+
+// Returns null for a signed-in admin, otherwise the error response to send.
+async function adminError(request, env) {
+  const s = await sessionFromRequest(request, env);
+  if (!s) return json({ error: 'Invalid or expired token' }, 401);
+  if (!isAdmin(env, s.username)) return json({ error: 'This account is not an admin' }, 403);
+  return null;
+}
+
+const SEARCH_FIELD_MASK = [
+  'places.id',
+  'places.displayName',
+  'places.formattedAddress',
+  'places.location',
+  'places.rating',
+  'places.userRatingCount',
+  'places.editorialSummary',
+  'places.googleMapsUri',
+  'places.websiteUri',
+  'places.businessStatus',
+  'nextPageToken',
+].join(',');
+
+// Google returns at most 20 places per page and 3 pages per search.
+const SEARCH_MAX_PAGES = 3;
+// Searches per sync, to stay well under the Worker's 50-subrequest limit.
+const SEARCH_MAX_QUERIES = 8;
+
+// One Text Search page.
+async function searchGooglePlaces(env, textQuery, pageToken) {
+  const resp = await fetch(`${placesApi(env)}/places:searchText`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': env.GOOGLE_MAPS_API_KEY,
+      'X-Goog-FieldMask': SEARCH_FIELD_MASK,
+    },
+    body: JSON.stringify({ textQuery, regionCode: 'NL', languageCode: 'en', pageSize: 20, pageToken }),
+  });
+  if (!resp.ok) throw new Error(`Places search ${resp.status}: ${(await resp.text()).slice(0, 200)}`);
+  return resp.json();
+}
+
+// "Pelgrimsstraat 5C, 3029 PA Rotterdam" → "Rotterdam" (Dutch postcode, then city).
+function cityFromAddress(address) {
+  const m = /\d{4}\s?[A-Z]{2}\s+(.+)$/.exec(address || '');
+  return m ? m[1].trim() : null;
+}
+
+function candidateFromRow(r) {
+  return {
+    placeId:         r.google_place_id,
+    name:            r.name,
+    address:         r.address,
+    latitude:        r.latitude,
+    longitude:       r.longitude,
+    rating:          r.rating,
+    userRatingCount: r.user_rating_count,
+    summary:         r.summary,
+    googleMapsURI:   r.google_maps_uri,
+    websiteURI:      r.website_uri,
+    searchQuery:     r.search_query,
+    status:          r.status,
+    shopId:          r.shop_id,
+    foundAt:         r.found_at,
+    decidedAt:       r.decided_at,
+  };
+}
+
+// POST /admin/shops/discover { query? } — search Google and queue new cafés.
+// Without a query it searches "specialty coffee in <city>" for every city the
+// app already has shops in.
+async function handleDiscoverShops(request, env) {
+  if (!env.GOOGLE_MAPS_API_KEY) return json({ error: 'Places API not configured' }, 503);
+  let body = {};
+  try { body = await request.json(); } catch { /* empty body is fine */ }
+
+  let queries;
+  const custom = typeof body.query === 'string' ? body.query.trim() : '';
+  if (custom) {
+    if (custom.length > 200) return json({ error: 'query is too long' }, 400);
+    queries = [custom];
+  } else {
+    const { results } = await env.DB.prepare('SELECT address FROM coffee_shops').all();
+    const cities = [...new Set(results.map((r) => cityFromAddress(r.address)).filter(Boolean))].sort();
+    queries = cities.slice(0, SEARCH_MAX_QUERIES).map((c) => `specialty coffee in ${c}`);
+  }
+
+  // Everything we already know about — shops and earlier candidates (any status).
+  const { results: known } = await env.DB.prepare(
+    `SELECT google_place_id AS id FROM coffee_shops WHERE google_place_id IS NOT NULL
+     UNION SELECT google_place_id FROM shop_candidates`
+  ).all();
+  const knownIds = new Set(known.map((r) => r.id));
+
+  const fresh = new Map();
+  let found = 0;
+  const errors = [];
+  for (const q of queries) {
+    let pageToken;
+    for (let page = 0; page < SEARCH_MAX_PAGES; page++) {
+      let data;
+      try {
+        data = await searchGooglePlaces(env, q, pageToken);
+      } catch (e) {
+        console.error('places search failed for', q, e.message);
+        errors.push(q);
+        break;
+      }
+      for (const p of data.places || []) {
+        found++;
+        if (!p.id || !p.location || knownIds.has(p.id) || fresh.has(p.id)) continue;
+        if (p.businessStatus && p.businessStatus !== 'OPERATIONAL') continue;
+        fresh.set(p.id, { place: p, query: q });
+      }
+      pageToken = data.nextPageToken;
+      if (!pageToken) break;
+    }
+  }
+
+  if (fresh.size) {
+    await env.DB.batch([...fresh.values()].map(({ place: p, query }) => env.DB.prepare(
+      `INSERT OR IGNORE INTO shop_candidates
+         (google_place_id, name, address, latitude, longitude, rating, user_rating_count,
+          summary, google_maps_uri, website_uri, search_query)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)`
+    ).bind(
+      p.id, p.displayName?.text || 'Unnamed place', p.formattedAddress || '',
+      p.location.latitude, p.location.longitude, p.rating ?? null, p.userRatingCount ?? null,
+      p.editorialSummary?.text ?? null, p.googleMapsUri ?? null, p.websiteUri ?? null, query
+    )));
+  }
+
+  return json({ queries, found, added: fresh.size, failedQueries: errors });
+}
+
+// GET /admin/shop-candidates — the whole queue, newest first (the dashboard
+// splits it by status).
+async function handleListCandidates(env) {
+  const { results } = await env.DB.prepare(
+    `SELECT * FROM shop_candidates
+      ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, found_at DESC, name`
+  ).all();
+  return json(results.map(candidateFromRow));
+}
+
+// POST /admin/shop-candidates/:placeId/add { category? } — turn a candidate into
+// a coffee shop. Fetches the full place once for opening hours and tags, and
+// stores it in place_details so the app has photos and reviews right away.
+async function handleAddCandidate(request, env, placeId) {
+  if (!env.GOOGLE_MAPS_API_KEY) return json({ error: 'Places API not configured' }, 503);
+  let body = {};
+  try { body = await request.json(); } catch { /* empty body is fine */ }
+  const category = (typeof body.category === 'string' && body.category.trim()) || 'Coffee Shop';
+
+  const c = await env.DB.prepare('SELECT * FROM shop_candidates WHERE google_place_id = ?1').bind(placeId).first();
+  if (!c) return json({ error: 'Unknown candidate' }, 404);
+
+  const existing = await env.DB.prepare('SELECT id FROM coffee_shops WHERE google_place_id = ?1').bind(placeId).first();
+  if (existing) {
+    await env.DB.prepare(
+      "UPDATE shop_candidates SET status = 'added', shop_id = ?2, decided_at = datetime('now') WHERE google_place_id = ?1"
+    ).bind(placeId, existing.id).run();
+    return json({ error: 'This café is already in the app' }, 409);
+  }
+
+  let place;
+  try {
+    place = await fetchGooglePlace(env, placeId);
+  } catch (e) {
+    console.error('add candidate: place lookup failed', placeId, e.message);
+    return json({ error: 'Google lookup failed. Please try again.' }, 502);
+  }
+  const details = placeToRow(placeId, place);
+  const shopId = crypto.randomUUID().toUpperCase();
+
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO coffee_shops
+         (id, name, address, latitude, longitude, category, rating, opening_hours,
+          roaster_info, description, tags, google_place_id)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, NULL, ?9, ?10, ?11)`
+    ).bind(
+      shopId, c.name, c.address, c.latitude, c.longitude, category,
+      details.rating ?? c.rating ?? 0, details.weekday_hours, c.summary || '', details.tags, placeId
+    ),
+    upsertPlaceStmt(env, details),
+    env.DB.prepare(
+      "UPDATE shop_candidates SET status = 'added', shop_id = ?2, decided_at = datetime('now') WHERE google_place_id = ?1"
+    ).bind(placeId, shopId),
+  ]);
+
+  const shop = await env.DB.prepare('SELECT * FROM coffee_shops WHERE id = ?1').bind(shopId).first();
+  return json(shopFromRow(shop));
+}
+
+// POST /admin/shop-candidates/:placeId/decline — and /restore to undo it.
+async function handleSetCandidateStatus(env, placeId, status) {
+  const res = await env.DB.prepare(
+    `UPDATE shop_candidates SET status = ?2, decided_at = CASE ?2 WHEN 'pending' THEN NULL ELSE datetime('now') END
+      WHERE google_place_id = ?1 AND status <> 'added'`
+  ).bind(placeId, status).run();
+  if (!res.meta.changes) return json({ error: 'Unknown candidate, or already added' }, 404);
+  return json({ success: true });
+}
+
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 export default {
@@ -621,7 +1018,7 @@ export default {
       if (pathname === '/auth/logout'   && request.method === 'POST') return handleLogout(request, env);
       if (pathname === '/admin/me'      && request.method === 'GET')  return handleAdminMe(request, env);
 
-      if (pathname === '/coffees'    && request.method === 'GET')  return handleGetCoffees(env);
+      if (pathname === '/coffees'    && request.method === 'GET')  return handleGetCoffees(request, env);
       if (pathname === '/shops'      && request.method === 'GET')  return handleGetShops(env);
       if (pathname === '/my/reviews' && request.method === 'GET')  return handleGetMyReviews(request, env);
       if (pathname === '/reviews'    && request.method === 'POST') return handleCreateReview(request, env);
@@ -633,20 +1030,53 @@ export default {
 
       const placeMatch = pathname.match(/^\/shops\/([^/]+)\/place$/);
       if (placeMatch && request.method === 'GET') {
-        return handleGetShopPlace(request, env, ctx, decodeURIComponent(placeMatch[1]));
+        return handleGetShopPlace(request, env, decodeURIComponent(placeMatch[1]));
       }
       if (pathname === '/place-photo' && request.method === 'GET') {
         return handleGetPlacePhoto(request, env, ctx);
       }
 
-      // Admin: force a full refresh of the place cache (also runs daily via cron).
+      // Admin: refresh the stalest batch of the place cache (also runs daily via
+      // cron). Accepts the ADMIN_TOKEN secret or a dashboard admin session.
       if (pathname === '/admin/refresh-places' && request.method === 'POST') {
         const token = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
         if (!env.ADMIN_TOKEN || token !== env.ADMIN_TOKEN) {
-          return json({ error: 'Unauthorized' }, 401);
+          const denied = await adminError(request, env);
+          if (denied) return denied;
         }
         const summary = await refreshAllPlaces(env);
         return json(summary);
+      }
+
+      const imageMatch = pathname.match(/^\/coffee-images\/([^/]+)$/);
+      if (imageMatch && request.method === 'GET') return handleGetCoffeeImage(env, imageMatch[1]);
+
+      // Admin: bean import queue (dashboard Beans page).
+      if (pathname.startsWith('/admin/coffee-candidates')) {
+        const denied = await adminError(request, env);
+        if (denied) return denied;
+        if (pathname === '/admin/coffee-candidates' && request.method === 'GET') return handleListCoffeeCandidates(env);
+        const m = pathname.match(/^\/admin\/coffee-candidates\/([^/]+?)(?:\/(add|decline|restore))?$/);
+        if (m && request.method === 'POST') {
+          const id = decodeURIComponent(m[1]);
+          if (!m[2]) return handleUpdateCoffeeCandidate(request, env, id);
+          if (m[2] === 'add') return handleAddCoffeeCandidate(request, env, id);
+          return handleSetCoffeeCandidateStatus(env, id, m[2] === 'decline' ? 'declined' : 'pending');
+        }
+      }
+
+      // Admin: café discovery and the review queue (dashboard Stores page).
+      if (pathname.startsWith('/admin/shop')) {
+        const denied = await adminError(request, env);
+        if (denied) return denied;
+        if (pathname === '/admin/shops/discover' && request.method === 'POST') return handleDiscoverShops(request, env);
+        if (pathname === '/admin/shop-candidates' && request.method === 'GET') return handleListCandidates(env);
+        const m = pathname.match(/^\/admin\/shop-candidates\/([^/]+)\/(add|decline|restore)$/);
+        if (m && request.method === 'POST') {
+          const placeId = decodeURIComponent(m[1]);
+          if (m[2] === 'add') return handleAddCandidate(request, env, placeId);
+          return handleSetCandidateStatus(env, placeId, m[2] === 'decline' ? 'declined' : 'pending');
+        }
       }
 
       return json({ error: 'Not found' }, 404);
@@ -657,8 +1087,8 @@ export default {
   },
 
   // Daily cron (see [triggers] in wrangler.toml): refresh the place cache so the
-  // app serves entirely from D1 and Google is queried at most once per day.
+  // app serves entirely from D1 and each place is fetched from Google once a day.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(refreshAllPlaces(env));
+    ctx.waitUntil(refreshAllPlaces(env, PLACES_REFRESH_BATCH, PLACE_DAILY_MIN_AGE));
   },
 };

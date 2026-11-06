@@ -3,8 +3,33 @@ import Foundation
 // MARK: - API configuration
 
 enum API {
+    /// Which backend this build targets. Chosen at compile time by the active
+    /// build configuration's SWIFT_ACTIVE_COMPILATION_CONDITIONS:
+    ///   Debug → (none)  → .dev   |   UAT → UAT → .uat   |   Release → PROD → .prod
+    enum Environment: String {
+        case dev, uat, prod
+
+        var baseURL: URL {
+            switch self {
+            case .dev:  return URL(string: "https://spillthebeans-auth.hk-lam.workers.dev")!
+            case .uat:  return URL(string: "https://spillthebeans-auth-uat.hk-lam.workers.dev")!
+            case .prod: return URL(string: "https://spillthebeans-auth-production.hk-lam.workers.dev")!
+            }
+        }
+    }
+
+    static let environment: Environment = {
+        #if UAT
+        return .uat
+        #elseif PROD
+        return .prod
+        #else
+        return .dev
+        #endif
+    }()
+
     /// The Cloudflare Worker backing the app (auth + data, D1-backed).
-    static let baseURL = URL(string: "https://spillthebeans-auth.hk-lam.workers.dev")!
+    static let baseURL = environment.baseURL
 
     /// Decoder that handles ISO8601 dates with or without fractional seconds
     /// (D1 timestamps include milliseconds, which the plain .iso8601 strategy rejects).

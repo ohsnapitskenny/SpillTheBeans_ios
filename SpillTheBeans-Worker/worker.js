@@ -1,9 +1,10 @@
 // Spill the Beans — API Worker
-// Auth endpoints:
-//   POST /auth/register  { username, password, displayName?, email? }
-//   POST /auth/login     { username, password }
-//   GET  /auth/verify    Authorization: Bearer <token>
-//   POST /auth/logout    Authorization: Bearer <token>
+// Auth endpoints (passwordless — a 6-digit code is emailed on sign-up and login):
+//   POST /auth/register     { email, username }  — create account, emails a code
+//   POST /auth/request-code { email }            — emails a login code
+//   POST /auth/verify-code  { email, code }      — exchange a code for a session
+//   GET  /auth/verify       Authorization: Bearer <token>
+//   POST /auth/logout       Authorization: Bearer <token>
 //   GET  /admin/me       Authorization: Bearer <token> — 200 for admins, 403 otherwise
 //
 // Admin endpoints (Authorization: Bearer <admin session token>):
@@ -35,13 +36,17 @@
 // a daily cron job. App requests are always answered from the cache.
 //
 // Bindings (set in wrangler.toml):
-//   USERS    (KV) — user records keyed by username
-//   SESSIONS (KV) — session tokens with 90-day TTL
+//   USERS    (KV) — user records keyed by username, plus email:<email> → username index
+//   SESSIONS (KV) — session tokens (90-day TTL) and code:<email> login codes (10-min TTL)
 //   DB       (D1) — coffees, coffee_shops, reviews, place_details tables
 //
 // Secrets:
 //   GOOGLE_MAPS_API_KEY — Places API key (wrangler secret put GOOGLE_MAPS_API_KEY)
 //   ADMIN_TOKEN         — guards POST /admin/refresh-places (wrangler secret put ADMIN_TOKEN)
+//   RESEND_API_KEY      — Resend API key for login emails (wrangler secret put RESEND_API_KEY)
+//
+// Vars (wrangler.toml):
+//   EMAIL_FROM          — sender for login emails, e.g. "Spill the Beans <login@yourdomain>"
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -56,90 +61,175 @@ function json(data, status = 200) {
   });
 }
 
-// PBKDF2 with SHA-256, 100k iterations — runs natively in the V8 runtime.
-async function hashPassword(password, salt) {
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    'raw', enc.encode(password), { name: 'PBKDF2' }, false, ['deriveBits']
-  );
-  const bits = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt: enc.encode(salt), iterations: 100_000, hash: 'SHA-256' },
-    key, 256
-  );
-  return Array.from(new Uint8Array(bits)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
 function randomHex(bytes = 32) {
   const arr = new Uint8Array(bytes);
   crypto.getRandomValues(arr);
   return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// ── Passwordless login codes ───────────────────────────────────────────────────
+
+const CODE_TTL          = 60 * 10;  // login codes live 10 minutes
+const CODE_MAX_ATTEMPTS = 5;        // wrong guesses before a code is burned
+
+function normalizeEmail(email) {
+  return (email || '').trim().toLowerCase();
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/// A uniformly random 6-digit code, zero-padded.
+function generateCode() {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return String(arr[0] % 1_000_000).padStart(6, '0');
+}
+
+/// Generate, store (keyed by email, with the owning username) and return a code.
+async function storeCode(env, email, username) {
+  const code = generateCode();
+  await env.SESSIONS.put(
+    `code:${email}`,
+    JSON.stringify({ code, username, attempts: 0 }),
+    { expirationTtl: CODE_TTL }
+  );
+  return code;
+}
+
+/// Email a login code via Resend. Without a provider configured (local dev) the
+/// code is logged to the console so the flow is still testable.
+async function sendLoginCode(env, email, code) {
+  if (!env.RESEND_API_KEY || !env.EMAIL_FROM) {
+    console.log(`[auth] login code for ${email}: ${code}`);
+    return;
+  }
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: env.EMAIL_FROM,
+      to: [email],
+      subject: `${code} is your Spill the Beans code`,
+      text: `Your Spill the Beans code is ${code}. It expires in 10 minutes.\n\n`
+          + `If you didn't request this, you can safely ignore this email.`,
+      html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:420px;margin:0 auto;padding:24px">
+        <h2 style="margin:0 0 8px;color:#3b2a20">Your login code</h2>
+        <p style="color:#6b5d52;margin:0 0 20px">Enter this code in the Spill the Beans app to continue.</p>
+        <div style="font-size:34px;font-weight:700;letter-spacing:8px;background:#f5efe8;border-radius:12px;padding:18px 0;text-align:center;color:#3b2a20">${code}</div>
+        <p style="color:#9a8c80;font-size:13px;margin:20px 0 0">This code expires in 10 minutes. If you didn't request it, you can ignore this email.</p>
+      </div>`,
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    console.error(`Resend send failed (${res.status}): ${detail}`);
+    throw new Error('email_send_failed');
+  }
+}
+
 // ── Route handlers ────────────────────────────────────────────────────────────
 
+// POST /auth/register { email, username } — create a passwordless account and
+// email a one-time code. No session is issued until the code is verified.
 async function handleRegister(request, env) {
   let body;
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
 
-  const { username, password, displayName, email } = body;
-  if (!username || !password) return json({ error: 'username and password are required' }, 400);
+  const email    = normalizeEmail(body.email);
+  const username = (body.username || '').toLowerCase().trim();
 
-  const normalized = username.toLowerCase().trim();
-  if (normalized.length < 3)  return json({ error: 'Username must be at least 3 characters' }, 400);
-  if (password.length < 8)    return json({ error: 'Password must be at least 8 characters' }, 400);
+  if (!email || !username)   return json({ error: 'email and username are required' }, 400);
+  if (!isValidEmail(email))  return json({ error: 'Please enter a valid email address' }, 400);
+  if (username.length < 3)   return json({ error: 'Username must be at least 3 characters' }, 400);
 
-  const existing = await env.USERS.get(`user:${normalized}`);
-  if (existing) return json({ error: 'Username already taken' }, 409);
-
-  const id   = crypto.randomUUID();
-  const salt = randomHex(16);
-  const hash = await hashPassword(password, salt);
+  if (await env.USERS.get(`user:${username}`)) return json({ error: 'Username already taken' }, 409);
+  if (await env.USERS.get(`email:${email}`))   return json({ error: 'An account with that email already exists' }, 409);
 
   const user = {
-    id,
-    username: normalized,
-    displayName: (displayName || '').trim() || normalized,
-    email: email || null,
-    passwordHash: hash,
-    salt,
+    id: crypto.randomUUID(),
+    username,
+    displayName: username,
+    email,
     createdAt: new Date().toISOString(),
   };
 
-  await env.USERS.put(`user:${normalized}`, JSON.stringify(user));
+  await env.USERS.put(`user:${username}`, JSON.stringify(user));
+  await env.USERS.put(`email:${email}`, username);   // reverse index for login-by-email
 
-  const token = randomHex(32);
-  await env.SESSIONS.put(
-    `session:${token}`,
-    JSON.stringify({ userId: id, username: normalized, displayName: user.displayName, email: user.email }),
-    { expirationTtl: 60 * 60 * 24 * 90 }   // 90 days
-  );
+  const code = await storeCode(env, email, username);
+  try {
+    await sendLoginCode(env, email, code);
+  } catch {
+    return json({ error: 'Could not send your code. Please try again.' }, 502);
+  }
 
-  return json({
-    token,
-    user: { id, username: normalized, displayName: user.displayName, email: user.email },
-  });
+  return json({ pending: true, email });
 }
 
-async function handleLogin(request, env) {
+// POST /auth/request-code { email } — email a login code to an existing account.
+async function handleRequestCode(request, env) {
   let body;
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
 
-  const { username, password } = body;
-  if (!username || !password) return json({ error: 'username and password are required' }, 400);
+  const email = normalizeEmail(body.email);
+  if (!email || !isValidEmail(email)) return json({ error: 'Please enter a valid email address' }, 400);
 
-  const normalized = username.toLowerCase().trim();
-  const raw = await env.USERS.get(`user:${normalized}`);
-  if (!raw) return json({ error: 'Invalid username or password' }, 401);
+  const username = await env.USERS.get(`email:${email}`);
+  if (!username) return json({ error: 'No account found for that email' }, 404);
 
-  const user = JSON.parse(raw);
-  const hash = await hashPassword(password, user.salt);
-  if (hash !== user.passwordHash) return json({ error: 'Invalid username or password' }, 401);
+  const code = await storeCode(env, email, username);
+  try {
+    await sendLoginCode(env, email, code);
+  } catch {
+    return json({ error: 'Could not send your code. Please try again.' }, 502);
+  }
+
+  return json({ pending: true, email });
+}
+
+// POST /auth/verify-code { email, code } — exchange a valid code for a session.
+async function handleVerifyCode(request, env) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const email = normalizeEmail(body.email);
+  const code  = (body.code || '').trim();
+  if (!email || !code) return json({ error: 'email and code are required' }, 400);
+
+  const raw = await env.SESSIONS.get(`code:${email}`);
+  if (!raw) return json({ error: 'That code has expired. Please request a new one.' }, 401);
+
+  const entry = JSON.parse(raw);
+  if (entry.attempts >= CODE_MAX_ATTEMPTS) {
+    await env.SESSIONS.delete(`code:${email}`);
+    return json({ error: 'Too many attempts. Please request a new code.' }, 429);
+  }
+
+  if (code !== entry.code) {
+    entry.attempts += 1;
+    await env.SESSIONS.put(`code:${email}`, JSON.stringify(entry), { expirationTtl: CODE_TTL });
+    return json({ error: 'Incorrect code. Please try again.' }, 401);
+  }
+
+  // Valid — burn the code and load the account.
+  await env.SESSIONS.delete(`code:${email}`);
+
+  const userRaw = await env.USERS.get(`user:${entry.username}`);
+  if (!userRaw) return json({ error: 'Account not found' }, 404);
+  const user = JSON.parse(userRaw);
 
   const token = randomHex(32);
   await env.SESSIONS.put(
     `session:${token}`,
     JSON.stringify({ userId: user.id, username: user.username, displayName: user.displayName, email: user.email }),
-    { expirationTtl: 60 * 60 * 24 * 90 }
+    { expirationTtl: 60 * 60 * 24 * 90 }   // 90 days
   );
 
   return json({
@@ -1067,10 +1157,11 @@ export default {
 
     const { pathname } = new URL(request.url);
     try {
-      if (pathname === '/auth/register' && request.method === 'POST') return handleRegister(request, env);
-      if (pathname === '/auth/login'    && request.method === 'POST') return handleLogin(request, env);
-      if (pathname === '/auth/verify'   && request.method === 'GET')  return handleVerify(request, env);
-      if (pathname === '/auth/logout'   && request.method === 'POST') return handleLogout(request, env);
+      if (pathname === '/auth/register'     && request.method === 'POST') return handleRegister(request, env);
+      if (pathname === '/auth/request-code' && request.method === 'POST') return handleRequestCode(request, env);
+      if (pathname === '/auth/verify-code'  && request.method === 'POST') return handleVerifyCode(request, env);
+      if (pathname === '/auth/verify'       && request.method === 'GET')  return handleVerify(request, env);
+      if (pathname === '/auth/logout'       && request.method === 'POST') return handleLogout(request, env);
       if (pathname === '/admin/me'      && request.method === 'GET')  return handleAdminMe(request, env);
 
       if (pathname === '/coffees'    && request.method === 'GET')  return handleGetCoffees(request, env);
